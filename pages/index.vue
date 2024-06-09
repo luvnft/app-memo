@@ -6,5 +6,4 @@
       <test-poap />
     </p-card>
   </div>
-  <text-poap />
 </template>
