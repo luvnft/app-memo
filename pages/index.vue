@@ -1,21 +1,10 @@
 <template>
-  <div class="flex h-screen w-full flex-col items-center gap-4 p-4">
-    <h1>Welcome to .POAP (App url: {{ $config.public.appUrl }})</h1>
-    <div class="flex w-1/2 flex-col gap-2 rounded-lg bg-gray-300 p-4 shadow">
-      <h2 v-if="pending">Loading...</h2>
-      <h2 v-else>Status: {{ data }}</h2>
-      <button class="w-full bg-blue-300 p-2" @click="refresh">
-        <icon name="mdi:reload" size="24" />
-      </button>
-    </div>
+  <div class="flex flex-col p-4">
+    <h1 class="text-4xl">Welcome to .POAP</h1>
+    <h2 class="text-xl">POAP is your way to happiness!</h2>
+    <p-card class="mt-4 bg-accent">
+      <test-poap />
+    </p-card>
   </div>
+  <text-poap />
 </template>
-
-<script lang="ts" setup>
-import { createLogger } from "~/utils/create-logger";
-
-const logger = createLogger("index");
-logger.info("Hello here");
-
-const { data, pending, refresh } = useFetch("/api/health");
-</script>

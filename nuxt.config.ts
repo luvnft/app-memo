@@ -5,7 +5,7 @@ export default defineNuxtConfig({
       title: ".POAP",
     },
   },
-
+  css: ["~/assets/css/main.css"],
   devtools: { enabled: true },
   modules: [
     "@nuxtjs/tailwindcss",
@@ -13,11 +13,17 @@ export default defineNuxtConfig({
     "@nuxt/eslint",
     "nuxt-icon",
     "@nuxt/image",
+    "@nuxtjs/google-fonts",
   ],
   runtimeConfig: {
     apiUrl: "",
     public: {
       appUrl: "",
+    },
+  },
+  googleFonts: {
+    families: {
+      Poppins: true,
     },
   },
 });

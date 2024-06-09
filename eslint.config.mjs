@@ -6,5 +6,6 @@ export default withNuxt({
     "no-console": ["error", { allow: ["warn", "error"] }],
     "no-empty": "error",
     "vue/html-self-closing": "off",
+    "vue/no-multiple-template-root": "off",
   },
 });

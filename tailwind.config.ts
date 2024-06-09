@@ -7,14 +7,14 @@ export default <Partial<Config>>{
     },
     extend: {
       colors: {
-        primary: "#1FB6FF",
+        primary: "rgb(230 0 122)",
         secondary: "#303138",
         danger: "#DA6257",
         success: "#7ACB91",
         warning: "#FFA759",
-        base: "#12141C",
-        foreground: "#FFFFFF",
-        accent: "#1C1D25",
+        base: "#FFFFFF",
+        foreground: "rgb(230 0 122)",
+        accent: "rgb(28, 5, 51)",
         disabled: "#26272E",
         link: "#1FB6FF",
       },
