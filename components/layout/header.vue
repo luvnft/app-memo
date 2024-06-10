@@ -4,7 +4,7 @@
   >
     <h1 class="text-2xl">.POAP</h1>
     <layout-nav />
-    <p-button>Connect</p-button>
+    <dot-button>Connect</dot-button>
     <select v-model="colorMode.preference">
       <option value="system">System</option>
       <option value="light">Light</option>

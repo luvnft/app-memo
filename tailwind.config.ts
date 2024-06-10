@@ -15,7 +15,7 @@ export default <Partial<Config>>{
         base: "#FFFFFF",
         foreground: "rgb(230 0 122)",
         accent: "rgb(28, 5, 51)",
-        disabled: "#26272E",
+        disabled: "#949494",
         link: "#1FB6FF",
       },
     },

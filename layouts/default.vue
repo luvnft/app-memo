@@ -1,11 +1,9 @@
 <template>
-  <layout-header />
-  <main>
-    <slot />
-  </main>
-  <layout-footer />
+  <div id="app-base">
+    <layout-header />
+    <main>
+      <slot />
+    </main>
+    <layout-footer />
+  </div>
 </template>
-
-<script lang="ts" setup></script>
-
-<style></style>
