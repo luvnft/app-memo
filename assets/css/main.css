@@ -1,4 +1,8 @@
 * {
-  font-family: "Poppins", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  font-family: "Unbounded", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   color: rgb(230 0 122);
+}
+
+body {
+  @apply bg-base;
 }

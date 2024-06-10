@@ -14,6 +14,7 @@ export default defineNuxtConfig({
     "nuxt-icon",
     "@nuxt/image",
     "@nuxtjs/google-fonts",
+    "@nuxtjs/color-mode",
   ],
   runtimeConfig: {
     apiUrl: "",
@@ -23,7 +24,7 @@ export default defineNuxtConfig({
   },
   googleFonts: {
     families: {
-      Poppins: true,
+      Unbounded: true,
     },
   },
 });
