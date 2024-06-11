@@ -1,4 +1,17 @@
-#app-base * {
-  font-family: "Unbounded", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-  color: rgb(230 0 122);
+#app-base {
+  * {
+    font-family: "Unbounded", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  }
+  p,
+  b,
+  a,
+  li,
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    color: rgb(230 0 122);
+  }
 }
