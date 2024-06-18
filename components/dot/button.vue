@@ -11,7 +11,7 @@
 </template>
 
 <script lang="ts" setup>
-import type { BtnVariant } from "./types";
+import type { BtnSize, BtnVariant } from "./types";
 
 defineEmits<{
   (e: "click"): void;
@@ -21,42 +21,66 @@ const props = withDefaults(
   defineProps<{
     disabled?: boolean;
     variant?: BtnVariant;
+    size?: BtnSize;
   }>(),
   {
     disabled: false,
-    variant: "primary",
+    variant: "primary-shadow",
+    size: "small",
   },
 );
 
 const btnClasses = computed(() => {
-  if (props.disabled) {
-    return "bg-disabled text-white cursor-not-allowed";
-  }
+  const baseClasses = props.disabled ? "cursor-not-allowed" : "cursor-pointer";
+
+  const sizeClasses = (
+    {
+      small: "text-sm px-4 py-1 rounded-full",
+      medium: "px-3 py-2",
+      large: "text-lg px-4 py-3",
+    } as Record<BtnSize, string>
+  )[props.size];
+
+  const variantClasses = (
+    {
+      "primary-shadow": `
+      bg-k-primary hover:bg-background-color text-black hover:text-text-color border border-border-color
+      disabled:bg-disabled disabled:text-neutral-7 disabled:opacity-50
+      shadow-text-color hover:shadow-text-color  shadow-[4px_4px] hover:shadow-[2px_2px]
+    `,
+      "secondary-shadow": `
+      bg-background-color text-text-color border border-border-color
+      disabled:bg-disabled disabled:text-neutral-7 disabled:opacity-50
+      shadow-text-color hover:shadow-text-color  shadow-[4px_4px] hover:shadow-[2px_2px]
+    `,
+      primary: `
+      bg-k-primary hover:bg-background-color text-black hover:text-text-color border border-border-color
+      disabled:bg-disabled disabled:text-neutral-7 disabled:opacity-50
+    `,
+      secondary: `
+      bg-background-color text-text-color border border-border-color
+      disabled:bg-disabled disabled:text-neutral-7 disabled:opacity-50
+    `,
+      "primary-rounded": `
+      bg-k-primary hover:bg-background-color text-black hover:text-text-color border border-border-color rounded-full
+      disabled:bg-disabled disabled:text-neutral-7 disabled:opacity-50
+    `,
+      "secondary-rounded": `
+      bg-background-color text-text-color border border-border-color rounded-full
+      disabled:bg-disabled disabled:text-neutral-7 disabled:opacity-50
+    `,
+    } as Record<BtnVariant, string>
+  )[props.variant];
+
   return {
-    "bg-primary text-white": props.variant === "primary",
-    "bg-white border border-primary": props.variant === "secondary",
-    "bg-danger  text-white": props.variant === "danger",
-    "bg-success text-white": props.variant === "success",
-    "bg-warning text-white": props.variant === "warning",
+    [`${baseClasses} ${sizeClasses} ${variantClasses}`]: true,
   };
 });
 </script>
 
 <style scoped>
 .dot-button {
-  @apply relative flex cursor-pointer items-center justify-center gap-1 rounded p-4 font-bold uppercase transition ease-in-out hover:bg-opacity-90;
-}
-.dot-button::before {
-  content: " ";
-  z-index: -1;
-  @apply absolute left-1 top-1 h-full w-full rounded bg-black p-4 transition ease-in-out;
-  transition:
-    left 0.2s,
-    top 0.2s;
-
-  &:hover {
-    @apply left-0.5 top-0.5;
-  }
+  @apply inline-flex items-center justify-center gap-1 transition ease-in-out;
 }
 .dot-button .icon {
   @apply ml-2;

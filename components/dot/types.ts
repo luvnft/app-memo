@@ -1,6 +1,9 @@
 export type BtnVariant =
   | "primary"
   | "secondary"
-  | "danger"
-  | "success"
-  | "warning";
+  | "primary-rounded"
+  | "secondary-rounded"
+  | "primary-shadow"
+  | "secondary-shadow";
+
+export type BtnSize = "small" | "medium" | "large";
