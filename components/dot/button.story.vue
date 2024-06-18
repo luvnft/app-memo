@@ -2,9 +2,10 @@
   <Story title="Dot/Button" auto-props-disabled>
     <Variant title="Default">
       <dot-button
-        class="w-1/2"
+        class="mb-5 w-1/2"
         :disabled="state.disabled"
         :variant="state.variant"
+        :size="state.size"
         @click="logEvent('Click!', $event)"
       >
         {{ state.content }}
@@ -12,8 +13,9 @@
     </Variant>
     <Variant title="With icon">
       <dot-button
-        class="w-1/2"
+        class="mb-5 w-1/2"
         :disabled="state.disabled"
+        :size="state.size"
         :variant="state.variant"
       >
         {{ state.content }}
@@ -27,7 +29,19 @@
       <HstSelect
         v-model="state.variant"
         title="Variant"
-        :options="['primary', 'secondary', 'danger', 'success', 'warning']"
+        :options="[
+          'primary-shadow',
+          'secondary-shadow',
+          'primary',
+          'secondary',
+          'primary-rounded',
+          'secondary-rounded',
+        ]"
+      />
+      <HstSelect
+        v-model="state.size"
+        title="Size"
+        :options="['small', 'medium', 'large']"
       />
       <HstCheckbox v-model="state.disabled" title="Disabled" />
     </template>
@@ -47,6 +61,7 @@ This is a button component.
 
 - `disabled`: Disables the button.
 - `variant`: The button variant.
+- `size`: The button size.
 
 ## Events
 
@@ -55,11 +70,12 @@ This is a button component.
 
 <script lang="ts" setup>
 import { logEvent } from "histoire/client";
-import type { BtnVariant } from "./types";
+import type { BtnSize, BtnVariant } from "./types";
 
 const state = reactive({
   content: "Hello",
-  variant: "primary" as BtnVariant,
+  variant: "primary-shadow" as BtnVariant,
+  size: "small" as BtnSize,
   disabled: false,
 });
 </script>
