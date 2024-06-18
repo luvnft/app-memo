@@ -49,7 +49,7 @@ const btnClasses = computed(() => {
       shadow-text-color hover:shadow-text-color  shadow-[4px_4px] hover:shadow-[2px_2px]
     `,
       "secondary-shadow": `
-      bg-background-color text-text-color border border-border-color
+      bg-background-color text-text-color border border-border-color hover:bg-k-accent-hover
       disabled:bg-disabled disabled:text-neutral-7 disabled:opacity-50
       shadow-text-color hover:shadow-text-color  shadow-[4px_4px] hover:shadow-[2px_2px]
     `,
@@ -58,7 +58,7 @@ const btnClasses = computed(() => {
       disabled:bg-disabled disabled:text-neutral-7 disabled:opacity-50
     `,
       secondary: `
-      bg-background-color text-text-color border border-border-color
+      bg-background-color text-text-color border border-border-color hover:bg-k-accent-hover
       disabled:bg-disabled disabled:text-neutral-7 disabled:opacity-50
     `,
       "primary-rounded": `
@@ -66,7 +66,7 @@ const btnClasses = computed(() => {
       disabled:bg-disabled disabled:text-neutral-7 disabled:opacity-50
     `,
       "secondary-rounded": `
-      bg-background-color text-text-color border border-border-color rounded-full
+      bg-background-color text-text-color border border-border-color hover:bg-k-accent-hover rounded-full 
       disabled:bg-disabled disabled:text-neutral-7 disabled:opacity-50
     `,
     } as Record<BtnVariant, string>
