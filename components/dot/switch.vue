@@ -17,7 +17,7 @@ const model = defineModel({
 });
 
 const props = defineProps<{
-  disabled: boolean;
+  disabled?: boolean;
 }>();
 
 const switchClasses = computed(() => {
