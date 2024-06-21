@@ -27,15 +27,15 @@ const props = defineProps<{
 
 const wrapperClasses = computed(() => {
   if (props.error) {
-    return "border-k-red ";
+    return "border-k-red";
   }
-  return "border-k-grey ";
+  return "border-k-grey";
 });
 
 const inputClasses = computed(() => {
   if (props.error) {
-    return "placeholder:text-k-red ";
+    return "placeholder:text-k-red";
   }
-  return "placeholder:text-placeholder-color ";
+  return "placeholder:text-placeholder-color";
 });
 </script>
