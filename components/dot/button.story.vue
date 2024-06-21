@@ -1,19 +1,50 @@
 <template>
-  <Story title="Dot/Button">
+  <Story title="Dot/Button" auto-props-disabled>
     <Variant title="Default">
-      <dot-button class="w-full" @click="logEvent('Click!', $event)">
+      <dot-button
+        class="mb-5 w-1/2"
+        :disabled="state.disabled"
+        :variant="state.variant"
+        :size="state.size"
+        @click="logEvent('Click!', $event)"
+      >
         {{ state.content }}
       </dot-button>
-      <template #controls>
-        <HstText v-model="state.content" title="Content" />
-      </template>
     </Variant>
-    <Variant title="Disabled">
-      <dot-button class="w-full" disabled>{{ state.content }}</dot-button>
-      <template #controls>
-        <HstText v-model="state.content" title="Content" />
-      </template>
+    <Variant title="With icon">
+      <dot-button
+        class="mb-5 w-1/2"
+        :disabled="state.disabled"
+        :size="state.size"
+        :variant="state.variant"
+      >
+        {{ state.content }}
+        <template #icon>
+          <icon name="mdi:chevron-double-down" size="24" />
+        </template>
+      </dot-button>
     </Variant>
+    <template #controls>
+      <HstText v-model="state.content" title="Content" />
+      <HstSelect
+        v-model="state.variant"
+        title="Variant"
+        :options="[
+          'primary-shadow',
+          'secondary-shadow',
+          'primary',
+          'secondary',
+          'primary-rounded',
+          'secondary-rounded',
+        ]"
+      />
+      <HstSelect
+        v-model="state.size"
+        title="Size"
+        :options="['small', 'medium', 'large']"
+      />
+      <HstCheckbox v-model="state.disabled" title="Disabled" />
+    </template>
   </Story>
 </template>
 
@@ -29,6 +60,8 @@ This is a button component.
 ## Props
 
 - `disabled`: Disables the button.
+- `variant`: The button variant.
+- `size`: The button size.
 
 ## Events
 
@@ -37,9 +70,13 @@ This is a button component.
 
 <script lang="ts" setup>
 import { logEvent } from "histoire/client";
+import type { BtnSize, BtnVariant } from "./types";
 
 const state = reactive({
   content: "Hello",
+  variant: "primary-shadow" as BtnVariant,
+  size: "small" as BtnSize,
+  disabled: false,
 });
 </script>
 
