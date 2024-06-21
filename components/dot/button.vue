@@ -35,7 +35,7 @@ const btnClasses = computed(() => {
 
   const sizeClasses = (
     {
-      small: "text-sm px-4 py-1 rounded-full",
+      small: "text-sm px-4 py-1",
       medium: "px-3 py-2",
       large: "text-lg px-4 py-3",
     } as Record<BtnSize, string>
