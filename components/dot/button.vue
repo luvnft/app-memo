@@ -30,51 +30,49 @@ const props = withDefaults(
   },
 );
 
-const btnClasses = computed(() => {
-  const baseClasses = props.disabled ? "cursor-not-allowed" : "cursor-pointer";
+const SIZE_CLASSES: Record<BtnSize, string> = {
+  small: "text-sm px-4 py-1",
+  medium: "px-3 py-2",
+  large: "text-lg px-4 py-3",
+};
 
-  const sizeClasses = (
-    {
-      small: "text-sm px-4 py-1",
-      medium: "px-3 py-2",
-      large: "text-lg px-4 py-3",
-    } as Record<BtnSize, string>
-  )[props.size];
-
-  const variantClasses = (
-    {
-      "primary-shadow": `
+const VARIANT_CLASSES: Record<BtnVariant, string> = {
+  "primary-shadow": `
       bg-k-primary hover:bg-background-color text-black hover:text-text-color border border-border-color
       disabled:bg-disabled disabled:text-neutral-7 disabled:opacity-50
       shadow-text-color hover:shadow-text-color  shadow-[4px_4px] hover:shadow-[2px_2px]
     `,
-      "secondary-shadow": `
+  "secondary-shadow": `
       bg-background-color text-text-color border border-border-color hover:bg-k-accent-hover
       disabled:bg-disabled disabled:text-neutral-7 disabled:opacity-50
       shadow-text-color hover:shadow-text-color  shadow-[4px_4px] hover:shadow-[2px_2px]
     `,
-      primary: `
+  primary: `
       bg-k-primary hover:bg-background-color text-black hover:text-text-color border border-border-color
       disabled:bg-disabled disabled:text-neutral-7 disabled:opacity-50
     `,
-      secondary: `
+  secondary: `
       bg-background-color text-text-color border border-border-color hover:bg-k-accent-hover
       disabled:bg-disabled disabled:text-neutral-7 disabled:opacity-50
     `,
-      "primary-rounded": `
+  "primary-rounded": `
       bg-k-primary hover:bg-background-color text-black hover:text-text-color border border-border-color rounded-full
       disabled:bg-disabled disabled:text-neutral-7 disabled:opacity-50
     `,
-      "secondary-rounded": `
+  "secondary-rounded": `
       bg-background-color text-text-color border border-border-color hover:bg-k-accent-hover rounded-full 
       disabled:bg-disabled disabled:text-neutral-7 disabled:opacity-50
     `,
-    } as Record<BtnVariant, string>
-  )[props.variant];
+};
 
-  return {
-    [`${baseClasses} ${sizeClasses} ${variantClasses}`]: true,
-  };
+const btnClasses = computed(() => {
+  const baseClasses = props.disabled ? "cursor-not-allowed" : "cursor-pointer";
+
+  const size = SIZE_CLASSES[props.size];
+
+  const variant = VARIANT_CLASSES[props.variant];
+
+  return `${baseClasses} ${size} ${variant}`;
 });
 </script>
 
