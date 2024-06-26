@@ -9,7 +9,7 @@
       :placeholder="placeholder"
       type="text"
       :class="inputClasses"
-      class="min-w-0 flex-1 py-3 focus:outline-none focus:ring-0"
+      class="min-w-0 flex-1 bg-transparent py-3 text-text-color focus:outline-none focus:ring-0"
     />
     <slot name="suffix" />
   </span>
