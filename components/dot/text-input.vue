@@ -1,6 +1,6 @@
 <template>
   <span
-    class="flex w-full items-center justify-between gap-2 border px-3 py-3"
+    class="flex w-full items-center justify-between gap-2 border px-3"
     :class="wrapperClasses"
   >
     <slot name="prefix" class="max-w-20" />
@@ -9,7 +9,7 @@
       :placeholder="placeholder"
       type="text"
       :class="inputClasses"
-      class="h-full w-full focus:outline-none focus:ring-0"
+      class="min-w-0 flex-1 py-3 focus:outline-none focus:ring-0"
     />
     <slot name="suffix" />
   </span>
