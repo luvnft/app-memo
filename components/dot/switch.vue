@@ -1,14 +1,14 @@
 <template>
   <span
-    class="inline-flex items-center rounded-full"
-    :class="disabled ? 'cursor-not-allowed' : 'cursor-pointer'"
+    class="relative box-content inline-flex h-6 w-12 items-center rounded-full border border-black p-1"
+    :class="switchContainerClasses"
     @click="!disabled && (model = !model)"
   >
     <input v-model="model" class="peer sr-only" type="checkbox" />
+
     <span
-      class="peer relative h-6 w-11 rounded-full border border-black after:absolute after:start-[1px] after:top-[1px] after:h-5 after:w-5 after:rounded-full after:border after:border-black after:bg-k-grey after:transition-all after:content-[''] peer-checked:after:translate-x-full peer-checked:after:bg-background-color peer-focus:outline-none rtl:peer-checked:after:-translate-x-full"
-      :class="switchClasses"
-    />
+      class="peer h-6 w-6 rounded-full border border-black bg-k-grey transition-transform peer-checked:translate-x-full peer-checked:bg-white"
+    ></span>
   </span>
 </template>
 <script lang="ts" setup>
@@ -20,10 +20,18 @@ const props = defineProps<{
   disabled?: boolean;
 }>();
 
-const switchClasses = computed(() => {
-  if (!props.disabled) {
-    return "bg-background-color peer-checked:bg-k-primary";
-  }
-  return "bg-k-shade peer-checked:bg-k-pink";
+const COLOR_CLASSES = [
+  "bg-background-color", // disabled 0 checked 0
+  "bg-k-primary", // disabled 0 checked 1
+  "bg-k-shade/50", // disabled 1 checked 0
+  "bg-k-accent-hover", // disabled 1 checked 1
+];
+
+const switchContainerClasses = computed(() => {
+  const baseClasses = props.disabled ? "cursor-not-allowed" : "cursor-pointer";
+
+  const colorClassesIdx = (Number(props.disabled) << 1) | Number(model.value);
+
+  return `${baseClasses} ${COLOR_CLASSES[colorClassesIdx]}`;
 });
 </script>
