@@ -79,5 +79,3 @@ const state = reactive({
   disabled: false,
 });
 </script>
-
-<style></style>
