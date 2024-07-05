@@ -5,8 +5,16 @@
     <div
       class="flex aspect-square w-2/5 rounded-full border border-black bg-zinc-400 shadow-[4px_4px] shadow-k-shade2"
     >
-      <div class="m-4 flex-1 rounded-full bg-zinc-300"></div>
+      <div v-if="pending" class="m-4 flex-1 rounded-full bg-zinc-300"></div>
+      <img
+        v-else
+        :src="data.imageSrc"
+        alt="poap image"
+        class="flex-1 rounded-full object-cover"
+      />
     </div>
+
+    <h3 v-if="!pending">{{ data.name }}</h3>
 
     <div class="flex flex-col space-y-3 self-stretch">
       <dot-label text="Enter POAP Code" class="flex-1">
@@ -26,6 +34,7 @@
         :disabled="!isCodeValid"
         variant="primary-shadow"
         size="medium"
+        @click="refresh"
         >Continue</dot-button
       >
     </div>
@@ -34,7 +43,13 @@
   </div>
 </template>
 <script setup lang="ts">
-const code = ref("");
+const code = ref("bangkok");
 
 const isCodeValid = computed(() => code.value.trim().length > 0);
+
+const { data, pending, refresh } = await useFetch("/api/code", {
+  query: { code },
+  immediate: false,
+  watch: false,
+});
 </script>
