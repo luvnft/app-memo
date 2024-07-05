@@ -29,7 +29,7 @@ const wrapperClasses = computed(() => {
   if (props.error) {
     return "border-k-red";
   }
-  return "border-k-grey";
+  return "border-border-color";
 });
 
 const inputClasses = computed(() => {
