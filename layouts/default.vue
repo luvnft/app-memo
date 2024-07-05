@@ -1,9 +1,9 @@
 <template>
-  <div id="app-base">
-    <layout-header />
+  <div id="app-base" class="min-h-screen bg-background-color">
+    <!-- <layout-header /> -->
     <main>
       <slot />
     </main>
-    <layout-footer />
+    <!-- <layout-footer /> -->
   </div>
 </template>
