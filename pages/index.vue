@@ -43,7 +43,7 @@
   </div>
 </template>
 <script setup lang="ts">
-const code = ref("bangkok");
+const code = ref("");
 
 const isCodeValid = computed(() => code.value.trim().length > 0);
 
