@@ -15,6 +15,7 @@ export default defineNuxtConfig({
     "@nuxt/image",
     "@nuxtjs/google-fonts",
     "@nuxtjs/color-mode",
+    "@vue-final-modal/nuxt",
   ],
   runtimeConfig: {
     apiUrl: "",
