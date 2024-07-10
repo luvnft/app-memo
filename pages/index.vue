@@ -17,6 +17,9 @@
     <h3 v-if="!pending">{{ data.name }}</h3>
 
     <div class="flex flex-col space-y-3 self-stretch">
+      <client-only>
+        <dot-connect />
+      </client-only>
       <dot-label text="Enter POAP Code" class="flex-1">
         <div class="flex space-x-3">
           <dot-text-input
@@ -31,12 +34,13 @@
         </div>
       </dot-label>
       <dot-button
-        :disabled="!isCodeValid"
+        :disabled="!isCodeValid || !hasAccount"
         variant="primary-shadow"
         size="medium"
         @click="refresh"
-        >Continue</dot-button
       >
+        Continue
+      </dot-button>
     </div>
 
     <a href="#">How this works ?</a>
@@ -46,6 +50,9 @@
 const code = ref("");
 
 const isCodeValid = computed(() => code.value.trim().length > 0);
+
+const accountStore = useAccountStore();
+const hasAccount = computed(() => accountStore.hasSelectedAccount);
 
 const { data, pending, refresh } = await useFetch("/api/code", {
   query: { code },
