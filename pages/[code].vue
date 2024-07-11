@@ -114,15 +114,15 @@ const claimed = ref<null | string>(null);
 const isClaiming = ref(false);
 
 const claim = async () => {
-  // const _address = address.value || accountStore.selected?.address;
-  // if (!_address) return;
-  // const data = await $fetch("/api/claim", {
-  //   method: "POST",
-  //   body: {
-  //     code: route.params.code,
-  //     address: _address,
-  //   },
-  // });
+  const _address = address.value || accountStore.selected?.address;
+  if (!_address) return;
+  const data = await $fetch("/api/claim", {
+    method: "POST",
+    body: {
+      code: route.params.code,
+      address: _address,
+    },
+  });
 
   isClaiming.value = true;
   setTimeout(() => {
