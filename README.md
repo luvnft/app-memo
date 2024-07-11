@@ -20,6 +20,13 @@ yarn install
 bun install
 ```
 
+> [!NOTE]
+> Do not forget to setup a `.env` file with the following content:
+
+```bash
+NUXT_API_URL=
+```
+
 ## Development Server
 
 Start the development server on `http://localhost:3000`:
