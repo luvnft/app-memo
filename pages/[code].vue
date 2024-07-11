@@ -22,14 +22,48 @@
 
     <div class="flex flex-col space-y-3 self-stretch">
       <template v-if="!claimed">
-        <client-only>
-          <dot-connect />
-        </client-only>
-        <dot-label text="Or enter address">
+        <div
+          class="flex border border-border-color shadow-[4px_4px] shadow-text-color"
+        >
+          <button
+            class="flex-1 py-2 text-text-color"
+            :class="{
+              'bg-background-color-inverse text-text-color-inverse':
+                showAddressInput,
+            }"
+            @click="showAddressInput = true"
+          >
+            Enter address
+          </button>
+          <button
+            class="flex-1 py-2 text-text-color"
+            :class="{
+              'bg-background-color-inverse text-text-color-inverse':
+                !showAddressInput,
+            }"
+            @click="showAddressInput = false"
+          >
+            Connect wallet
+          </button>
+        </div>
+
+        <dot-label v-if="showAddressInput" text="Enter DOT address">
           <dot-text-input v-model="address" placeholder="Address" />
         </dot-label>
+
+        <client-only v-if="!showAddressInput">
+          <dot-connect />
+        </client-only>
+
+        <div class="fixed -top-3 left-0 right-0 flex h-7">
+          <div
+            class="absolute bottom-0 left-0 top-0 bg-pink-400 transition-all duration-[60000ms] ease-linear"
+            :style="`width: ${isClaiming ? '100%' : '0%'};`"
+          ></div>
+        </div>
+
         <dot-button
-          :disabled="!canClaim"
+          :disabled="!canClaim || isClaiming"
           variant="primary-shadow"
           size="medium"
           @click="claim"
@@ -65,6 +99,8 @@ const accountStore = useAccountStore();
 
 const address = ref("");
 
+const showAddressInput = ref(true);
+
 const canClaim = computed(
   () => address.value.trim().length > 0 || accountStore.hasSelectedAccount,
 );
@@ -75,19 +111,24 @@ const { data, status, error } = await useFetch("/api/code", {
 });
 
 const claimed = ref<null | string>(null);
+const isClaiming = ref(false);
 
 const claim = async () => {
-  const _address = address.value || accountStore.selected?.address;
-  if (!_address) return;
-  const data = await $fetch("/api/claim", {
-    method: "POST",
-    body: {
-      code: route.params.code,
-      address: _address,
-    },
-  });
+  // const _address = address.value || accountStore.selected?.address;
+  // if (!_address) return;
+  // const data = await $fetch("/api/claim", {
+  //   method: "POST",
+  //   body: {
+  //     code: route.params.code,
+  //     address: _address,
+  //   },
+  // });
 
-  const url = `https://kodadot.xyz/${data.chain}/gallery/${data.collection}-${data.sn}`;
-  claimed.value = url;
+  isClaiming.value = true;
+  setTimeout(() => {
+    isClaiming.value = false;
+    const url = `https://kodadot.xyz/${data.chain}/gallery/${data.collection}-${data.sn}`;
+    claimed.value = url;
+  }, 60_000);
 };
 </script>
