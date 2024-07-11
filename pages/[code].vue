@@ -81,14 +81,6 @@
           </a>
         </dot-label>
       </template>
-
-      <dot-button
-        variant="secondary-shadow"
-        size="medium"
-        @click="$router.push('/')"
-      >
-        Back
-      </dot-button>
     </div>
   </div>
 </template>
