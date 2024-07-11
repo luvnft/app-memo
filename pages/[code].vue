@@ -21,20 +21,33 @@
     <h3 v-if="error" class="text-k-red">Couldn't load POAP</h3>
 
     <div class="flex flex-col space-y-3 self-stretch">
-      <client-only>
-        <dot-connect />
-      </client-only>
-      <dot-label text="Or enter address">
-        <dot-text-input v-model="address" placeholder="Address" />
-      </dot-label>
-      <dot-button
-        :disabled="!canClaim"
-        variant="primary-shadow"
-        size="medium"
-        @click="claim"
-      >
-        Claim
-      </dot-button>
+      <template v-if="!claimed">
+        <client-only>
+          <dot-connect />
+        </client-only>
+        <dot-label text="Or enter address">
+          <dot-text-input v-model="address" placeholder="Address" />
+        </dot-label>
+        <dot-button
+          :disabled="!canClaim"
+          variant="primary-shadow"
+          size="medium"
+          @click="claim"
+        >
+          Claim
+        </dot-button>
+      </template>
+
+      <template v-else>
+        <dot-label text="POAP claimed successfully 🥳">
+          <a :href="claimed" class="block w-full">
+            <dot-button class="w-full" variant="primary-shadow" size="large"
+              >Check your POAP at KodaDot</dot-button
+            >
+          </a>
+        </dot-label>
+      </template>
+
       <dot-button
         variant="secondary-shadow"
         size="medium"
@@ -61,15 +74,20 @@ const { data, status, error } = await useFetch("/api/code", {
   watch: false,
 });
 
+const claimed = ref<null | string>(null);
+
 const claim = async () => {
   const _address = address.value || accountStore.selected?.address;
   if (!_address) return;
-  await $fetch("/api/claim", {
+  const data = await $fetch("/api/claim", {
     method: "POST",
     body: {
       code: route.params.code,
       address: _address,
     },
   });
+
+  const url = `https://kodadot.xyz/${data.chain}/gallery/${data.collection}-${data.sn}`;
+  claimed.value = url;
 };
 </script>
