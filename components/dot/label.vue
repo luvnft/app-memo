@@ -3,7 +3,9 @@
     class="flex"
     :class="vertical ? 'flex-row justify-between' : 'flex-col gap-2'"
   >
-    <label class="font-bold text-text-color" :class="{ 'text-k-red': error }"
+    <label
+      class="font-bold"
+      :class="{ 'text-k-red': error, 'text-text-color': !error }"
       >{{ text }} <span v-if="required">*</span></label
     >
     <slot />
