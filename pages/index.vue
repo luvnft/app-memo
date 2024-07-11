@@ -5,7 +5,10 @@
     <div
       class="flex aspect-square w-2/5 rounded-full border border-black bg-zinc-400 shadow-[4px_4px] shadow-k-shade2"
     >
-      <div v-if="pending" class="m-4 flex-1 rounded-full bg-zinc-300"></div>
+      <div
+        v-if="status !== 'success'"
+        class="m-4 flex-1 rounded-full bg-zinc-300"
+      />
       <img
         v-else
         :src="data.imageSrc"
@@ -14,12 +17,10 @@
       />
     </div>
 
-    <h3 v-if="!pending">{{ data.name }}</h3>
+    <h3 v-if="status === 'success'">{{ data.name }}</h3>
+    <h3 v-if="error" class="text-k-red">Couldn't load POAP</h3>
 
     <div class="flex flex-col space-y-3 self-stretch">
-      <client-only>
-        <dot-connect />
-      </client-only>
       <dot-label text="Enter POAP Code" class="flex-1">
         <div class="flex space-x-3">
           <dot-text-input
@@ -34,10 +35,10 @@
         </div>
       </dot-label>
       <dot-button
-        :disabled="!isCodeValid || !hasAccount"
+        :disabled="!isCodeValid"
         variant="primary-shadow"
         size="medium"
-        @click="refresh"
+        @click="continueClaim"
       >
         Continue
       </dot-button>
@@ -51,12 +52,16 @@ const code = ref("");
 
 const isCodeValid = computed(() => code.value.trim().length > 0);
 
-const accountStore = useAccountStore();
-const hasAccount = computed(() => accountStore.hasSelectedAccount);
-
-const { data, pending, refresh } = await useFetch("/api/code", {
+const { data, status, refresh, error } = await useFetch("/api/code", {
   query: { code },
   immediate: false,
   watch: false,
 });
+const router = useRouter();
+const continueClaim = async () => {
+  await refresh();
+  if (status.value === "success") {
+    router.push(`/${code.value}`);
+  }
+};
 </script>
