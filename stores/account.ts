@@ -27,5 +27,9 @@ export const useAccountStore = defineStore({
       if (!state.selected) return "";
       return addressShortener(state.selected.address);
     },
+    accountName: (state) => {
+      if (!state.selected) return "";
+      return state.selected.meta.name ?? "";
+    },
   },
 });

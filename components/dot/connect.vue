@@ -2,7 +2,9 @@
   <dot-label text="Account">
     <dot-button variant="primary-shadow" size="medium" @click="open">
       {{
-        accountStore.hasSelectedAccount ? accountStore.shortAddress : "Connect"
+        accountStore.hasSelectedAccount
+          ? `${accountStore.accountName} ${accountStore.shortAddress}`
+          : "Connect"
       }}
     </dot-button>
   </dot-label>
