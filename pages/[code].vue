@@ -48,7 +48,7 @@
         </div>
 
         <dot-label v-if="showAddressInput" text="Enter DOT address">
-          <dot-text-input v-model="address" placeholder="Address" />
+          <dot-text-input v-model="manualAddress" placeholder="Address" />
         </dot-label>
 
         <client-only v-if="!showAddressInput">
@@ -61,6 +61,12 @@
             :style="`width: ${isClaiming ? '100%' : '0%'};`"
           ></div>
         </div>
+
+        <dot-label
+          v-if="claimFailed"
+          :error="true"
+          text="You already claimed this POAP"
+        />
 
         <dot-button
           :disabled="!canClaim || isClaiming"
@@ -85,42 +91,51 @@
   </div>
 </template>
 <script setup lang="ts">
+import { isAddress } from "@polkadot/util-crypto";
+
 const route = useRoute();
-
 const accountStore = useAccountStore();
-
-const address = ref("");
-
+const manualAddress = ref("");
 const showAddressInput = ref(true);
 
-const canClaim = computed(
-  () => address.value.trim().length > 0 || accountStore.hasSelectedAccount,
+const address = computed(() =>
+  showAddressInput.value ? manualAddress.value : accountStore.selected?.address,
 );
+
+const canClaim = computed(() => isAddress(address.value));
 
 const { data, status, error } = await useFetch("/api/code", {
   query: { code: route.params.code },
   watch: false,
 });
 
+const claimFailed = ref(false);
 const claimed = ref<null | string>(null);
 const isClaiming = ref(false);
 
 const claim = async () => {
-  const _address = address.value || accountStore.selected?.address;
-  if (!_address) return;
-  const data = await $fetch("/api/claim", {
-    method: "POST",
-    body: {
-      code: route.params.code,
-      address: _address,
-    },
-  });
+  if (!address.value) return;
 
-  isClaiming.value = true;
-  setTimeout(() => {
+  try {
+    claimFailed.value = false;
+    isClaiming.value = true;
+
+    const data = await $fetch("/api/claim", {
+      method: "POST",
+      body: {
+        code: route.params.code,
+        address: address.value,
+      },
+    });
+
+    setTimeout(() => {
+      const url = `https://kodadot.xyz/${data.chain}/gallery/${data.collection}-${data.sn}`;
+      claimed.value = url;
+    }, 60_000);
+  } catch (error) {
+    claimFailed.value = true;
+  } finally {
     isClaiming.value = false;
-    const url = `https://kodadot.xyz/${data.chain}/gallery/${data.collection}-${data.sn}`;
-    claimed.value = url;
-  }, 60_000);
+  }
 };
 </script>
