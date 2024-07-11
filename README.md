@@ -1,6 +1,6 @@
 # .POAP
 
-This is a project to create and view POAPs (Proof of Attendance Protocol) on the Polkadot ecosystem. 
+This is a project to create and view POAPs (Proof of Attendance Protocol) on the Polkadot ecosystem
 
 ## Setup
 
