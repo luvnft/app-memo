@@ -61,7 +61,7 @@ const router = useRouter();
 const continueClaim = async () => {
   await refresh();
   if (status.value === "success") {
-    router.push(`/${code.value}`);
+    router.push(`/claim/${code.value}`);
   }
 };
 </script>
