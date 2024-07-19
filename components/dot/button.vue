@@ -32,8 +32,8 @@ const props = withDefaults(
 
 const SIZE_CLASSES: Record<BtnSize, string> = {
   small: "text-sm px-4 py-1",
-  medium: "px-3 py-2",
-  large: "text-lg px-4 py-3",
+  medium: "px-4 py-2",
+  large: "text-lg px-5 py-3",
 };
 
 const VARIANT_CLASSES: Record<BtnVariant, string> = {
