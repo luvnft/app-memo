@@ -1,6 +1,6 @@
 <template>
   <span
-    class="flex w-full items-center justify-between gap-2 border px-3"
+    class="flex w-full items-center justify-between gap-2 border px-3 focus-within:border-k-primary focus-within:bg-k-primary-light"
     :class="wrapperClasses"
   >
     <slot name="prefix" class="max-w-20" />
@@ -36,6 +36,6 @@ const inputClasses = computed(() => {
   if (props.error) {
     return "placeholder:text-k-red";
   }
-  return "placeholder:text-placeholder-color";
+  return "placeholder:text-text-color/60";
 });
 </script>
