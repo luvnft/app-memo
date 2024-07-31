@@ -7,7 +7,7 @@
     <input
       v-model="model"
       :placeholder="placeholder"
-      type="text"
+      :type="props.type ?? 'text'"
       :class="inputClasses"
       class="min-w-0 flex-1 bg-transparent py-3 text-text-color focus:outline-none focus:ring-0"
     />
@@ -17,12 +17,19 @@
 
 <script lang="ts" setup>
 const model = defineModel({
-  type: String,
+  type: [String, Date],
+  set(val: string) {
+    return props.type === "date" ? new Date(val) : val;
+  },
+  get(val: Date | string) {
+    return val instanceof Date ? val.toISOString().split("T").at(0) : val;
+  },
 });
 
 const props = defineProps<{
   placeholder?: string;
   error?: boolean;
+  type?: string;
 }>();
 
 const wrapperClasses = computed(() => {
