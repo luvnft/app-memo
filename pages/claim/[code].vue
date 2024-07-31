@@ -52,7 +52,9 @@
         </dot-label>
 
         <client-only v-if="!showAddressInput">
-          <dot-connect />
+          <dot-label text="Account">
+            <dot-connect />
+          </dot-label>
         </client-only>
 
         <div class="fixed -top-3 left-0 right-0 flex h-7">
