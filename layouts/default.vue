@@ -1,9 +1,12 @@
 <template>
-  <div id="app-base" class="min-h-screen bg-background-color">
-    <!-- <layout-header /> -->
-    <main>
+  <div
+    id="app-base"
+    class="relative h-screen min-h-screen bg-background-color pt-10"
+  >
+    <layout-header />
+    <main class="h-full p-4">
       <slot />
     </main>
-    <!-- <layout-footer /> -->
+    <layout-footer />
   </div>
 </template>

@@ -1,26 +1,33 @@
 <template>
-  <nav class="w-full">
-    <ul class="flex w-full justify-evenly">
+  <nav>
+    <ul class="flex w-full justify-evenly gap-4">
       <li
-        class="cursor-pointer rounded-lg p-4 transition ease-in-out hover:bg-primary/10"
+        v-for="link in links"
+        :key="link.name"
+        class="hover:bg-primary/10 cursor-pointer transition ease-in-out"
       >
-        About <icon size="24" name="mdi:chevron-down" />
-      </li>
-      <li
-        class="cursor-pointer rounded-lg p-4 transition ease-in-out hover:bg-primary/10"
-      >
-        Issuers <icon size="24" name="mdi:chevron-down" />
-      </li>
-      <li
-        class="cursor-pointer rounded-lg p-4 transition ease-in-out hover:bg-primary/10"
-      >
-        Collectors <icon size="24" name="mdi:chevron-down" />
-      </li>
-      <li
-        class="cursor-pointer rounded-lg p-4 transition ease-in-out hover:bg-primary/10"
-      >
-        Builders <icon size="24" name="mdi:chevron-down" />
+        <nuxt-link :to="link.href">
+          <span class="flex items-center gap-2">
+            {{ link.name }}
+            <icon :name="link.icon" />
+          </span>
+        </nuxt-link>
       </li>
     </ul>
   </nav>
 </template>
+<script setup lang="ts">
+const links = [
+  { name: "Claim", icon: "mdi:hand-back-right", href: "/claim" },
+  {
+    name: "Distribute",
+    icon: "mdi:credit-card-edit-outline",
+    href: "/distribute",
+  },
+];
+</script>
+<style>
+a.router-link-exact-active {
+  @apply !text-white;
+}
+</style>
