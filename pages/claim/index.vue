@@ -27,7 +27,7 @@
             v-model="code"
             placeholder="CODE · SVv43nF...9a33jA"
           />
-          <dot-button variant="secondary" size="small">
+          <dot-button variant="secondary" size="small" @click="open()">
             <template #icon>
               <icon name="mdi:qrcode" size="24" />
             </template>
@@ -48,8 +48,10 @@
   </div>
 </template>
 <script setup lang="ts">
-const code = ref("");
+import QRScannerModal from "~/components/dot/qr-scanner-modal.vue";
+import { useModal } from "vue-final-modal";
 
+const code = ref("");
 const isCodeValid = computed(() => code.value.trim().length > 0);
 
 const { data, status, refresh, error } = await useFetch("/api/code", {
@@ -64,4 +66,13 @@ const continueClaim = async () => {
     router.push(`/claim/${code.value}`);
   }
 };
+
+const { open } = useModal({
+  component: QRScannerModal,
+  attrs: {
+    onScan(data: string) {
+      code.value = data;
+    },
+  },
+});
 </script>
