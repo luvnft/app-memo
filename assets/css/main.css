@@ -7,7 +7,7 @@ html {
 }
 
 body {
-  @apply h-full overflow-scroll bg-k-primary;
+  @apply h-full overflow-y-auto bg-k-primary;
 }
 
 @layer base {
