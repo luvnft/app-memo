@@ -45,6 +45,6 @@ function onOpened() {
 const vfm = useVfm();
 
 function closeModal() {
-  vfm.close("qr-scanner-modal"); // toto nefunguje
+  vfm.close("qr-scanner-modal");
 }
 </script>
