@@ -2,7 +2,9 @@
   <header
     class="glass-blur border-primary fixed left-0 top-0 flex h-[60px] w-full items-center justify-between border-b p-2 px-4"
   >
-    <h1 class="text-2xl dark:text-white">.POAP</h1>
+    <nuxt-link to="/">
+      <h1 class="text-2xl dark:text-white">.POAP</h1>
+    </nuxt-link>
     <div class="flex-end flex items-center gap-4">
       <layout-nav />
       <client-only>
