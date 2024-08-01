@@ -17,7 +17,11 @@
       </div>
       <div class="col-span-2 space-y-8">
         <dot-label text="POAP title">
-          <dot-text-input type="text" placeholder="Lorem ipsum dolor sit" />
+          <dot-text-input
+            :limit="150"
+            type="text"
+            placeholder="Lorem ipsum dolor sit"
+          />
         </dot-label>
         <dot-label text="POAP description">
           <dot-text-input placeholder="Lorem ipsum dolor sit" />
