@@ -26,7 +26,7 @@ const props = withDefaults(
   {
     disabled: false,
     variant: "primary-shadow",
-    size: "small",
+    size: "medium",
   },
 );
 
@@ -78,7 +78,7 @@ const btnClasses = computed(() => {
 
 <style scoped>
 .dot-button {
-  @apply inline-flex items-center justify-center gap-1 transition ease-in-out;
+  @apply inline-flex items-center justify-center gap-1 text-nowrap transition ease-in-out;
 }
 .dot-button .icon {
   @apply ml-2;

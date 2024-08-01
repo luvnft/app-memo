@@ -1,13 +1,11 @@
 <template>
-  <dot-label text="Account">
-    <dot-button variant="primary-shadow" size="medium" @click="open">
-      {{
-        accountStore.hasSelectedAccount
-          ? `${accountStore.accountName} ${accountStore.shortAddress}`
-          : "Connect"
-      }}
-    </dot-button>
-  </dot-label>
+  <dot-button variant="primary-shadow" :size="size" @click="open">
+    {{
+      accountStore.hasSelectedAccount
+        ? `${accountStore.accountName} ${accountStore.shortAddress}`
+        : "Connect"
+    }}
+  </dot-button>
 </template>
 
 <script lang="ts" setup>
@@ -15,6 +13,10 @@ import { useModal } from "vue-final-modal";
 import ConnectModal from "./connect-modal.vue";
 
 const accountStore = useAccountStore();
+
+defineProps<{
+  size?: "small" | "medium" | "large";
+}>();
 
 const { open, close } = useModal({
   component: ConnectModal,

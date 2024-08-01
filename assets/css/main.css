@@ -2,6 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
+html {
+  @apply h-full overflow-hidden;
+}
+
+body {
+  @apply h-full overflow-y-auto bg-k-primary;
+}
+
 @layer base {
   :root {
     --white: #ffffff;
