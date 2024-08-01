@@ -1,6 +1,6 @@
 <template>
   <header
-    class="glass-blur border-primary fixed left-0 top-0 flex h-[60px] w-full items-center justify-between border-b p-2 px-4"
+    class="border-primary fixed left-0 top-0 flex h-[60px] w-full items-center justify-between border-b bg-white/[0.12] p-2 px-4 shadow-[0_4px_30px] shadow-black/[0.1] backdrop-blur-[10.2px]"
   >
     <nuxt-link to="/">
       <h1 class="text-2xl dark:text-white">.POAP</h1>
@@ -13,11 +13,3 @@
     </div>
   </header>
 </template>
-<style scoped>
-.glass-blur {
-  background: rgba(255, 255, 255, 0.12);
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-  backdrop-filter: blur(10.2px);
-  -webkit-backdrop-filter: blur(10.2px);
-}
-</style>
