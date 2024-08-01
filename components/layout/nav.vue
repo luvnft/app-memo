@@ -20,9 +20,9 @@
 const links = [
   { name: "Claim", icon: "mdi:hand-back-right", href: "/claim" },
   {
-    name: "Distribute",
+    name: "Create",
     icon: "mdi:credit-card-edit-outline",
-    href: "/distribute",
+    href: "/create",
   },
 ];
 </script>
