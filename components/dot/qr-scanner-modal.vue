@@ -8,9 +8,9 @@
     @opened="onOpened()"
   >
     <video ref="vid" class="flex-1 object-cover"></video>
-    <dot-button size="medium" variant="secondary" @click="closeModal()"
-      >Cancel</dot-button
-    >
+    <dot-button size="medium" variant="secondary" @click="closeModal()">
+      Cancel
+    </dot-button>
   </VueFinalModal>
 </template>
 
