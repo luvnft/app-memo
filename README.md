@@ -84,4 +84,5 @@ Check out the [deployment documentation](https://nuxt.com/docs/getting-started/d
 
 > [!NOTE]
 > We like pricing by vercel
+> Vercel
 
