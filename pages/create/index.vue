@@ -4,16 +4,7 @@
 
     <div class="grid grid-cols-3 gap-8">
       <div class="col-span-1">
-        <div
-          class="bg-k-primary/5 relative aspect-square border-2 border-dashed border-k-primary shadow-[6px_6px] shadow-k-primary"
-        >
-          <div
-            class="absolute inset-0 flex flex-col items-center justify-center space-y-2"
-          >
-            <icon name="mdi:image" class="text-k-primary" size="64" />
-            <p class="text-center font-bold">Drop your artwork</p>
-          </div>
-        </div>
+        <dot-image-input />
       </div>
       <div class="col-span-2 space-y-8">
         <dot-label text="POAP title">
