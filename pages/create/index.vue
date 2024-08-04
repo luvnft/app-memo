@@ -15,7 +15,7 @@
           />
         </dot-label>
         <dot-label text="POAP description">
-          <dot-text-input placeholder="Lorem ipsum dolor sit" />
+          <dot-text-area :limit="150" placeholder="Lorem ipsum dolor sit" />
         </dot-label>
         <dot-label text="Website description">
           <dot-text-input placeholder="https://" />
