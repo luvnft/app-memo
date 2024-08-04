@@ -34,7 +34,11 @@
           </dot-label>
         </div>
         <dot-label text="Quantity">
-          <dot-text-input v-model="quantity" type="number" placeholder="0" />
+          <dot-text-input
+            v-model.number="quantity"
+            type="number"
+            placeholder="0"
+          />
           <div class="flex gap-2">
             <dot-button
               class="flex-1"
