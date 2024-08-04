@@ -38,7 +38,7 @@
 </template>
 
 <script lang="ts" setup>
-const imageInputId = crypto.randomUUID() as string;
+const imageInputId = useId();
 
 const previewImageSrc = ref("");
 
