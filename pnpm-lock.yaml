@@ -37,7 +37,10 @@ importers:
         version: 12.6.2(@polkadot/util@12.6.2)
       '@vue-final-modal/nuxt':
         specifier: ^1.0.3
-        version: 1.0.3(rollup@4.18.0)(vue-final-modal@4.5.4(@vueuse/core@10.10.0(vue@3.4.27(typescript@5.4.5)))(@vueuse/integrations@10.10.0(change-case@4.1.2)(focus-trap@7.5.4)(vue@3.4.27(typescript@5.4.5)))(focus-trap@7.5.4)(vue@3.4.27(typescript@5.4.5)))
+        version: 1.0.3(rollup@4.18.0)(vue-final-modal@4.5.4(@vueuse/core@10.11.0(vue@3.4.27(typescript@5.4.5)))(@vueuse/integrations@10.10.0(change-case@4.1.2)(focus-trap@7.5.4)(vue@3.4.27(typescript@5.4.5)))(focus-trap@7.5.4)(vue@3.4.27(typescript@5.4.5)))
+      '@vueuse/core':
+        specifier: ^10.11.0
+        version: 10.11.0(vue@3.4.27(typescript@5.4.5))
       consola:
         specifier: ^3.2.3
         version: 3.2.3
@@ -67,7 +70,7 @@ importers:
         version: 3.4.27(typescript@5.4.5)
       vue-final-modal:
         specifier: ^4.5.4
-        version: 4.5.4(@vueuse/core@10.10.0(vue@3.4.27(typescript@5.4.5)))(@vueuse/integrations@10.10.0(change-case@4.1.2)(focus-trap@7.5.4)(vue@3.4.27(typescript@5.4.5)))(focus-trap@7.5.4)(vue@3.4.27(typescript@5.4.5))
+        version: 4.5.4(@vueuse/core@10.11.0(vue@3.4.27(typescript@5.4.5)))(@vueuse/integrations@10.10.0(change-case@4.1.2)(focus-trap@7.5.4)(vue@3.4.27(typescript@5.4.5)))(focus-trap@7.5.4)(vue@3.4.27(typescript@5.4.5))
       vue-router:
         specifier: ^4.3.2
         version: 4.3.2(vue@3.4.27(typescript@5.4.5))
@@ -1979,6 +1982,9 @@ packages:
   '@vueuse/core@10.10.0':
     resolution: {integrity: sha512-vexJ/YXYs2S42B783rI95lMt3GzEwkxzC8Hb0Ndpd8rD+p+Lk/Za4bd797Ym7yq4jXqdSyj3JLChunF/vyYjUw==}
 
+  '@vueuse/core@10.11.0':
+    resolution: {integrity: sha512-x3sD4Mkm7PJ+pcq3HX8PLPBadXCAlSDR/waK87dz0gQE+qJnaaFhc/dZVfJz+IUYzTMVGum2QlR7ImiJQN4s6g==}
+
   '@vueuse/integrations@10.10.0':
     resolution: {integrity: sha512-vHGeK7X6mkdkpcm1eE9t3Cpm21pNVfZRwrjwwbrEs9XftnSgszF4831G2rei8Dt9cIYJIfFV+iyx/29muimJPQ==}
     peerDependencies:
@@ -2023,8 +2029,14 @@ packages:
   '@vueuse/metadata@10.10.0':
     resolution: {integrity: sha512-UNAo2sTCAW5ge6OErPEHb5z7NEAg3XcO9Cj7OK45aZXfLLH1QkexDcZD77HBi5zvEiLOm1An+p/4b5K3Worpug==}
 
+  '@vueuse/metadata@10.11.0':
+    resolution: {integrity: sha512-kQX7l6l8dVWNqlqyN3ePW3KmjCQO3ZMgXuBMddIu83CmucrsBfXlH+JoviYyRBws/yLTQO8g3Pbw+bdIoVm4oQ==}
+
   '@vueuse/shared@10.10.0':
     resolution: {integrity: sha512-2aW33Ac0Uk0U+9yo3Ypg9s5KcR42cuehRWl7vnUHadQyFvCktseyxxEPBi1Eiq4D2yBGACOnqLZpx1eMc7g5Og==}
+
+  '@vueuse/shared@10.11.0':
+    resolution: {integrity: sha512-fyNoIXEq3PfX1L3NkNhtVQUSRtqYwJtJg+Bp9rIzculIZWHTkKSysujrOk2J+NrRulLTQH9+3gGSfYLWSEWU1A==}
 
   abab@2.0.6:
     resolution: {integrity: sha512-j2afSsaIENvHZN2B8GOpF566vZ5WVk5opAiMTvWgaQT8DkbOqsTfvNAvHoRGU2zzP8cPoqys+xHTRDWW8L+/BA==}
@@ -8219,10 +8231,10 @@ snapshots:
       vite: 5.2.13(@types/node@20.14.2)(terser@5.31.1)
       vue: 3.4.27(typescript@5.4.5)
 
-  '@vue-final-modal/nuxt@1.0.3(rollup@4.18.0)(vue-final-modal@4.5.4(@vueuse/core@10.10.0(vue@3.4.27(typescript@5.4.5)))(@vueuse/integrations@10.10.0(change-case@4.1.2)(focus-trap@7.5.4)(vue@3.4.27(typescript@5.4.5)))(focus-trap@7.5.4)(vue@3.4.27(typescript@5.4.5)))':
+  '@vue-final-modal/nuxt@1.0.3(rollup@4.18.0)(vue-final-modal@4.5.4(@vueuse/core@10.11.0(vue@3.4.27(typescript@5.4.5)))(@vueuse/integrations@10.10.0(change-case@4.1.2)(focus-trap@7.5.4)(vue@3.4.27(typescript@5.4.5)))(focus-trap@7.5.4)(vue@3.4.27(typescript@5.4.5)))':
     dependencies:
       '@nuxt/kit': 3.12.1(rollup@4.18.0)
-      vue-final-modal: 4.5.4(@vueuse/core@10.10.0(vue@3.4.27(typescript@5.4.5)))(@vueuse/integrations@10.10.0(change-case@4.1.2)(focus-trap@7.5.4)(vue@3.4.27(typescript@5.4.5)))(focus-trap@7.5.4)(vue@3.4.27(typescript@5.4.5))
+      vue-final-modal: 4.5.4(@vueuse/core@10.11.0(vue@3.4.27(typescript@5.4.5)))(@vueuse/integrations@10.10.0(change-case@4.1.2)(focus-trap@7.5.4)(vue@3.4.27(typescript@5.4.5)))(focus-trap@7.5.4)(vue@3.4.27(typescript@5.4.5))
     transitivePeerDependencies:
       - rollup
       - supports-color
@@ -8361,7 +8373,7 @@ snapshots:
       '@unocss/reset': 0.60.4
       '@vue/devtools-shared': 7.2.1
       '@vueuse/components': 10.10.0(vue@3.4.27(typescript@5.4.5))
-      '@vueuse/core': 10.10.0(vue@3.4.27(typescript@5.4.5))
+      '@vueuse/core': 10.11.0(vue@3.4.27(typescript@5.4.5))
       '@vueuse/integrations': 10.10.0(change-case@4.1.2)(focus-trap@7.5.4)(vue@3.4.27(typescript@5.4.5))
       colord: 2.9.3
       floating-vue: 5.2.2(@nuxt/kit@3.12.1(rollup@4.18.0))(vue@3.4.27(typescript@5.4.5))
@@ -8424,6 +8436,16 @@ snapshots:
       - '@vue/composition-api'
       - vue
 
+  '@vueuse/core@10.11.0(vue@3.4.27(typescript@5.4.5))':
+    dependencies:
+      '@types/web-bluetooth': 0.0.20
+      '@vueuse/metadata': 10.11.0
+      '@vueuse/shared': 10.11.0(vue@3.4.27(typescript@5.4.5))
+      vue-demi: 0.14.8(vue@3.4.27(typescript@5.4.5))
+    transitivePeerDependencies:
+      - '@vue/composition-api'
+      - vue
+
   '@vueuse/integrations@10.10.0(change-case@4.1.2)(focus-trap@7.5.4)(vue@3.4.27(typescript@5.4.5))':
     dependencies:
       '@vueuse/core': 10.10.0(vue@3.4.27(typescript@5.4.5))
@@ -8438,7 +8460,16 @@ snapshots:
 
   '@vueuse/metadata@10.10.0': {}
 
+  '@vueuse/metadata@10.11.0': {}
+
   '@vueuse/shared@10.10.0(vue@3.4.27(typescript@5.4.5))':
+    dependencies:
+      vue-demi: 0.14.8(vue@3.4.27(typescript@5.4.5))
+    transitivePeerDependencies:
+      - '@vue/composition-api'
+      - vue
+
+  '@vueuse/shared@10.11.0(vue@3.4.27(typescript@5.4.5))':
     dependencies:
       vue-demi: 0.14.8(vue@3.4.27(typescript@5.4.5))
     transitivePeerDependencies:
@@ -12663,9 +12694,9 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  vue-final-modal@4.5.4(@vueuse/core@10.10.0(vue@3.4.27(typescript@5.4.5)))(@vueuse/integrations@10.10.0(change-case@4.1.2)(focus-trap@7.5.4)(vue@3.4.27(typescript@5.4.5)))(focus-trap@7.5.4)(vue@3.4.27(typescript@5.4.5)):
+  vue-final-modal@4.5.4(@vueuse/core@10.11.0(vue@3.4.27(typescript@5.4.5)))(@vueuse/integrations@10.10.0(change-case@4.1.2)(focus-trap@7.5.4)(vue@3.4.27(typescript@5.4.5)))(focus-trap@7.5.4)(vue@3.4.27(typescript@5.4.5)):
     dependencies:
-      '@vueuse/core': 10.10.0(vue@3.4.27(typescript@5.4.5))
+      '@vueuse/core': 10.11.0(vue@3.4.27(typescript@5.4.5))
       '@vueuse/integrations': 10.10.0(change-case@4.1.2)(focus-trap@7.5.4)(vue@3.4.27(typescript@5.4.5))
       focus-trap: 7.5.4
       vue: 3.4.27(typescript@5.4.5)
