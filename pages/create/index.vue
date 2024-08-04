@@ -6,7 +6,7 @@
       <div class="col-span-1">
         <dot-image-input />
       </div>
-      <div class="col-span-2 space-y-8">
+      <div class="col-span-2 space-y-3">
         <dot-label text="POAP title">
           <dot-text-input
             v-model="title"
