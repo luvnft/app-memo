@@ -17,7 +17,7 @@
       v-if="Number.isInteger(limit)"
       class="absolute -top-5 right-0 text-xs text-text-color"
     >
-      {{ model.length ?? 0 }} / {{ limit }}
+      {{ model?.length ?? 0 }} / {{ limit }}
     </span>
   </span>
 </template>
@@ -27,9 +27,7 @@ import { useTextareaAutosize } from "@vueuse/core";
 
 const { textarea } = useTextareaAutosize();
 
-const model = defineModel<string>({
-  required: true,
-});
+const model = defineModel<string>();
 
 const props = defineProps<{
   placeholder?: string;
