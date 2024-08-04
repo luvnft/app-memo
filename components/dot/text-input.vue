@@ -18,18 +18,17 @@
       v-if="Number.isInteger(limit)"
       class="absolute -top-5 right-0 text-xs text-text-color"
     >
-      {{ model?.length ?? 0 }} / {{ limit }}
+      {{ model?.toString().length ?? 0 }} / {{ limit }}
     </span>
   </span>
 </template>
 
 <script lang="ts" setup>
-const model = defineModel({
-  type: [String, Date],
-  set(val: string) {
+const model = defineModel<string | number | Date>({
+  set(val: string | Date | number) {
     return props.type === "date" ? new Date(val) : val;
   },
-  get(val: Date | string) {
+  get(val: string | Date | number) {
     return val instanceof Date ? val.toISOString().split("T").at(0) : val;
   },
 });
