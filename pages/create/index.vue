@@ -9,16 +9,21 @@
       <div class="col-span-2 space-y-8">
         <dot-label text="POAP title">
           <dot-text-input
+            v-model="title"
             :limit="150"
             type="text"
-            placeholder="Lorem ipsum dolor sit"
+            placeholder="XYZ Event Collection"
           />
         </dot-label>
         <dot-label text="POAP description">
-          <dot-text-input placeholder="Lorem ipsum dolor sit" />
+          <dot-text-area
+            v-model="description"
+            :limit="150"
+            placeholder="Describe your POAP. These description will be displayed for all POAP users."
+          />
         </dot-label>
-        <dot-label text="Website description">
-          <dot-text-input placeholder="https://" />
+        <dot-label text="Website address">
+          <dot-text-input v-model="websiteAddress" placeholder="https://" />
         </dot-label>
         <div class="grid grid-cols-2 gap-8">
           <dot-label text="Start date">
@@ -100,6 +105,9 @@
 </template>
 
 <script lang="ts" setup>
+const title = ref("");
+const description = ref("");
+const websiteAddress = ref("");
 const startDate = ref(new Date());
 const endDate = ref(new Date());
 const quantity = ref(0);
