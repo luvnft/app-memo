@@ -20,18 +20,20 @@
     <h3 v-if="status === 'success'">{{ data.name }}</h3>
     <h3 v-if="error" class="text-k-red">Couldn't load POAP</h3>
 
-    <div class="flex flex-col space-y-3 self-stretch">
+    <div class="flex flex-col space-y-1 self-stretch">
       <dot-label text="Enter POAP Code" class="flex-1">
-        <div class="flex space-x-3">
+        <div class="flex space-x-4">
           <dot-text-input
             v-model="code"
             placeholder="CODE · SVv43nF...9a33jA"
           />
-          <dot-button variant="secondary" size="small" @click="open()">
-            <template #icon>
-              <icon name="mdi:qrcode" size="24" />
-            </template>
-          </dot-button>
+          <div>
+            <dot-button variant="secondary" size="large" @click="open()">
+              <template #icon>
+                <icon name="mdi:qrcode" size="24" />
+              </template>
+            </dot-button>
+          </div>
         </div>
       </dot-label>
       <dot-button
