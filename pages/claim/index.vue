@@ -8,12 +8,11 @@
     </div>
 
     <h3 v-if="status === 'success'">{{ data.name }}</h3>
-    <h3 v-if="error" class="text-k-red">Couldn't load POAP</h3>
 
     <div class="flex flex-col space-y-1 self-stretch">
       <dot-label text="Enter POAP Code" class="flex-1">
         <div class="flex space-x-4">
-          <dot-text-input v-model="code" placeholder="CODE · SVv43nF...9a33jA" />
+          <dot-text-input v-model="code" :error="errorMessage" placeholder="CODE · SVv43nF...9a33jA" />
           <div>
             <dot-button variant="secondary" size="large" @click="open()">
               <template #icon>
@@ -50,6 +49,8 @@ const continueClaim = async () => {
     router.push(`/claim/${code.value}`);
   }
 };
+
+const errorMessage = computed(() => (error.value ? "Couldn't load POAP" : undefined));
 
 const { open } = useModal({
   component: QRScannerModal,
