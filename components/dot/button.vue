@@ -3,6 +3,7 @@
     class="dot-button"
     :disabled="disabled"
     :class="btnClasses"
+    :type="submit ? 'submit' : 'button'"
     @click="$emit('click')"
   >
     <slot class="icon" name="icon" />
@@ -22,6 +23,7 @@ const props = withDefaults(
     disabled?: boolean;
     variant?: BtnVariant;
     size?: BtnSize;
+    submit?: boolean;
   }>(),
   {
     disabled: false,
