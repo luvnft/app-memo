@@ -1,8 +1,5 @@
 <template>
-  <form
-    class="mx-auto flex max-w-4xl flex-col space-y-7 px-4 pt-8"
-    @submit="onSubmit"
-  >
+  <form class="mx-auto flex max-w-4xl flex-col space-y-7 px-4 pt-8" @submit="onSubmit">
     <h1 class="text-4xl font-extrabold text-text-color">Distribution Tool</h1>
 
     <div class="grid grid-cols-3 gap-8">
@@ -28,89 +25,32 @@
           />
         </dot-label>
         <dot-label text="Website address">
-          <dot-text-input
-            v-model="websiteAddress"
-            placeholder="https://"
-            :error="websiteAddressError"
-          />
+          <dot-text-input v-model="websiteAddress" placeholder="https://" :error="websiteAddressError" />
         </dot-label>
         <div class="grid grid-cols-2 gap-8">
           <dot-label text="Start date">
-            <dot-text-input
-              v-model="startDate"
-              type="date"
-              :error="startDateError || localStartDateError"
-            />
+            <dot-text-input v-model="startDate" type="date" :error="startDateError || localStartDateError" />
           </dot-label>
           <dot-label text="End">
-            <dot-text-input
-              v-model="endDate"
-              type="date"
-              :error="endDateError || localEndDateError"
-            />
+            <dot-text-input v-model="endDate" type="date" :error="endDateError || localEndDateError" />
           </dot-label>
         </div>
         <dot-label text="Quantity">
-          <dot-text-input
-            v-model.number="quantity"
-            type="number"
-            placeholder="0"
-            :error="quantityError"
-          />
+          <dot-text-input v-model.number="quantity" type="number" placeholder="0" :error="quantityError" />
           <div class="flex gap-2">
-            <dot-button
-              class="flex-1"
-              size="small"
-              variant="secondary-rounded"
-              @click="quantity -= 100"
-            >
+            <dot-button class="flex-1" size="small" variant="secondary-rounded" @click="quantity -= 100">
               -100
             </dot-button>
-            <dot-button
-              class="flex-1"
-              size="small"
-              variant="secondary-rounded"
-              @click="quantity -= 10"
-            >
+            <dot-button class="flex-1" size="small" variant="secondary-rounded" @click="quantity -= 10">
               -10
             </dot-button>
-            <dot-button
-              class="flex-1"
-              size="small"
-              variant="secondary-rounded"
-              @click="quantity -= 1"
-            >
-              -1
-            </dot-button>
-            <dot-button
-              class="flex-1"
-              size="small"
-              variant="secondary-rounded"
-              @click="quantity = 0"
-              >0
-            </dot-button>
-            <dot-button
-              class="flex-1"
-              size="small"
-              variant="secondary-rounded"
-              @click="quantity += 1"
-            >
-              +1
-            </dot-button>
-            <dot-button
-              class="flex-1"
-              size="small"
-              variant="secondary-rounded"
-              @click="quantity += 10"
-            >
+            <dot-button class="flex-1" size="small" variant="secondary-rounded" @click="quantity -= 1"> -1 </dot-button>
+            <dot-button class="flex-1" size="small" variant="secondary-rounded" @click="quantity = 0">0 </dot-button>
+            <dot-button class="flex-1" size="small" variant="secondary-rounded" @click="quantity += 1"> +1 </dot-button>
+            <dot-button class="flex-1" size="small" variant="secondary-rounded" @click="quantity += 10">
               +10
             </dot-button>
-            <dot-button
-              class="flex-1"
-              size="small"
-              variant="secondary-rounded"
-              @click="quantity += 100"
-            >
+            <dot-button class="flex-1" size="small" variant="secondary-rounded" @click="quantity += 100">
               +100
             </dot-button>
           </div>
@@ -120,13 +60,7 @@
         </dot-label>
       </div>
     </div>
-    <dot-button
-      :disabled="!isSubmittable"
-      size="large"
-      submit
-      variant="primary-shadow"
-      class="w-full"
-    >
+    <dot-button :disabled="!isSubmittable" size="large" submit variant="primary-shadow" class="w-full">
       Create
     </dot-button>
   </form>
@@ -139,19 +73,12 @@ import * as zod from "zod";
 
 const validationSchema = toTypedSchema(
   zod.object({
-    title: zod
-      .string({ message: "Title is required" })
-      .min(1, { message: "Title is required" }),
+    title: zod.string({ message: "Title is required" }).min(1, { message: "Title is required" }),
     description: zod.string().optional(),
-    websiteAddress: zod
-      .string()
-      .url({ message: "URL has invalid format" })
-      .optional(),
+    websiteAddress: zod.string().url({ message: "URL has invalid format" }).optional(),
     startDate: zod.date({ message: "Start date is required" }),
     endDate: zod.date({ message: "End date is required" }),
-    quantity: zod
-      .number({ message: "Quantity is required" })
-      .positive({ message: "Quantity must be positive" }),
+    quantity: zod.number({ message: "Quantity is required" }).positive({ message: "Quantity must be positive" }),
   }),
 );
 
@@ -163,18 +90,13 @@ const { handleSubmit, errors } = useForm({
 });
 
 const { value: title, errorMessage: titleError } = useField<string>("title");
-const { value: description, errorMessage: descriptionError } =
-  useField<string>("description");
-const { value: websiteAddress, errorMessage: websiteAddressError } =
-  useField<string>("websiteAddress");
-const { value: startDate, errorMessage: startDateError } =
-  useField<Date>("startDate");
+const { value: description, errorMessage: descriptionError } = useField<string>("description");
+const { value: websiteAddress, errorMessage: websiteAddressError } = useField<string>("websiteAddress");
+const { value: startDate, errorMessage: startDateError } = useField<Date>("startDate");
 const localStartDateError = ref<string>("");
-const { value: endDate, errorMessage: endDateError } =
-  useField<Date>("endDate");
+const { value: endDate, errorMessage: endDateError } = useField<Date>("endDate");
 const localEndDateError = ref<string>("");
-const { value: quantity, errorMessage: quantityError } =
-  useField<number>("quantity");
+const { value: quantity, errorMessage: quantityError } = useField<number>("quantity");
 
 // As `refine` doesnt work with `toTypedSchema` we need to do this manually
 watch([startDate, endDate], ([startDate, endDate]) => {
@@ -187,21 +109,21 @@ watch([startDate, endDate], ([startDate, endDate]) => {
   }
 });
 
-const onSubmit = handleSubmit(
-  ({ description, endDate, quantity, startDate, title, websiteAddress }) => {
-    if (localStartDateError.value || localEndDateError.value) {
-      return;
-    }
-    console.log({
-      description,
-      endDate,
-      quantity,
-      startDate,
-      title,
-      websiteAddress,
-    });
-  },
-);
+const logger = createLogger("CreatePage");
+
+const onSubmit = handleSubmit(({ description, endDate, quantity, startDate, title, websiteAddress }) => {
+  if (localStartDateError.value || localEndDateError.value) {
+    return;
+  }
+  logger.success({
+    description,
+    endDate,
+    quantity,
+    startDate,
+    title,
+    websiteAddress,
+  });
+});
 
 const isSubmittable = computed(
   () =>

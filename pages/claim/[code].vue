@@ -2,19 +2,9 @@
   <div class="mx-auto flex max-w-xl flex-col items-center space-y-10 p-4">
     <h1 class="mt-10 text-center text-4xl font-bold md:mt-20">Claim POAP</h1>
 
-    <div
-      class="flex aspect-square w-2/5 rounded-full border border-black bg-zinc-400 shadow-[4px_4px] shadow-k-shade2"
-    >
-      <div
-        v-if="status !== 'success'"
-        class="m-4 flex-1 rounded-full bg-zinc-300"
-      />
-      <img
-        v-else
-        :src="data.imageSrc"
-        alt="poap image"
-        class="flex-1 rounded-full object-cover"
-      />
+    <div class="flex aspect-square w-2/5 rounded-full border border-black bg-zinc-400 shadow-[4px_4px] shadow-k-shade2">
+      <div v-if="status !== 'success'" class="m-4 flex-1 rounded-full bg-zinc-300" />
+      <img v-else :src="data.imageSrc" alt="poap image" class="flex-1 rounded-full object-cover" />
     </div>
 
     <h3 v-if="status === 'success'">{{ data.name }}</h3>
@@ -22,14 +12,11 @@
 
     <div class="flex flex-col space-y-3 self-stretch">
       <template v-if="!claimed">
-        <div
-          class="flex border border-border-color shadow-[4px_4px] shadow-text-color"
-        >
+        <div class="flex border border-border-color shadow-[4px_4px] shadow-text-color">
           <button
             class="flex-1 py-2 text-text-color"
             :class="{
-              'bg-background-color-inverse text-text-color-inverse':
-                showAddressInput,
+              'bg-background-color-inverse text-text-color-inverse': showAddressInput,
             }"
             @click="showAddressInput = true"
           >
@@ -38,8 +25,7 @@
           <button
             class="flex-1 py-2 text-text-color"
             :class="{
-              'bg-background-color-inverse text-text-color-inverse':
-                !showAddressInput,
+              'bg-background-color-inverse text-text-color-inverse': !showAddressInput,
             }"
             @click="showAddressInput = false"
           >
@@ -64,18 +50,9 @@
           ></div>
         </div>
 
-        <dot-label
-          v-if="claimFailed"
-          :error="true"
-          text="You already claimed this POAP"
-        />
+        <dot-label v-if="claimFailed" :error="true" text="You already claimed this POAP" />
 
-        <dot-button
-          :disabled="!canClaim || isClaiming"
-          variant="primary-shadow"
-          size="medium"
-          @click="claim"
-        >
+        <dot-button :disabled="!canClaim || isClaiming" variant="primary-shadow" size="medium" @click="claim">
           Claim
         </dot-button>
       </template>
@@ -83,9 +60,7 @@
       <template v-else>
         <dot-label text="POAP claimed successfully 🥳">
           <a :href="claimed" class="block w-full">
-            <dot-button class="w-full" variant="primary-shadow" size="large"
-              >Check your POAP at KodaDot</dot-button
-            >
+            <dot-button class="w-full" variant="primary-shadow" size="large">Check your POAP at KodaDot</dot-button>
           </a>
         </dot-label>
       </template>
@@ -100,9 +75,7 @@ const accountStore = useAccountStore();
 const manualAddress = ref("");
 const showAddressInput = ref(true);
 
-const address = computed(() =>
-  showAddressInput.value ? manualAddress.value : accountStore.selected?.address,
-);
+const address = computed(() => (showAddressInput.value ? manualAddress.value : accountStore.selected?.address));
 
 const canClaim = computed(() => isAddress(address.value));
 
