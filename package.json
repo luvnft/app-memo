@@ -23,6 +23,7 @@
     "@pinia/nuxt": "^0.5.1",
     "@polkadot/extension-dapp": "^0.48.2",
     "@polkadot/util-crypto": "^12.6.2",
+    "@vee-validate/zod": "^4.13.2",
     "@vue-final-modal/nuxt": "^1.0.3",
     "@vueuse/core": "^10.11.0",
     "consola": "^3.2.3",
@@ -33,9 +34,11 @@
     "prettier-plugin-tailwindcss": "^0.6.2",
     "qr-scanner": "^1.4.2",
     "tailwindcss": "^3.4.4",
+    "vee-validate": "^4.13.2",
     "vue": "^3.4.27",
     "vue-final-modal": "^4.5.4",
-    "vue-router": "^4.3.2"
+    "vue-router": "^4.3.2",
+    "zod": "^3.23.8"
   },
   "lint-staged": {
     "*.{js,ts,vue,css,md}": "prettier --write"
