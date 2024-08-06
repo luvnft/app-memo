@@ -8,6 +8,7 @@
     </div>
 
     <h3 v-if="status === 'success'">{{ data.name }}</h3>
+    <h3 v-if="error" class="text-k-red">Couldn't load POAP</h3>
 
     <div class="flex flex-col space-y-3 self-stretch">
       <template v-if="!claimed">
