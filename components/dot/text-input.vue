@@ -15,15 +15,12 @@
       />
       <slot name="suffix" />
 
-      <span
-        v-if="Number.isInteger(limit)"
-        class="absolute -top-5 right-0 text-xs text-text-color"
-      >
+      <span v-if="Number.isInteger(limit)" class="absolute -top-5 right-0 text-xs text-text-color">
         {{ model?.toString().length ?? 0 }} / {{ limit }}
       </span>
     </span>
     <span class="mt-0.5 text-xs font-semibold text-red-500">
-      {{ props.error ?? "&nbsp;" }}
+      {{ error ?? "&nbsp;" }}
     </span>
   </div>
 </template>

@@ -1,44 +1,52 @@
 <template>
-  <input
-    :id="imageInputId"
-    hidden
-    type="file"
-    accept="image/jpeg, image/png, image/gif, image/tiff, image/webp"
-    @change="previewImage"
-  />
+  <client-only>
+    <input
+      :id="imageInputId"
+      hidden
+      type="file"
+      accept="image/jpeg, image/png, image/gif, image/tiff, image/webp"
+      @change="previewImage"
+    />
 
-  <label :for="imageInputId">
-    <div
-      class="bg-k-primary/5 group relative aspect-square cursor-pointer border-2 border-dashed border-k-primary shadow-[6px_6px] shadow-k-primary hover:border-background-color-inverse hover:shadow-background-color-inverse"
-    >
-      <div class="absolute inset-0 flex flex-col items-center justify-center">
-        <template v-if="previewImageSrc">
-          <img
-            :src="previewImageSrc"
-            alt="submitted image preview"
-            class="pointer-events-none aspect-square flex-1 object-cover p-4"
-          />
+    <label :for="imageInputId">
+      <div
+        class="bg-k-primary/5 group relative aspect-square cursor-pointer border-2 border-dashed border-k-primary shadow-[6px_6px] shadow-k-primary hover:border-background-color-inverse hover:shadow-background-color-inverse"
+      >
+        <div class="absolute inset-0 flex flex-col items-center justify-center">
+          <template v-if="previewImageSrc">
+            <img
+              :src="previewImageSrc"
+              alt="submitted image preview"
+              class="pointer-events-none aspect-square flex-1 object-cover p-4"
+            />
 
-          <div
-            class="pointer-events-none absolute inset-0 hidden items-center justify-center bg-black/40 backdrop-blur-lg group-hover:flex"
-          >
-            <h1 class="px-4 text-center text-k-primary">
-              Choose a different artwork
-            </h1>
-          </div>
-        </template>
+            <div
+              class="pointer-events-none absolute inset-0 hidden items-center justify-center bg-black/40 backdrop-blur-lg group-hover:flex"
+            >
+              <h1 class="px-4 text-center text-k-primary">Choose a different artwork</h1>
+            </div>
+          </template>
 
-        <template v-else>
-          <icon name="mdi:image" class="text-k-primary" size="64" />
-          <p class="mt-2 text-center font-bold">Drop your artwork</p>
-        </template>
+          <template v-else>
+            <icon name="mdi:image" class="text-k-primary" size="64" />
+            <p class="mt-2 text-center font-bold">Drop your artwork</p>
+          </template>
+        </div>
       </div>
-    </div>
-  </label>
+    </label>
+    <span class="mt-0.5 text-xs font-semibold text-red-500">
+      {{ error ?? "&nbsp;" }}
+    </span>
+  </client-only>
 </template>
 
 <script lang="ts" setup>
 const imageInputId = useId();
+const model = defineModel<File>();
+
+defineProps<{
+  error?: string;
+}>();
 
 const previewImageSrc = ref("");
 
@@ -49,6 +57,8 @@ function previewImage(event: Event) {
   if (!file) {
     return;
   }
+
+  model.value = file;
 
   const fileReader = new FileReader();
   fileReader.onload = (e) => {
