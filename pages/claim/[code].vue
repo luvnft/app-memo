@@ -34,7 +34,9 @@
         </div>
 
         <dot-label v-if="showAddressInput" text="Enter DOT address">
-          <dot-text-input v-model="manualAddress" placeholder="Address" />
+          <form @submit.prevent="onSubmit()">
+            <dot-text-input v-model="manualAddress" placeholder="Address" />
+          </form>
         </dot-label>
 
         <client-only v-if="!showAddressInput">
@@ -43,7 +45,7 @@
           </dot-label>
         </client-only>
 
-        <div class="fixed -top-3 left-0 right-0 flex h-7">
+        <div class="fixed -top-3 left-0 right-0 z-[60] flex h-7">
           <div
             class="absolute bottom-0 left-0 top-0 bg-pink-400 transition-all duration-[60000ms] ease-linear"
             :style="`width: ${isClaiming ? '100%' : '0%'};`"
@@ -88,8 +90,11 @@ const claimFailed = ref(false);
 const claimed = ref<null | string>(null);
 const isClaiming = ref(false);
 
+const onSubmit = () => claim();
+
 const claim = async () => {
   if (!address.value) return;
+  if (!canClaim.value) return;
 
   try {
     claimFailed.value = false;

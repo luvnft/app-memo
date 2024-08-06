@@ -11,7 +11,7 @@
 
     <div class="flex flex-col space-y-1 self-stretch">
       <dot-label text="Enter POAP Code" class="flex-1">
-        <div class="flex space-x-4">
+        <form class="flex space-x-4" @submit.prevent="onSubmit()">
           <dot-text-input v-model="code" :error="errorMessage" placeholder="CODE · SVv43nF...9a33jA" />
           <div>
             <dot-button variant="secondary" size="large" @click="open()">
@@ -20,10 +20,15 @@
               </template>
             </dot-button>
           </div>
-        </div>
+        </form>
       </dot-label>
-      <dot-button :disabled="!isCodeValid" variant="primary-shadow" size="medium" @click="continueClaim">
-        Continue
+      <dot-button
+        :disabled="!isCodeValid || status === 'pending'"
+        variant="primary-shadow"
+        size="medium"
+        @click="continueClaim"
+      >
+        {{ status === "pending" ? "Searching ..." : "Continue" }}
       </dot-button>
     </div>
 
@@ -42,6 +47,7 @@ const { data, status, refresh, error } = await useFetch("/api/code", {
   immediate: false,
   watch: false,
 });
+
 const router = useRouter();
 const continueClaim = async () => {
   await refresh();
@@ -49,6 +55,8 @@ const continueClaim = async () => {
     router.push(`/claim/${code.value}`);
   }
 };
+
+const onSubmit = () => continueClaim();
 
 const errorMessage = computed(() => (error.value ? "Couldn't load POAP" : undefined));
 
