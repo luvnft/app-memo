@@ -4,7 +4,7 @@
 
     <div class="grid grid-cols-3 gap-8">
       <div class="col-span-1">
-        <dot-image-input />
+        <dot-image-input v-model="image" :error="imageError" />
       </div>
       <div class="col-span-2 space-y-3">
         <dot-label text="POAP title">
@@ -73,6 +73,9 @@ import * as zod from "zod";
 
 const validationSchema = toTypedSchema(
   zod.object({
+    image: zod.instanceof(File).refine((value) => value.size < 5 * 1024 * 1024, {
+      message: "Image size must be less than 5MB",
+    }),
     title: zod.string({ message: "Title is required" }).min(1, { message: "Title is required" }),
     description: zod.string().optional(),
     websiteAddress: zod.string().url({ message: "URL has invalid format" }).optional(),
@@ -89,6 +92,7 @@ const { handleSubmit, errors } = useForm({
   },
 });
 
+const { value: image, errorMessage: imageError } = useField<File>("image");
 const { value: title, errorMessage: titleError } = useField<string>("title");
 const { value: description, errorMessage: descriptionError } = useField<string>("description");
 const { value: websiteAddress, errorMessage: websiteAddressError } = useField<string>("websiteAddress");
@@ -111,7 +115,7 @@ watch([startDate, endDate], ([startDate, endDate]) => {
 
 const logger = createLogger("CreatePage");
 
-const onSubmit = handleSubmit(({ description, endDate, quantity, startDate, title, websiteAddress }) => {
+const onSubmit = handleSubmit(({ description, endDate, image, quantity, startDate, title, websiteAddress }) => {
   if (localStartDateError.value || localEndDateError.value) {
     return;
   }
@@ -120,6 +124,7 @@ const onSubmit = handleSubmit(({ description, endDate, quantity, startDate, titl
     endDate,
     quantity,
     startDate,
+    image,
     title,
     websiteAddress,
   });
@@ -127,6 +132,7 @@ const onSubmit = handleSubmit(({ description, endDate, quantity, startDate, titl
 
 const isSubmittable = computed(
   () =>
+    image.value &&
     title.value &&
     startDate.value &&
     endDate.value &&

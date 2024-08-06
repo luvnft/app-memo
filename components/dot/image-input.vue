@@ -23,9 +23,7 @@
             <div
               class="pointer-events-none absolute inset-0 hidden items-center justify-center bg-black/40 backdrop-blur-lg group-hover:flex"
             >
-              <h1 class="px-4 text-center text-k-primary">
-                Choose a different artwork
-              </h1>
+              <h1 class="px-4 text-center text-k-primary">Choose a different artwork</h1>
             </div>
           </template>
 
@@ -36,11 +34,19 @@
         </div>
       </div>
     </label>
+    <span class="mt-0.5 text-xs font-semibold text-red-500">
+      {{ error ?? "&nbsp;" }}
+    </span>
   </client-only>
 </template>
 
 <script lang="ts" setup>
 const imageInputId = useId();
+const model = defineModel<File>();
+
+defineProps<{
+  error?: string;
+}>();
 
 const previewImageSrc = ref("");
 
@@ -51,6 +57,8 @@ function previewImage(event: Event) {
   if (!file) {
     return;
   }
+
+  model.value = file;
 
   const fileReader = new FileReader();
   fileReader.onload = (e) => {
