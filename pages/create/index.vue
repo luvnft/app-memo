@@ -7,13 +7,13 @@
         <dot-image-input v-model="image" :error="imageError" />
       </div>
       <div class="col-span-2 space-y-3">
-        <dot-label text="POAP title">
+        <dot-label text="POAP name">
           <dot-text-input
-            v-model="title"
+            v-model="name"
             :limit="150"
             type="text"
             placeholder="XYZ Event Collection"
-            :error="titleError"
+            :error="nameError"
           />
         </dot-label>
         <dot-label text="POAP description">
@@ -25,7 +25,7 @@
           />
         </dot-label>
         <dot-label text="Website address">
-          <dot-text-input v-model="websiteAddress" placeholder="https://" :error="websiteAddressError" />
+          <dot-text-input v-model="externalUrl" placeholder="https://" :error="externalUrlError" />
         </dot-label>
         <div class="grid grid-cols-2 gap-8">
           <dot-label text="Start date">
@@ -76,9 +76,9 @@ const validationSchema = toTypedSchema(
     image: zod.instanceof(File).refine((value) => value.size < 5 * 1024 * 1024, {
       message: "Image size must be less than 5MB",
     }),
-    title: zod.string({ message: "Title is required" }).min(1, { message: "Title is required" }),
+    name: zod.string({ message: "Name is required" }).min(1, { message: "Name is required" }),
     description: zod.string().optional(),
-    websiteAddress: zod.string().url({ message: "URL has invalid format" }).optional(),
+    externalUrl: zod.string().url({ message: "URL has invalid format" }).optional(),
     startDate: zod.date({ message: "Start date is required" }),
     endDate: zod.date({ message: "End date is required" }),
     quantity: zod.number({ message: "Quantity is required" }).positive({ message: "Quantity must be positive" }),
@@ -93,9 +93,9 @@ const { handleSubmit, errors } = useForm({
 });
 
 const { value: image, errorMessage: imageError } = useField<File>("image");
-const { value: title, errorMessage: titleError } = useField<string>("title");
+const { value: name, errorMessage: nameError } = useField<string>("name");
 const { value: description, errorMessage: descriptionError } = useField<string>("description");
-const { value: websiteAddress, errorMessage: websiteAddressError } = useField<string>("websiteAddress");
+const { value: externalUrl, errorMessage: externalUrlError } = useField<string>("externalUrl");
 const { value: startDate, errorMessage: startDateError } = useField<Date>("startDate");
 const localStartDateError = ref<string>("");
 const { value: endDate, errorMessage: endDateError } = useField<Date>("endDate");
@@ -115,7 +115,7 @@ watch([startDate, endDate], ([startDate, endDate]) => {
 
 const logger = createLogger("CreatePage");
 
-const onSubmit = handleSubmit(({ description, endDate, image, quantity, startDate, title, websiteAddress }) => {
+const onSubmit = handleSubmit(({ description, endDate, image, quantity, startDate, name, externalUrl }) => {
   if (localStartDateError.value || localEndDateError.value) {
     return;
   }
@@ -125,15 +125,15 @@ const onSubmit = handleSubmit(({ description, endDate, image, quantity, startDat
     quantity,
     startDate,
     image,
-    title,
-    websiteAddress,
+    name,
+    externalUrl,
   });
 });
 
 const isSubmittable = computed(
   () =>
     image.value &&
-    title.value &&
+    name.value &&
     startDate.value &&
     endDate.value &&
     quantity.value &&
