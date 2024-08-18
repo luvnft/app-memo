@@ -2,11 +2,11 @@
   <form class="mx-auto flex max-w-4xl flex-col space-y-7 px-4 pt-8" @submit="onSubmit">
     <h1 class="text-4xl font-extrabold text-text-color">Distribution Tool</h1>
 
-    <div class="grid grid-cols-3 gap-8">
-      <div class="col-span-1">
+    <div class="grid grid-cols-1 gap-8 md:grid-cols-3">
+      <div class="md:col-span-1">
         <dot-image-input v-model="image" :error="imageError" />
       </div>
-      <div class="col-span-2 space-y-3">
+      <div class="space-y-3 md:col-span-2">
         <dot-label text="POAP name">
           <dot-text-input
             v-model="name"
@@ -37,7 +37,7 @@
         </div>
         <dot-label text="Quantity">
           <dot-text-input v-model.number="quantity" type="number" placeholder="0" :error="quantityError" />
-          <div class="flex gap-2">
+          <div class="hidden gap-2 md:flex">
             <dot-button class="flex-1" size="small" variant="secondary-rounded" @click="quantity -= 100">
               -100
             </dot-button>

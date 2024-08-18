@@ -5,11 +5,6 @@
     <nuxt-link to="/">
       <h1 class="text-2xl dark:text-white">.POAP</h1>
     </nuxt-link>
-    <div class="flex-end flex items-center gap-4">
-      <layout-nav />
-      <client-only>
-        <dot-connect size="small">Connect</dot-connect>
-      </client-only>
-    </div>
+    <layout-nav />
   </header>
 </template>
