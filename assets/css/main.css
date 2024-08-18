@@ -26,11 +26,11 @@ body {
     --background-color: var(--white);
     --background-color-inverse: #191718;
     --link-hover: #6b6b6b;
-    --k-accent: #00b2ff;
-    --k-accent2: #00b2ff;
-    --k-accent-light: #d8f3ff;
-    --k-accent-hover: #d8f3ff;
-    --k-accent-light-2: #d8f3ff;
+    --k-accent: #56f39a;
+    --k-accent2: #56f39a;
+    --k-accent-light: #d9ffe9;
+    --k-accent-hover: #d9ffe9;
+    --k-accent-light-2: #d9ffe9;
     --k-accent-light-2-dark: #363234;
     --k-accent-light-2-dark-head: #191718;
     --k-accent-light-2-dark-paragraph: #191718;
@@ -57,7 +57,7 @@ body {
     --k-blue: #6188e7;
     --k-blue-hover: #3567e0;
     --k-blue-light: #e8edfb;
-    --k-primary: #00b2ff;
+    --k-primary: #56f39a;
     --k-primary-light: #e9f8ff;
     --k-shade: 204 204 204;
     --k-shade2: #cccccc;
