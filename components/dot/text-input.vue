@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-1 flex-col">
+  <div class="flex min-w-0 flex-1 flex-col">
     <span
       class="relative flex w-full items-center justify-between gap-2 border px-3 focus-within:border-k-primary focus-within:bg-k-primary-light"
       :class="wrapperClasses"
