@@ -28,7 +28,7 @@
           </template>
 
           <template v-else>
-            <icon name="mdi:image" class="text-k-primary" size="64" />
+            <icon name="mdi:image" class="text-k-primary group-hover:text-text-color" size="64" />
             <p class="mt-2 text-center font-bold">Drop your artwork</p>
           </template>
         </div>
