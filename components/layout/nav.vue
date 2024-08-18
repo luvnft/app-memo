@@ -90,7 +90,7 @@ const closeNav = () => {
     }
   }
   button.activator {
-    @apply relative z-[100] block h-[30px] w-[30px] cursor-pointer appearance-none border-none outline-none;
+    @apply relative z-[100] block h-[30px] w-[30px] cursor-pointer appearance-none border-none outline-none md:hidden;
 
     span {
       @apply absolute bottom-0 left-0 right-0 top-0 m-auto block h-[2px] w-[20px] bg-background-color-inverse transition-all duration-300 ease-in-out;
