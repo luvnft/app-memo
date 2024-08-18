@@ -1,5 +1,5 @@
 <template>
-  <client-only>
+  <div>
     <input
       :id="imageInputId"
       hidden
@@ -37,7 +37,7 @@
     <span class="mt-0.5 text-xs font-semibold text-red-500">
       {{ error ?? "&nbsp;" }}
     </span>
-  </client-only>
+  </div>
 </template>
 
 <script lang="ts" setup>
