@@ -1,6 +1,6 @@
 <template>
   <form class="mx-auto flex max-w-4xl flex-col space-y-7 px-4 pt-8" @submit="onSubmit">
-    <h1 class="text-4xl font-extrabold text-text-color">Distribution Tool</h1>
+    <h1 class="text-4xl font-extrabold text-text-color">.create</h1>
 
     <div class="grid grid-cols-1 gap-8 md:grid-cols-3">
       <div class="md:col-span-1">
