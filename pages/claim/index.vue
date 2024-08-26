@@ -1,6 +1,6 @@
 <template>
   <div class="mx-auto flex max-w-xl flex-col items-center space-y-10 p-4">
-    <h1 class="mt-10 text-center text-4xl font-bold md:mt-20">Claim POAP</h1>
+    <h1 class="mt-10 text-center text-4xl font-bold md:mt-20">.claim</h1>
 
     <div class="flex aspect-square w-2/5 rounded-full border border-black bg-zinc-400 shadow-[4px_4px] shadow-k-shade2">
       <div v-if="status !== 'success'" class="m-4 flex-1 rounded-full bg-zinc-300" />
