@@ -54,7 +54,7 @@
 
         <dot-label v-if="claimFailed" :error="true" text="You already claimed this POAP" />
 
-        <dot-button :disabled="!canClaim || isClaiming" variant="primary-shadow" size="medium" @click="claim">
+        <dot-button :disabled="!canClaim || isClaiming" variant="primary" size="medium" @click="claim">
           Claim
         </dot-button>
       </template>
@@ -62,7 +62,7 @@
       <template v-else>
         <dot-label text="POAP claimed successfully 🥳">
           <a :href="claimed" class="block w-full">
-            <dot-button class="w-full" variant="primary-shadow" size="large">Check your POAP at KodaDot</dot-button>
+            <dot-button class="w-full" variant="primary" size="large">Check your POAP at KodaDot</dot-button>
           </a>
         </dot-label>
       </template>

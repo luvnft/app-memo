@@ -12,12 +12,7 @@
       </dot-button>
     </Variant>
     <Variant title="With icon">
-      <dot-button
-        class="mb-5 w-1/2"
-        :disabled="state.disabled"
-        :size="state.size"
-        :variant="state.variant"
-      >
+      <dot-button class="mb-5 w-1/2" :disabled="state.disabled" :size="state.size" :variant="state.variant">
         {{ state.content }}
         <template #icon>
           <icon name="mdi:chevron-double-down" size="24" />
@@ -29,20 +24,9 @@
       <HstSelect
         v-model="state.variant"
         title="Variant"
-        :options="[
-          'primary-shadow',
-          'secondary-shadow',
-          'primary',
-          'secondary',
-          'primary-rounded',
-          'secondary-rounded',
-        ]"
+        :options="['primary-shadow', 'secondary-shadow', 'primary', 'secondary', 'primary', 'secondary']"
       />
-      <HstSelect
-        v-model="state.size"
-        title="Size"
-        :options="['small', 'medium', 'large']"
-      />
+      <HstSelect v-model="state.size" title="Size" :options="['small', 'medium', 'large']" />
       <HstCheckbox v-model="state.disabled" title="Disabled" />
     </template>
   </Story>
@@ -74,7 +58,7 @@ import type { BtnSize, BtnVariant } from "./types";
 
 const state = reactive({
   content: "Hello",
-  variant: "primary-shadow" as BtnVariant,
+  variant: "primary" as BtnVariant,
   size: "small" as BtnSize,
   disabled: false,
 });

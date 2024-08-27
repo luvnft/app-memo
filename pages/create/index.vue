@@ -1,68 +1,48 @@
 <template>
-  <form class="mx-auto flex max-w-4xl flex-col space-y-7 px-4 pt-8" @submit="onSubmit">
+  <form class="mx-auto flex max-w-md flex-col space-y-7 px-4 pt-8" @submit="onSubmit">
     <h1 class="text-4xl font-extrabold text-text-color">.create</h1>
 
-    <div class="grid grid-cols-1 gap-8 md:grid-cols-3">
-      <div class="md:col-span-1">
-        <dot-image-input v-model="image" :error="imageError" />
+    <div class="flex flex-col gap-4">
+      <dot-image-input v-model="image" :error="imageError" />
+      <dot-label text="POAP name">
+        <dot-text-input v-model="name" :limit="150" type="text" placeholder="XYZ Event Collection" :error="nameError" />
+      </dot-label>
+      <dot-label text="POAP description">
+        <dot-text-area
+          v-model="description"
+          :limit="150"
+          placeholder="Describe your POAP. These description will be displayed for all POAP users."
+          :error="descriptionError"
+        />
+      </dot-label>
+      <dot-label text="Website address">
+        <dot-text-input v-model="externalUrl" placeholder="https://" :error="externalUrlError" />
+      </dot-label>
+      <div class="grid grid-cols-2 gap-8">
+        <dot-label text="Start date">
+          <dot-text-input v-model="startDate" type="date" :error="startDateError || localStartDateError" />
+        </dot-label>
+        <dot-label text="End">
+          <dot-text-input v-model="endDate" type="date" :error="endDateError || localEndDateError" />
+        </dot-label>
       </div>
-      <div class="space-y-3 md:col-span-2">
-        <dot-label text="POAP name">
-          <dot-text-input
-            v-model="name"
-            :limit="150"
-            type="text"
-            placeholder="XYZ Event Collection"
-            :error="nameError"
-          />
-        </dot-label>
-        <dot-label text="POAP description">
-          <dot-text-area
-            v-model="description"
-            :limit="150"
-            placeholder="Describe your POAP. These description will be displayed for all POAP users."
-            :error="descriptionError"
-          />
-        </dot-label>
-        <dot-label text="Website address">
-          <dot-text-input v-model="externalUrl" placeholder="https://" :error="externalUrlError" />
-        </dot-label>
-        <div class="grid grid-cols-2 gap-8">
-          <dot-label text="Start date">
-            <dot-text-input v-model="startDate" type="date" :error="startDateError || localStartDateError" />
-          </dot-label>
-          <dot-label text="End">
-            <dot-text-input v-model="endDate" type="date" :error="endDateError || localEndDateError" />
-          </dot-label>
+      <dot-label text="Quantity">
+        <dot-text-input v-model.number="quantity" type="number" placeholder="0" :error="quantityError" />
+        <div class="hidden gap-2 md:flex">
+          <dot-button class="flex-1" size="small" variant="tertiary" @click="quantity -= 100"> -100 </dot-button>
+          <dot-button class="flex-1" size="small" variant="tertiary" @click="quantity -= 10"> -10 </dot-button>
+          <dot-button class="flex-1" size="small" variant="tertiary" @click="quantity -= 1"> -1 </dot-button>
+          <dot-button class="flex-1" size="small" variant="tertiary" @click="quantity = 0">0 </dot-button>
+          <dot-button class="flex-1" size="small" variant="tertiary" @click="quantity += 1"> +1 </dot-button>
+          <dot-button class="flex-1" size="small" variant="tertiary" @click="quantity += 10"> +10 </dot-button>
+          <dot-button class="flex-1" size="small" variant="tertiary" @click="quantity += 100"> +100 </dot-button>
         </div>
-        <dot-label text="Quantity">
-          <dot-text-input v-model.number="quantity" type="number" placeholder="0" :error="quantityError" />
-          <div class="hidden gap-2 md:flex">
-            <dot-button class="flex-1" size="small" variant="secondary-rounded" @click="quantity -= 100">
-              -100
-            </dot-button>
-            <dot-button class="flex-1" size="small" variant="secondary-rounded" @click="quantity -= 10">
-              -10
-            </dot-button>
-            <dot-button class="flex-1" size="small" variant="secondary-rounded" @click="quantity -= 1"> -1 </dot-button>
-            <dot-button class="flex-1" size="small" variant="secondary-rounded" @click="quantity = 0">0 </dot-button>
-            <dot-button class="flex-1" size="small" variant="secondary-rounded" @click="quantity += 1"> +1 </dot-button>
-            <dot-button class="flex-1" size="small" variant="secondary-rounded" @click="quantity += 10">
-              +10
-            </dot-button>
-            <dot-button class="flex-1" size="small" variant="secondary-rounded" @click="quantity += 100">
-              +100
-            </dot-button>
-          </div>
-        </dot-label>
-        <dot-label text="POAP Secret">
-          <dot-text-input placeholder="event2024" />
-        </dot-label>
-      </div>
+      </dot-label>
+      <dot-label text="POAP Secret">
+        <dot-text-input placeholder="event2024" />
+      </dot-label>
     </div>
-    <dot-button :disabled="!isSubmittable" size="large" submit variant="primary-shadow" class="w-full">
-      Create
-    </dot-button>
+    <dot-button :disabled="!isSubmittable" size="large" submit variant="primary" class="w-full"> Create </dot-button>
   </form>
 </template>
 
