@@ -10,25 +10,24 @@
 
     <label :for="imageInputId">
       <div
-        class="bg-k-primary/5 group relative aspect-square cursor-pointer border-2 border-dashed border-k-primary shadow-[6px_6px] shadow-k-primary hover:border-background-color-inverse hover:shadow-background-color-inverse"
+        class="group relative aspect-square cursor-pointer overflow-hidden rounded-lg border-2 border-dashed border-background-color-inverse hover:border-background-color-inverse hover:shadow-background-color-inverse"
       >
         <div class="absolute inset-0 flex flex-col items-center justify-center">
           <template v-if="previewImageSrc">
             <img
               :src="previewImageSrc"
               alt="submitted image preview"
-              class="pointer-events-none aspect-square flex-1 object-cover p-4"
+              class="pointer-events-none m-2 aspect-square flex-1 overflow-hidden rounded-md object-cover"
             />
 
             <div
-              class="pointer-events-none absolute inset-0 hidden items-center justify-center bg-black/40 backdrop-blur-lg group-hover:flex"
+              class="pointer-events-none absolute inset-0 flex items-center justify-center bg-black/30 opacity-0 backdrop-blur-lg transition-opacity group-hover:opacity-100"
             >
               <h1 class="px-4 text-center text-k-primary">Choose a different artwork</h1>
             </div>
           </template>
 
           <template v-else>
-            <icon name="mdi:image" class="text-k-primary group-hover:text-text-color" size="64" />
             <p class="mt-2 text-center font-bold">Drop your artwork</p>
           </template>
         </div>

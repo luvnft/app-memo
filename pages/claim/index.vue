@@ -14,7 +14,7 @@
         <form class="flex space-x-4" @submit.prevent="onSubmit()">
           <dot-text-input v-model="code" :error="errorMessage" placeholder="CODE · SVv43nF...9a33jA" />
           <div>
-            <dot-button variant="secondary" size="large" @click="open()">
+            <dot-button variant="tertiary" size="large" @click="open()">
               <template #icon>
                 <icon name="mdi:qrcode" size="24" />
               </template>
@@ -24,8 +24,8 @@
       </dot-label>
       <dot-button
         :disabled="!isCodeValid || status === 'pending'"
-        variant="primary-shadow"
-        size="medium"
+        variant="primary"
+        size="large"
         @click="continueClaim"
       >
         {{ status === "pending" ? "Searching ..." : "Continue" }}

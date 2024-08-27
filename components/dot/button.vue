@@ -27,44 +27,30 @@ const props = withDefaults(
   }>(),
   {
     disabled: false,
-    variant: "primary-shadow",
+    variant: "primary",
     size: "medium",
   },
 );
 
 const SIZE_CLASSES: Record<BtnSize, string> = {
-  small: "text-sm px-4 py-1",
+  small: "px-3 py-1 text-sm ",
   medium: "px-4 py-2",
-  large: "text-lg px-5 py-3",
+  large: "px-6 py-3 text-lg ",
 };
 
 const VARIANT_CLASSES: Record<BtnVariant, string> = {
-  "primary-shadow": `
-      bg-k-primary hover:bg-background-color text-black hover:text-text-color border border-border-color
-      disabled:bg-disabled disabled:text-neutral-7 disabled:opacity-50
-      shadow-text-color hover:shadow-text-color  shadow-[4px_4px] hover:shadow-[2px_2px]
-    `,
-  "secondary-shadow": `
-      bg-background-color text-text-color border border-border-color hover:bg-k-accent-hover
-      disabled:bg-disabled disabled:text-neutral-7 disabled:opacity-50
-      shadow-text-color hover:shadow-text-color  shadow-[4px_4px] hover:shadow-[2px_2px]
-    `,
   primary: `
-      bg-k-primary hover:bg-background-color text-black hover:text-text-color border border-border-color
+      bg-k-primary hover:bg-background-color-inverse text-black hover:text-text-color-inverse rounded-full
       disabled:bg-disabled disabled:text-neutral-7 disabled:opacity-50
     `,
   secondary: `
-      bg-background-color text-text-color border border-border-color hover:bg-k-accent-hover
+      bg-transparent text-k-primary border-2 border-k-primary hover:bg-k-primary hover:text-black/90 rounded-full
       disabled:bg-disabled disabled:text-neutral-7 disabled:opacity-50
     `,
-  "primary-rounded": `
-      bg-k-primary hover:bg-background-color text-black hover:text-text-color border border-border-color rounded-full
-      disabled:bg-disabled disabled:text-neutral-7 disabled:opacity-50
-    `,
-  "secondary-rounded": `
-      bg-background-color text-text-color border border-border-color hover:bg-k-accent-hover rounded-full 
-      disabled:bg-disabled disabled:text-neutral-7 disabled:opacity-50
-    `,
+  tertiary: `
+    bg-transparent text-background-color-inverse border-2 border-background-color-inverse hover:bg-background-color-inverse hover:text-text-color-inverse rounded-full
+    disabled:bg-disabled disabled:text-neutral-7 disabled:opacity-50
+  `,
 };
 
 const btnClasses = computed(() => {
