@@ -51,6 +51,14 @@ const VARIANT_CLASSES: Record<BtnVariant, string> = {
     bg-transparent text-background-color-inverse border-2 border-background-color-inverse hover:bg-background-color-inverse hover:text-text-color-inverse rounded-full
     disabled:bg-disabled disabled:text-neutral-7 disabled:opacity-50
   `,
+  "tertiary-light": `
+    bg-transparent text-white border-2 border-white hover:bg-white hover:text-black rounded-full
+    disabled:bg-disabled disabled:text-neutral-7 disabled:opacity-50
+  `,
+  "tertiary-dark": `
+    bg-transparent text-black border-2 border-black hover:bg-black hover:text-white rounded-full
+    disabled:bg-disabled disabled:text-neutral-7 disabled:opacity-50
+  `,
 };
 
 const btnClasses = computed(() => {

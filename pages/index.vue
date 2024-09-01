@@ -11,7 +11,7 @@ definePageMeta({
       <p class="text-4xl !text-white md:text-7xl">Your memories,<br />forever onchain</p>
       <div class="flex flex-row gap-5">
         <dot-button size="large" variant="primary" class="px-10 sm:px-20">Claim</dot-button>
-        <dot-button size="large" variant="tertiary" class="px-10 sm:px-20">Create</dot-button>
+        <dot-button size="large" variant="tertiary-light" class="px-10 sm:px-20">Create</dot-button>
       </div>
       <div class="flex flex-col items-center gap-3">
         <p class="!text-white">Powered by</p>
@@ -29,13 +29,13 @@ definePageMeta({
           <p class="!text-black">Turn milestones into digital memories</p>
         </div>
         <div class="flex justify-end">
-          <dot-button class="w-full sm:w-auto" variant="primary" size="large">Learn more</dot-button>
+          <dot-button class="w-full sm:w-auto" variant="tertiary-dark" size="large">Learn more</dot-button>
         </div>
       </div>
     </section>
 
     <section class="flex min-h-[50vh] flex-col">
-      <p class="m-6 text-3xl text-white">How Dotmemo Works</p>
+      <p class="m-6 text-3xl !text-white">How Dotmemo Works</p>
 
       <div class="grid grid-cols-1 gap-7 sm:grid-cols-2 lg:grid-cols-3">
         <div class="flex flex-col gap-2 rounded-3xl bg-bg-card p-8 sm:p-12">
