@@ -1,17 +1,20 @@
 <script lang="ts" setup>
 import polkadotLogo from "@/assets/images/Polkadot.png";
+definePageMeta({
+  layout: "landing",
+});
 </script>
 
 <template>
-  <main class="flex flex-col gap-10">
+  <main class="flex flex-col gap-10 bg-bg-persistent">
     <section class="flex h-[65vh] flex-col items-center justify-center gap-10">
-      <p class="text-4xl md:text-7xl">Your memories,<br />forever onchain</p>
+      <p class="text-4xl !text-white md:text-7xl">Your memories,<br />forever onchain</p>
       <div class="flex flex-row gap-5">
         <dot-button size="large" variant="primary" class="px-10 sm:px-20">Claim</dot-button>
         <dot-button size="large" variant="tertiary" class="px-10 sm:px-20">Create</dot-button>
       </div>
       <div class="flex flex-col items-center gap-3">
-        <p class="text-white">Powered by</p>
+        <p class="!text-white">Powered by</p>
         <img :src="polkadotLogo" alt="polkadot logo" class="h-10" />
       </div>
     </section>
@@ -37,8 +40,8 @@ import polkadotLogo from "@/assets/images/Polkadot.png";
       <div class="grid grid-cols-1 gap-7 sm:grid-cols-2 lg:grid-cols-3">
         <div class="flex flex-col gap-2 rounded-3xl bg-bg-card p-8 sm:p-12">
           <div class="mb-16 h-16 w-16 rounded-full bg-k-primary"></div>
-          <p class="text-2xl font-bold text-white">Claim</p>
-          <p>
+          <p class="text-2xl font-bold !text-white">Claim</p>
+          <p class="!text-white">
             Receive a digital badge for attending or participating in special events, all securely stored on the
             Polkadot network.
           </p>
@@ -46,8 +49,8 @@ import polkadotLogo from "@/assets/images/Polkadot.png";
 
         <div class="flex flex-col gap-2 rounded-3xl bg-bg-card p-8 sm:p-12">
           <div class="mb-16 h-16 w-16 rounded-full bg-k-primary"></div>
-          <p class="text-2xl font-bold text-white">Create</p>
-          <p>
+          <p class="text-2xl font-bold !text-white">Create</p>
+          <p class="!text-white">
             Organizers can create unique badges to distribute at their events, giving attendees a tangible way to
             commemorate their experiences.
           </p>
@@ -55,8 +58,8 @@ import polkadotLogo from "@/assets/images/Polkadot.png";
 
         <div class="flex flex-col gap-2 rounded-3xl bg-bg-card p-8 sm:p-12">
           <div class="mb-16 h-16 w-16 rounded-full bg-k-primary"></div>
-          <p class="text-2xl font-bold text-white">Share & Showcase</p>
-          <p>
+          <p class="text-2xl font-bold !text-white">Share & Showcase</p>
+          <p class="!text-white">
             Show off your achievements by sharing your badges on social media or displaying them in your digital wallet.
           </p>
         </div>

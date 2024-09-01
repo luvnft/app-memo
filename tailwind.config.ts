@@ -19,6 +19,7 @@ export default <Partial<Config>>{
         // link: "#1FB6FF",
 
         "bg-card": "var(--bg-card)",
+        "bg-persistent": "var(--bg-persistent)",
 
         "text-color": "rgb(var(--text-color) / <alpha-value>)",
         "text-color-inverse": "var(--text-color-inverse)",
