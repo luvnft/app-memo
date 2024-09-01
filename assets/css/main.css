@@ -16,6 +16,7 @@ body {
     --black: #000000;
     --k-accent-light-3: #ffaee1;
     --steps-active-color: 97 136 231;
+    --bg-card: #0c3f22;
   }
 
   :root,
@@ -83,7 +84,7 @@ body {
     --black: #191718;
     --text-color: 255 255 255;
     --text-color-inverse: var(--black);
-    --background-color: #191718;
+    --background-color: #0d2919;
     --background-color-inverse: var(--white);
     --link-hover: #cccccc;
     --border-color: var(--white);
