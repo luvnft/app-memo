@@ -1,6 +1,6 @@
 <template>
-  <div id="app-base" class="relative bg-bg-persistent pt-10">
-    <main class="h-full min-h-screen p-4">
+  <div id="app-base" class="relative bg-bg-persistent">
+    <main class="h-full min-h-screen">
       <slot />
     </main>
     <layout-footer />

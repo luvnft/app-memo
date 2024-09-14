@@ -1,17 +1,21 @@
-<script lang="ts" setup>
-import polkadotLogo from "@/assets/images/Polkadot.png";
-definePageMeta({
-  layout: "landing",
-});
-</script>
-
 <template>
-  <main class="flex flex-col gap-10 bg-bg-persistent">
-    <section class="flex h-[65vh] flex-col items-center justify-center gap-10">
+  <main class="flex flex-col bg-bg-persistent">
+    <section
+      class="relative flex h-[65vh] flex-col items-center justify-center gap-10"
+      :style="{
+        backgroundImage: `url(${landingBackground})`,
+        backgroundSize: '100%',
+        backgroundRepeat: 'no-repeat',
+      }"
+    >
       <p class="text-4xl !text-white md:text-7xl">Your memories,<br />forever onchain</p>
       <div class="flex flex-row gap-5">
-        <dot-button size="large" variant="primary" class="px-10 sm:px-20">Claim</dot-button>
-        <dot-button size="large" variant="tertiary-light" class="px-10 sm:px-20">Create</dot-button>
+        <dot-button size="large" variant="primary" class="px-10 sm:px-20" @click="router.push('/claim')">
+          Claim
+        </dot-button>
+        <dot-button size="large" variant="tertiary-light" class="px-10 sm:px-20" @click="router.push('/create')">
+          Create
+        </dot-button>
       </div>
       <div class="flex flex-col items-center gap-3">
         <p class="!text-white">Powered by</p>
@@ -19,7 +23,7 @@ definePageMeta({
       </div>
     </section>
 
-    <section class="flex min-h-[40vh] flex-col justify-between gap-7 rounded-2xl bg-white p-10">
+    <section class="mx-10 flex min-h-[40vh] flex-col justify-between gap-7 rounded-2xl bg-white p-10">
       <p class="max-w-full text-4xl !text-black sm:max-w-[66%] md:text-6xl">
         Capture your unforgettable moments as digital badges on the Polkadot network.
       </p>
@@ -34,7 +38,7 @@ definePageMeta({
       </div>
     </section>
 
-    <section class="flex min-h-[50vh] flex-col">
+    <section class="m-10 flex min-h-[50vh] flex-col">
       <p class="m-6 text-3xl !text-white">How Dotmemo Works</p>
 
       <div class="grid grid-cols-1 gap-7 sm:grid-cols-2 lg:grid-cols-3">
@@ -66,7 +70,7 @@ definePageMeta({
       </div>
     </section>
 
-    <section class="flex min-h-[40vh] flex-col gap-7 rounded-2xl bg-white p-10">
+    <section class="m-10 flex min-h-[40vh] flex-col gap-7 rounded-2xl bg-white p-10">
       <p class="text-4xl !text-black md:text-6xl">Featured</p>
 
       <div class="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
@@ -79,3 +83,13 @@ definePageMeta({
     </section>
   </main>
 </template>
+
+<script lang="ts" setup>
+import polkadotLogo from "@/assets/images/Polkadot.png";
+import landingBackground from "@/assets/images/landing-background.png";
+definePageMeta({
+  layout: "landing",
+});
+
+const router = useRouter();
+</script>
