@@ -122,3 +122,11 @@ const isSubmittable = computed(
     !Object.keys(errors.value).length,
 );
 </script>
+
+<style>
+input[type="date"]::-webkit-inner-spin-button,
+input[type="date"]::-webkit-calendar-picker-indicator {
+  /* https://gist.github.com/evilmarty/3021338 */
+  filter: invert(60%) sepia(100%) saturate(1854%) hue-rotate(100deg) brightness(80%) contrast(106%);
+}
+</style>
