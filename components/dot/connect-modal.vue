@@ -7,7 +7,7 @@
   >
     <h1 class="text-2xl font-semibold text-text-color">Select account</h1>
     <div class="flex flex-col gap-2">
-      <div class="mb-4 flex flex-col gap-1">
+      <div class="mb-4 flex flex-col gap-3">
         <dot-button
           v-for="account in accountStore.accounts"
           :key="account.address"
@@ -15,7 +15,7 @@
           :variant="selectedAccount?.address === account.address ? 'primary' : 'tertiary'"
           @click="selectedAccount = account"
         >
-          <div class=".5gap-1 flex flex-1 flex-col items-start py-1">
+          <div class="flex flex-1 flex-col items-start gap-1 px-4 py-1">
             <h2 class="font-bold">{{ account.meta.name }}</h2>
             <p class="text-xs">
               {{ addressShortener(account.address, 10, -10) }}
