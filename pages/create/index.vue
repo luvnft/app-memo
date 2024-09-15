@@ -39,7 +39,7 @@
         </div>
       </dot-label>
       <dot-label text="POAP Secret">
-        <dot-text-input placeholder="event2024" />
+        <dot-text-input v-model="secret" placeholder="event2024" :error="secretError" />
       </dot-label>
     </div>
     <dot-button :disabled="!isSubmittable" size="large" submit variant="primary" class="w-full"> Create </dot-button>
@@ -49,6 +49,8 @@
 <script lang="ts" setup>
 import { useField, useForm } from "vee-validate";
 import { toTypedSchema } from "@vee-validate/zod";
+import { useModal } from "vue-final-modal";
+import SignModal from "~/components/dot/sign-modal.vue";
 import * as zod from "zod";
 
 const validationSchema = toTypedSchema(
@@ -62,6 +64,7 @@ const validationSchema = toTypedSchema(
     startDate: zod.date({ message: "Start date is required" }),
     endDate: zod.date({ message: "End date is required" }),
     quantity: zod.number({ message: "Quantity is required" }).positive({ message: "Quantity must be positive" }),
+    secret: zod.string({ message: "Secret is required" }).min(1, { message: "Secret is required" }),
   }),
 );
 
@@ -81,6 +84,7 @@ const localStartDateError = ref<string>("");
 const { value: endDate, errorMessage: endDateError } = useField<Date>("endDate");
 const localEndDateError = ref<string>("");
 const { value: quantity, errorMessage: quantityError } = useField<number>("quantity");
+const { value: secret, errorMessage: secretError } = useField<string>("secret");
 
 // As `refine` doesnt work with `toTypedSchema` we need to do this manually
 watch([startDate, endDate], ([startDate, endDate]) => {
@@ -95,10 +99,25 @@ watch([startDate, endDate], ([startDate, endDate]) => {
 
 const logger = createLogger("CreatePage");
 
-const onSubmit = handleSubmit(({ description, endDate, image, quantity, startDate, name, externalUrl }) => {
+const onSubmit = handleSubmit(({ description, endDate, image, quantity, startDate, name, externalUrl, secret }) => {
   if (localStartDateError.value || localEndDateError.value) {
     return;
   }
+
+  const { open } = useModal({
+    component: SignModal,
+    attrs: {
+      name,
+      startDate,
+      endDate,
+      quantity,
+      image,
+      secret,
+    },
+  });
+
+  open();
+
   logger.success({
     description,
     endDate,
@@ -122,3 +141,11 @@ const isSubmittable = computed(
     !Object.keys(errors.value).length,
 );
 </script>
+
+<style>
+input[type="date"]::-webkit-inner-spin-button,
+input[type="date"]::-webkit-calendar-picker-indicator {
+  /* https://gist.github.com/evilmarty/3021338 */
+  filter: invert(60%) sepia(100%) saturate(1854%) hue-rotate(100deg) brightness(80%) contrast(106%);
+}
+</style>

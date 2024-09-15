@@ -12,9 +12,9 @@
 
     <div class="flex flex-col space-y-3 self-stretch">
       <template v-if="!claimed">
-        <div class="flex border border-border-color shadow-[4px_4px] shadow-text-color">
+        <div class="flex rounded-full border-2 border-border-color p-2 shadow-text-color">
           <button
-            class="flex-1 py-2 text-text-color"
+            class="flex-1 rounded-full py-2 text-text-color"
             :class="{
               'bg-background-color-inverse text-text-color-inverse': showAddressInput,
             }"
@@ -23,7 +23,7 @@
             Enter address
           </button>
           <button
-            class="flex-1 py-2 text-text-color"
+            class="flex-1 rounded-full py-2 text-text-color"
             :class="{
               'bg-background-color-inverse text-text-color-inverse': !showAddressInput,
             }"
@@ -45,18 +45,24 @@
           </dot-label>
         </client-only>
 
-        <div class="fixed -top-3 left-0 right-0 z-[60] flex h-7">
-          <div
-            class="absolute bottom-0 left-0 top-0 bg-pink-400 transition-all duration-[60000ms] ease-linear"
-            :style="`width: ${isClaiming ? '100%' : '0%'};`"
-          ></div>
-        </div>
-
         <dot-label v-if="claimFailed" :error="true" text="You already claimed this POAP" />
 
         <dot-button :disabled="!canClaim || isClaiming" variant="primary" size="medium" @click="claim">
           Claim
         </dot-button>
+
+        <div
+          class="flex h-10 rounded-full bg-stone-600/15 p-1"
+          :class="{
+            'opacity-100': isClaiming,
+            'opacity-0': !isClaiming,
+          }"
+        >
+          <div
+            class="rounded-full bg-k-primary transition-all duration-[60000ms] ease-linear"
+            :style="`width: ${isClaiming ? '100%' : '0%'};`"
+          ></div>
+        </div>
       </template>
 
       <template v-else>

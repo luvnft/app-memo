@@ -18,6 +18,9 @@ export default <Partial<Config>>{
         // disabled: "#949494",
         // link: "#1FB6FF",
 
+        "bg-card": "var(--bg-card)",
+        "bg-persistent": "var(--bg-persistent)",
+
         "text-color": "rgb(var(--text-color) / <alpha-value>)",
         "text-color-inverse": "var(--text-color-inverse)",
         "border-color": "var(--border-color)",
@@ -31,8 +34,7 @@ export default <Partial<Config>>{
         "k-accent-light-2": "var(--k-accent-light-2)",
         "k-accent-light-2-dark": "var(--k-accent-light-2-dark)",
         "k-accent-light-2-dark-head": "var(--k-accent-light-2-dark-head)",
-        "k-accent-light-2-dark-paragraph":
-          "var(--k-accent-light-2-dark-paragraph)",
+        "k-accent-light-2-dark-paragraph": "var(--k-accent-light-2-dark-paragraph)",
         "k-accent-light-3": "var(--k-accent-light-3)",
         "k-green": "var(--k-green)",
         "k-red": "var(--k-red)",
