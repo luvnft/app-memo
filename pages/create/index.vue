@@ -43,8 +43,6 @@
       </dot-label>
     </div>
     <dot-button :disabled="!isSubmittable" size="large" submit variant="primary" class="w-full"> Create </dot-button>
-
-    <button @click="onSubmit()">Open</button>
   </form>
 </template>
 
