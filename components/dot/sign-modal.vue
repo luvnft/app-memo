@@ -58,10 +58,18 @@
           <span class="text-xs text-text-color opacity-60">$0.980</span>
           <span class="ml-2 font-bold text-text-color">1 DOT</span>
         </p>
-        <p class="text-sm text-text-color">Free Minting Deposit</p>
-        <p class="text-right text-sm text-text-color">24 x 0.04 DOT</p>
-        <p class="text-sm text-text-color">Fees</p>
-        <p class="text-right text-sm text-text-color">0.02 DOT</p>
+
+        <button class="col-span-2 flex items-center gap-2" @click="showBreakdown = !showBreakdown">
+          <p class="text-xs text-text-color opacity-50">Breakdown</p>
+          <Icon :name="`mdi:chevron-${showBreakdown ? 'up' : 'down'}`" size="20" class="text-text-color opacity-50" />
+        </button>
+
+        <template v-if="showBreakdown">
+          <p class="text-sm text-text-color">Free Minting Deposit</p>
+          <p class="text-right text-sm text-text-color">24 x 0.04 DOT</p>
+          <p class="text-sm text-text-color">Fees</p>
+          <p class="text-right text-sm text-text-color">0.02 DOT</p>
+        </template>
       </div>
 
       <dot-button :disabled="!canSign" variant="primary" size="large" @click="sign()"> Proceed to signing </dot-button>
@@ -91,6 +99,8 @@ const currentAccount = computed(() => accountStore.selected);
 
 const canSign = computed(() => accountStore.hasSelectedAccount);
 const isSigning = ref(false);
+
+const showBreakdown = ref(false);
 
 function sign() {
   // TODO API call or smth
