@@ -93,6 +93,7 @@ const canSign = computed(() => accountStore.hasSelectedAccount);
 const isSigning = ref(false);
 
 function sign() {
+  // TODO API call or smth
   isSigning.value = true;
 
   setTimeout(() => {
