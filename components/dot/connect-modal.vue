@@ -33,9 +33,10 @@
 
 <script lang="ts" setup>
 import { VueFinalModal } from "vue-final-modal";
-import { web3Accounts, web3Enable } from "@polkadot/extension-dapp";
+import { web3Accounts } from "@polkadot/extension-dapp";
 import { useAccountStore } from "~/stores/account";
 import type { Account } from "~/types/web3";
+import { getInjectedExtensions } from "~/utils/extension";
 
 const emit = defineEmits<{
   (e: "confirm"): void;
@@ -43,7 +44,7 @@ const emit = defineEmits<{
 
 const accountStore = useAccountStore();
 onMounted(async () => {
-  await web3Enable("dotpoap dapp");
+  const _extensions = getInjectedExtensions();
   accountStore.setAccounts(await web3Accounts());
 });
 
