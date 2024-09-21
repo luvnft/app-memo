@@ -23,7 +23,12 @@ export const createCollection = (api: ApiPromise, owner: string) => {
   return create;
 };
 
-export const setMaxSupply = (api: ApiPromise, collectionId: string, maxSupply: string | number | bigint) => {
+export const setMaxSupply = (api: ApiPromise, collectionId: string, metadata: string) => {
+  const set = api.tx.nfts.setCollectionMetadata(collectionId, metadata);
+  return set;
+};
+
+export const setCollectionMetadata = (api: ApiPromise, collectionId: string, maxSupply: string | number | bigint) => {
   const set = api.tx.nfts.setCollectionMaxSupply(collectionId, maxSupply);
   return set;
 };
