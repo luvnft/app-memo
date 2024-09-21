@@ -16,6 +16,7 @@
   "dependencies": {
     "@kodadot1/minipfs": "0.4.3-rc.2",
     "@kodadot1/sub-api": "0.4.0-rc.2",
+    "@kodadot1/uniquery": "0.6.0-rc.0",
     "@nuxt/eslint": "^0.3.13",
     "@nuxt/image": "^1.7.0",
     "@nuxtjs/color-mode": "^3.4.1",
