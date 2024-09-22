@@ -30,7 +30,7 @@
 
     <hr class="my-3" />
 
-    <template v-if="!isSigning">
+    <template v-if="!isLoading">
       <div class="flex items-center gap-5">
         <div class="h-20 w-20 rounded-full border-2 border-border-color"></div>
         <div class="flex flex-col gap-2">
@@ -72,7 +72,7 @@
         </template>
       </div>
 
-      <dot-button :disabled="!canSign" variant="primary" size="large" @click="sign()"> Proceed to signing </dot-button>
+      <dot-button :disabled="!isLogIn" variant="primary" size="large" @click="sign()"> Proceed to signing </dot-button>
     </template>
 
     <template v-else>
@@ -83,7 +83,11 @@
 
 <script lang="ts" setup>
 import { VueFinalModal, useVfm } from "vue-final-modal";
-import { useAccountStore } from "~/stores/account";
+import { useAccountStore } from "@/stores/account";
+// import { asUtilityBatch } from "@kodadot1/sub-api";
+import { buildMemo } from "~/utils/sdk/create";
+import useAuth from "~/composables/useAuth";
+import { logger } from "nuxt/kit";
 
 const props = defineProps<{
   name: string;
@@ -94,21 +98,27 @@ const props = defineProps<{
   secret: string;
 }>();
 
+const { apiInstance } = useApi();
+const { howAboutToExecute, status: _status, isError: _isError, isLoading } = useMetaTransaction();
+const { accountId, isLogIn } = useAuth();
+
 const accountStore = useAccountStore();
 const currentAccount = computed(() => accountStore.selected);
 
-const canSign = computed(() => accountStore.hasSelectedAccount);
-const isSigning = ref(false);
+// const canSign = computed(() => accountStore.hasSelectedAccount);
 
 const showBreakdown = ref(false);
 
-function sign() {
-  // TODO API call or smth
-  isSigning.value = true;
+async function sign() {
+  if (!accountId.value) {
+    logger.error("No account selected");
+    return;
+  }
+  const api = await apiInstance.value;
 
-  setTimeout(() => {
-    isSigning.value = false;
-  }, 1000);
+  const args = buildMemo(api, accountId.value, props.quantity);
+  const cb = api.tx.utility.batchAll;
+  await howAboutToExecute(accountId.value, cb, [args]);
 }
 
 const vfm = useVfm();
