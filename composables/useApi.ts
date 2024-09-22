@@ -4,6 +4,7 @@ import { getChainEndpointByPrefix } from "@/utils/chain";
 
 export default function () {
   // const { urlPrefix } = usePrefix()
+  // const config = useRuntimeConfig()
 
   const apiUrl = computed(() => {
     const endpoint: string = getChainEndpointByPrefix("ahp") || "";
