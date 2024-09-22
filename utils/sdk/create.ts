@@ -1,8 +1,7 @@
 import type { ApiPromise } from "@polkadot/api";
-import type { SubmittableExtrinsic } from "@polkadot/api/types";
 import { nextCollectionId } from "./query";
 import { MEMO_BOT } from "./constants";
-import { asBalanceTransferAlive } from "@kodadot1/sub-api";
+import { asBalanceTransferAlive, type Extrinsic } from "@kodadot1/sub-api";
 
 /** @name PalletNftsCollectionConfig (356) */
 interface PalletNftsCollectionConfig {
@@ -21,7 +20,7 @@ interface PalletNftsMintSettings {
   readonly defaultItemSettings: number;
 }
 
-function createArgsForNftPallet(account: string, maxSupply?: number): [string, PalletNftsCollectionConfig] {
+export function createArgsForNftPallet(account: string, maxSupply?: number): [string, PalletNftsCollectionConfig] {
   const config = {
     settings: 0,
     maxSupply,
@@ -62,7 +61,6 @@ export const setCollectionMetadata = (api: ApiPromise, collectionId: string, max
   return set;
 };
 
-export type Extrinsic = SubmittableExtrinsic<"promise">;
 export const buildBatch = (api: ApiPromise, calls: Extrinsic[]) => {
   const batch = api.tx.utility.batchAll(calls);
   return batch;
@@ -80,6 +78,8 @@ export const buildMemo = async (api: ApiPromise, account: string, max: number) =
   if (!nextId) {
     throw new Error("Could not get next collection id");
   }
+  // eslint-disable-next-line no-console
+  console.log("nextId", nextId.toString());
   const create = createCollection(api, account);
   const setMax = setMaxSupply(api, nextId.toString(), String(max));
   // const
