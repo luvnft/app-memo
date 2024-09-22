@@ -1,11 +1,27 @@
 import type { ApiPromise } from "@polkadot/api";
 import type { SubmittableExtrinsic } from "@polkadot/api/types";
+import { nextCollectionId } from "./query";
+import { MEMO_BOT } from "./constants";
+import { asBalanceTransferAlive } from "@kodadot1/sub-api";
 
-function createArgsForNftPallet(
-  account: string,
-  maxSupply?: number,
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-): [string, any] {
+/** @name PalletNftsCollectionConfig (356) */
+interface PalletNftsCollectionConfig {
+  readonly settings: number;
+  readonly maxSupply?: number;
+  readonly mintSettings: PalletNftsMintSettings;
+}
+/** @name PalletNftsCollectionSetting (358) */
+
+/** @name PalletNftsMintSettings (359) */
+interface PalletNftsMintSettings {
+  readonly mintType: { Issuer: null } | { Public: null } | { HolderOf: number };
+  readonly price?: number;
+  readonly startBlock?: number;
+  readonly endBlock?: number;
+  readonly defaultItemSettings: number;
+}
+
+function createArgsForNftPallet(account: string, maxSupply?: number): [string, PalletNftsCollectionConfig] {
   const config = {
     settings: 0,
     maxSupply,
@@ -28,6 +44,19 @@ export const setMaxSupply = (api: ApiPromise, collectionId: string, metadata: st
   return set;
 };
 
+// * - `issuer`: The new Issuer of this collection.
+// * - `admin`: The new Admin of this collection.
+// * - `freezer`: The new Freezer of this collection.
+type Team = {
+  isssuer: string;
+  admin: string;
+  freezer: string;
+};
+export const setTeam = (api: ApiPromise, collectionId: string, team: Team) => {
+  const set = api.tx.nfts.setTeam(collectionId, team.isssuer, team.admin, team.freezer);
+  return set;
+};
+
 export const setCollectionMetadata = (api: ApiPromise, collectionId: string, maxSupply: string | number | bigint) => {
   const set = api.tx.nfts.setCollectionMaxSupply(collectionId, maxSupply);
   return set;
@@ -37,4 +66,28 @@ export type Extrinsic = SubmittableExtrinsic<"promise">;
 export const buildBatch = (api: ApiPromise, calls: Extrinsic[]) => {
   const batch = api.tx.utility.batchAll(calls);
   return batch;
+};
+
+export const transferUs = (api: ApiPromise, amount: number) => {
+  // const txFee = calculateFee(amount, Fee.TX);
+  // const depositFee = calculateFee(amount, Fee.DEPOSIT);
+  const transfer = asBalanceTransferAlive(api, MEMO_BOT, amount);
+  return transfer;
+};
+
+export const buildMemo = async (api: ApiPromise, account: string, max: number) => {
+  const nextId = await nextCollectionId(api);
+  if (!nextId) {
+    throw new Error("Could not get next collection id");
+  }
+  const create = createCollection(api, account);
+  const setMax = setMaxSupply(api, nextId.toString(), String(max));
+  // const
+  // const metadata = setCollectionMetadata(api, nextId.toString(), );
+  // const team = setTeam(api, nextId.toString(), {
+  //   isssuer: account,
+  //   admin: account,
+  //   freezer: account,
+  // });
+  return [create, setMax];
 };
