@@ -33,6 +33,9 @@ export default defineNuxtConfig({
       Unbounded: true,
     },
   },
+  routeRules: {
+    "/create": { ssr: false },
+  },
 
   compatibilityDate: "2024-09-20",
 });
