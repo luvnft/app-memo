@@ -135,6 +135,7 @@ const isSubmittable = computed(
     name.value &&
     startDate.value &&
     endDate.value &&
+    secret.value &&
     quantity.value &&
     !localStartDateError.value &&
     !localEndDateError.value &&
