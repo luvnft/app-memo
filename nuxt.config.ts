@@ -5,8 +5,10 @@ export default defineNuxtConfig({
       title: ".POAP",
     },
   },
+
   css: ["~/assets/css/main.css"],
   devtools: { enabled: true },
+
   modules: [
     "@nuxtjs/tailwindcss",
     "@pinia/nuxt",
@@ -17,6 +19,7 @@ export default defineNuxtConfig({
     "@nuxtjs/color-mode",
     "@vue-final-modal/nuxt",
   ],
+
   runtimeConfig: {
     apiUrl: "",
     public: {
@@ -24,9 +27,12 @@ export default defineNuxtConfig({
       chain: process.env.NUXT_CHAIN_PREFIX || "ahp", // 'ahp' for asset hub polkadot
     },
   },
+
   googleFonts: {
     families: {
       Unbounded: true,
     },
   },
+
+  compatibilityDate: "2024-09-20",
 });
