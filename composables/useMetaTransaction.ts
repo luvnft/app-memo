@@ -4,7 +4,8 @@ import type { ISubmittableResult } from "@polkadot/types/types";
 import useAPI from "./useApi";
 import useTransactionStatus, { TransactionStatus } from "./useTransactionStatus";
 import exec, { execResultValue, txCb } from "@/utils/transactionExecutor";
-import type { ExecResult, Extrinsic, TxCbOnSuccessParams } from "@/utils/transactionExecutor";
+import type { ExecResult, TxCbOnSuccessParams } from "@/utils/transactionExecutor";
+import type { Extrinsic } from "@kodadot1/sub-api";
 
 export type HowAboutToExecuteOnSuccessParam = {
   txHash: string;
