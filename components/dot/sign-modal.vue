@@ -85,7 +85,7 @@
 import { VueFinalModal, useVfm } from "vue-final-modal";
 import { useAccountStore } from "@/stores/account";
 // import { asUtilityBatch } from "@kodadot1/sub-api";
-import { buildMemo, createArgsForNftPallet } from "~/utils/sdk/create";
+import { createArgsForNftPallet } from "@/utils/sdk/create";
 import useAuth from "~/composables/useAuth";
 import { nextCollectionId } from "~/utils/sdk/query";
 import { MEMO_BOT } from "~/utils/sdk/constants";
@@ -100,7 +100,7 @@ const props = defineProps<{
 }>();
 
 const { apiInstance } = useApi();
-const { howAboutToExecute, status: _status, isError: _isError, isLoading } = useMetaTransaction();
+const { howAboutToExecute, status, isError: _isError, isLoading } = useMetaTransaction();
 const { accountId, isLogIn } = useAuth();
 
 const accountStore = useAccountStore();
@@ -117,7 +117,7 @@ async function sign() {
   }
   const api = await apiInstance.value;
 
-  const createArgs = createArgsForNftPallet(accountId.value);
+  const createArgs = createArgsForNftPallet(accountId.value, props.quantity);
   const nextId = await nextCollectionId(api);
 
   if (!nextId) {
@@ -141,6 +141,13 @@ async function sign() {
   // const cb = api.tx.utility.batchAll;
   await howAboutToExecute(accountId.value, cb, args);
 }
+
+watch(status, (status) => {
+  if (status === TransactionStatus.Finalized) {
+    // call API
+    // closeModal();
+  }
+});
 
 const vfm = useVfm();
 const closeModal = () => vfm.close("sign-modal");
