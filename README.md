@@ -25,6 +25,7 @@ bun install
 
 ```bash
 NUXT_API_URL=
+NUXT_CHAIN_PREFIX=
 ```
 
 ## Development Server
@@ -81,8 +82,6 @@ bun run preview
 
 Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
 
-
 > [!NOTE]
 > We like pricing by vercel
 > Vercel
-
