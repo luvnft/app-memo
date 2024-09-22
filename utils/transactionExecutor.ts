@@ -5,6 +5,8 @@ import type { Callback, ISubmittableResult } from "@polkadot/types/types";
 import { getAddress } from "@/utils/extension";
 import { toDefaultAddress } from "@/utils/account";
 import type { DispatchError, Hash } from "@polkadot/types/interfaces";
+import { MEMO_BOT } from "./sdk/constants";
+import type { Extrinsic } from "@kodadot1/sub-api";
 
 export interface KeyringPair$Meta {
   [index: string]: any;
@@ -17,11 +19,9 @@ export interface KeyringAccount {
   type: string;
 }
 
-const DOTMEMO_DAO = "5FFG7GHAR2F2xCb5bqaLQrdgNGdtEL64tYgZimRBHDjuxVuA";
-
 export type ExecResult = UnsubscribeFn | string;
-export type Extrinsic = SubmittableExtrinsic<"promise">;
 export type UnsubscribeFn = () => string;
+type ExtrinsicFunction<T> = (...arg: T[]) => Extrinsic;
 export type StatusCb = (result: ISubmittableResult) => void | Promise<void>;
 
 export const execResultValue = (execResult: ExecResult): string => {
@@ -32,11 +32,11 @@ export const execResultValue = (execResult: ExecResult): string => {
   return execResult;
 };
 
-const exec = async (
+const exec = async <T>(
   account: KeyringAccount | string,
   password: string | null,
-  callback: (...params: any[]) => SubmittableExtrinsic<"promise">,
-  params: any[],
+  callback: ExtrinsicFunction<T>,
+  params: T[],
   statusCb: Callback<any>,
 ): Promise<ExecResult> => {
   try {
@@ -96,7 +96,7 @@ export const estimate = async (
   params: any[],
 ): Promise<string> => {
   const transfer = await callback(...params);
-  const address = typeof account === "string" ? (account ?? DOTMEMO_DAO) : account.address;
+  const address = typeof account === "string" ? (account ?? MEMO_BOT) : account.address;
   // if user have not connect wallet, we provide a mock address to estimate fee
   const injector = await getAddress(toDefaultAddress(address));
 
