@@ -87,7 +87,6 @@ import { useAccountStore } from "@/stores/account";
 // import { asUtilityBatch } from "@kodadot1/sub-api";
 import { buildMemo } from "~/utils/sdk/create";
 import useAuth from "~/composables/useAuth";
-import { logger } from "nuxt/kit";
 
 const props = defineProps<{
   name: string;
