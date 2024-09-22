@@ -1,20 +1,21 @@
 import { ApiFactory } from "@kodadot1/sub-api";
 import type { ApiPromise } from "@polkadot/api";
 import { getChainEndpointByPrefix } from "@/utils/chain";
+import usePrefix from "./usePrefix";
 
 export default function () {
-  // const { urlPrefix } = usePrefix()
+  const { prefix } = usePrefix();
   // const config = useRuntimeConfig()
 
   const apiUrl = computed(() => {
-    const endpoint: string = getChainEndpointByPrefix("ahp") || "";
+    const endpoint: string = getChainEndpointByPrefix(prefix.value) || "";
     return endpoint;
   });
 
   const apiInstance = computed<Promise<ApiPromise>>(() => ApiFactory.useApiInstance(apiUrl.value));
 
-  const apiInstanceByPrefix = (prefix: string) => {
-    const endpoint: string = getChainEndpointByPrefix(prefix) || "";
+  const apiInstanceByPrefix = (_prefix: string) => {
+    const endpoint: string = getChainEndpointByPrefix(_prefix) || "";
     return ApiFactory.useApiInstance(endpoint);
   };
 
