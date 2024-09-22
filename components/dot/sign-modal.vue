@@ -66,7 +66,7 @@
 
         <template v-if="showBreakdown">
           <p class="text-sm text-text-color">Free Minting Deposit</p>
-          <p class="text-right text-sm text-text-color">24 x 0.04 DOT</p>
+          <p class="text-right text-sm text-text-color">{{ props.quantity }} x 0.04 DOT</p>
           <p class="text-sm text-text-color">Fees</p>
           <p class="text-right text-sm text-text-color">0.02 DOT</p>
         </template>
@@ -85,8 +85,10 @@
 import { VueFinalModal, useVfm } from "vue-final-modal";
 import { useAccountStore } from "@/stores/account";
 // import { asUtilityBatch } from "@kodadot1/sub-api";
-import { buildMemo } from "~/utils/sdk/create";
+import { buildMemo, createArgsForNftPallet } from "~/utils/sdk/create";
 import useAuth from "~/composables/useAuth";
+import { nextCollectionId } from "~/utils/sdk/query";
+import { MEMO_BOT } from "~/utils/sdk/constants";
 
 const props = defineProps<{
   name: string;
@@ -110,14 +112,34 @@ const showBreakdown = ref(false);
 
 async function sign() {
   if (!accountId.value) {
-    logger.error("No account selected");
+    console.error("No account selected");
     return;
   }
   const api = await apiInstance.value;
 
-  const args = buildMemo(api, accountId.value, props.quantity);
+  const createArgs = createArgsForNftPallet(accountId.value);
+  const nextId = await nextCollectionId(api);
+
+  if (!nextId) {
+    console.error("No next collection id");
+    return;
+  }
+
+  // const args = buildMemo(api, accountId.value, props.quantity);
+
   const cb = api.tx.utility.batchAll;
-  await howAboutToExecute(accountId.value, cb, [args]);
+  const args = [
+    [
+      api.tx.nfts.create(...createArgs),
+      // api.tx.nfts.setCollectionMetadata(
+      //   nextId,
+      //   fromCollection.metadata,
+      // ),
+      api.tx.nfts.setTeam(nextId, MEMO_BOT, accountId.value, accountId.value),
+    ],
+  ];
+  // const cb = api.tx.utility.batchAll;
+  await howAboutToExecute(accountId.value, cb, args);
 }
 
 const vfm = useVfm();
