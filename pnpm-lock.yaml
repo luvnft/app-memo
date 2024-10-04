@@ -11,6 +11,9 @@ importers:
       '@kodadot1/minipfs':
         specifier: 0.4.3-rc.2
         version: 0.4.3-rc.2
+      '@kodadot1/static':
+        specifier: ^0.0.7
+        version: 0.0.7
       '@kodadot1/sub-api':
         specifier: 0.4.0-rc.2
         version: 0.4.0-rc.2(@polkadot/api@13.1.1)(@polkadot/types-codec@13.1.1)
@@ -873,6 +876,9 @@ packages:
 
   '@kodadot1/static@0.0.6':
     resolution: {integrity: sha512-zmse14vpMHZx+ZN5n6ryBnBWjfuxCb3mNeynsNiUma0NGJRlhQWPzy7xwSQu/Mn8tgviNfOikZI1yLyJ7+ZCUQ==}
+
+  '@kodadot1/static@0.0.7':
+    resolution: {integrity: sha512-pb7uaDXGJdwCkvf8pZ/6mUrg7TNpEkWdbiKc2bPcQoJOfq7FZHrAEF+30lQrHB+woOT76kodFEoLioLwDt8cqg==}
 
   '@kodadot1/sub-api@0.4.0-rc.2':
     resolution: {integrity: sha512-kys7ZXg6mpWIz8pc1I74RwM2Cx4kZgwKdSjV9kejSnYk+i6SSv7+/AJ2KFNtkfL6+UdPlrpLqYMrAmOhfeNyiQ==}
@@ -6128,6 +6134,8 @@ snapshots:
   '@kodadot1/static@0.0.5': {}
 
   '@kodadot1/static@0.0.6': {}
+
+  '@kodadot1/static@0.0.7': {}
 
   '@kodadot1/sub-api@0.4.0-rc.2(@polkadot/api@13.1.1)(@polkadot/types-codec@13.1.1)':
     dependencies:
