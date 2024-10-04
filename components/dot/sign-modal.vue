@@ -184,6 +184,8 @@ async function sign() {
 }
 
 watch(status, async (status) => {
+  // eslint-disable-next-line no-console
+  console.log("TransactionStatus", status);
   if (status === TransactionStatus.Finalized) {
     const data = await $fetch("/api/create", {
       method: "POST",
