@@ -50,7 +50,7 @@
 import { useField, useForm } from "vee-validate";
 import { toTypedSchema } from "@vee-validate/zod";
 import { useModal } from "vue-final-modal";
-import SignModal from "~/components/dot/sign-modal.vue";
+import SignModal from "@/components/dot/sign-modal.vue";
 import * as zod from "zod";
 
 const validationSchema = toTypedSchema(
@@ -113,6 +113,7 @@ const onSubmit = handleSubmit(({ description, endDate, image, quantity, startDat
       quantity,
       image,
       secret,
+      description,
     },
   });
 
