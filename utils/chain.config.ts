@@ -1,4 +1,4 @@
-import { CHAINS } from "@kodadot1/static";
+import { CHAINS, NAMES } from "@kodadot1/static";
 
 import type { ChainProperties, ChainVM, Prefix } from "@kodadot1/static";
 
@@ -16,6 +16,14 @@ export const ss58Of = (prefix: Prefix): number => {
 
 export const blockExplorerOf = (prefix: Prefix): string | undefined => {
   return chainPropListOf(prefix).blockExplorer;
+};
+
+export const getChainName = (prefix: Prefix) => {
+  return NAMES[prefix];
+};
+
+export const getTransactionFee = (prefix: Extract<Prefix, "ahp" | "ahk">) => {
+  return prefix === "ahp" ? 0.002 : 0.0002;
 };
 
 type AssetItem = {
