@@ -35,7 +35,7 @@
         <div class="h-20 w-20 rounded-full border-2 border-border-color"></div>
         <div class="flex flex-col gap-2">
           <h1 class="text-xl text-text-color">{{ props.name }}</h1>
-          <p class="text-sm text-text-color opacity-70">Network: PolkadotHub</p>
+          <p class="text-sm text-text-color opacity-70">Network: {{ chainName }}</p>
         </div>
       </div>
 
@@ -56,7 +56,7 @@
         <p class="text-sm text-text-color">Total Deposit + Fees</p>
         <p class="text-right text-sm text-text-color">
           <span class="text-xs text-text-color opacity-60">$0.980</span>
-          <span class="ml-2 font-bold text-text-color">1 DOT</span>
+          <span class="ml-2 font-bold text-text-color">{{ totalDeposit }} {{ properties.symbol }}</span>
         </p>
 
         <button class="col-span-2 flex items-center gap-2" @click="showBreakdown = !showBreakdown">
@@ -65,10 +65,14 @@
         </button>
 
         <template v-if="showBreakdown">
+          <p class="text-sm text-text-color">Collection Deposit</p>
+          <p class="text-right text-sm text-text-color">{{ depositForCollection }} {{ properties.symbol }}</p>
           <p class="text-sm text-text-color">Free Minting Deposit</p>
-          <p class="text-right text-sm text-text-color">{{ props.quantity }} x 0.04 DOT</p>
+          <p class="text-right text-sm text-text-color">
+            {{ props.quantity }} x {{ depositPerItem }} {{ properties.symbol }}
+          </p>
           <p class="text-sm text-text-color">Fees</p>
-          <p class="text-right text-sm text-text-color">0.02 DOT</p>
+          <p class="text-right text-sm text-text-color">0.02 {{ properties.symbol }}</p>
         </template>
       </div>
 
@@ -84,11 +88,12 @@
 <script lang="ts" setup>
 import { VueFinalModal, useVfm } from "vue-final-modal";
 import { useAccountStore } from "@/stores/account";
-// import { asUtilityBatch } from "@kodadot1/sub-api";
 import { createArgsForNftPallet } from "@/utils/sdk/create";
 import useAuth from "~/composables/useAuth";
 import { nextCollectionId } from "~/utils/sdk/query";
-import { MEMO_BOT } from "~/utils/sdk/constants";
+import { collectionDeposit, itemDeposit, MEMO_BOT, metadataDeposit } from "~/utils/sdk/constants";
+import { onApiConnect } from "@kodadot1/sub-api";
+import { getChainName } from "~/utils/chain.config";
 
 const props = defineProps<{
   name: string;
@@ -102,11 +107,25 @@ const props = defineProps<{
 const { apiInstance } = useApi();
 const { howAboutToExecute, status, isError: _isError, isLoading } = useMetaTransaction();
 const { accountId, isLogIn } = useAuth();
+const { prefix } = usePrefix();
+
+const properties = chainAssetOf(prefix.value);
+const chainName = getChainName(prefix.value);
+const depositPerItem = ref(0);
+const depositForCollection = ref(0);
+const totalDeposit = computed(() => depositPerItem.value * props.quantity + depositForCollection.value);
 
 const accountStore = useAccountStore();
 const currentAccount = computed(() => accountStore.selected);
 
-// const canSign = computed(() => accountStore.hasSelectedAccount);
+onApiConnect(prefix.value, async (api) => {
+  const collectionFee = collectionDeposit(api);
+  const itemFee = itemDeposit(api);
+  const metadataFee = metadataDeposit(api);
+  const decimals = Number(`1e${properties.decimals}`);
+  depositForCollection.value = (collectionFee + metadataFee) / decimals;
+  depositPerItem.value = itemFee / decimals;
+});
 
 const showBreakdown = ref(false);
 
