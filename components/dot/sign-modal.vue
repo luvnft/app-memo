@@ -94,6 +94,7 @@ import { nextCollectionId } from "~/utils/sdk/query";
 import { collectionDeposit, itemDeposit, MEMO_BOT, metadataDeposit } from "~/utils/sdk/constants";
 import { onApiConnect } from "@kodadot1/sub-api";
 import { getChainName } from "~/utils/chain.config";
+import { pinFileToIPFS, pinJson, type Metadata } from "~/services/nftStorage";
 
 const props = defineProps<{
   name: string;
@@ -102,6 +103,7 @@ const props = defineProps<{
   endDate: Date;
   quantity: number;
   secret: string;
+  description?: string;
 }>();
 
 const { apiInstance } = useApi();
@@ -113,6 +115,8 @@ const properties = chainAssetOf(prefix.value);
 const chainName = getChainName(prefix.value);
 const depositPerItem = ref(0);
 const depositForCollection = ref(0);
+const futureCollection = ref(0);
+const toMint = ref("");
 const totalDeposit = computed(() => depositPerItem.value * props.quantity + depositForCollection.value);
 
 const accountStore = useAccountStore();
@@ -129,11 +133,32 @@ onApiConnect(prefix.value, async (api) => {
 
 const showBreakdown = ref(false);
 
+async function pinAll() {
+  const imageHash = await pinFileToIPFS(props.image);
+  const metadata: Metadata = {
+    name: props.name,
+    image: `ipfs://${imageHash}`,
+    banner: `ipfs://${imageHash}`,
+    kind: "poap",
+    description: props.description || "",
+    external_url: "",
+    type: props.image.type,
+  };
+  const metadataHash = await pinJson(metadata);
+  return `ipfs://${metadataHash}`;
+}
+
 async function sign() {
   if (!accountId.value) {
     console.error("No account selected");
     return;
   }
+
+  if (!toMint.value) {
+    const metadataHash = await pinAll();
+    toMint.value = metadataHash;
+  }
+
   const api = await apiInstance.value;
 
   const createArgs = createArgsForNftPallet(accountId.value, props.quantity);
@@ -144,27 +169,34 @@ async function sign() {
     return;
   }
 
-  // const args = buildMemo(api, accountId.value, props.quantity);
+  futureCollection.value = nextId;
 
   const cb = api.tx.utility.batchAll;
   const args = [
     [
       api.tx.nfts.create(...createArgs),
-      // api.tx.nfts.setCollectionMetadata(
-      //   nextId,
-      //   fromCollection.metadata,
-      // ),
+      api.tx.nfts.setCollectionMetadata(nextId, toMint.value),
       api.tx.nfts.setTeam(nextId, MEMO_BOT, accountId.value, accountId.value),
     ],
   ];
-  // const cb = api.tx.utility.batchAll;
+
   await howAboutToExecute(accountId.value, cb, args);
 }
 
-watch(status, (status) => {
+watch(status, async (status) => {
   if (status === TransactionStatus.Finalized) {
-    // call API
-    // closeModal();
+    const data = await $fetch("/api/create", {
+      method: "POST",
+      body: {
+        secret: props.secret,
+        chain: prefix.value,
+        collectionId: futureCollection.value,
+        mint: toMint.value,
+      },
+    });
+    // eslint-disable-next-line no-console
+    console.log(data);
+    closeModal();
   }
 });
 
