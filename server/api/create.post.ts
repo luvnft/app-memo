@@ -11,7 +11,7 @@ export default defineEventHandler(async (event) => {
     body: {
       id: secret,
       chain,
-      collection,
+      collection: String(collection),
       table_ref: `poaps_${secret.toLowerCase()}`,
       mint,
     },
