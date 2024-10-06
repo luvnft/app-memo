@@ -13,7 +13,7 @@ export default defineNuxtConfig({
     "@nuxtjs/tailwindcss",
     "@pinia/nuxt",
     "@nuxt/eslint",
-    "nuxt-icon",
+    "@nuxt/icon",
     "@nuxt/image",
     "@nuxtjs/google-fonts",
     "@nuxtjs/color-mode",

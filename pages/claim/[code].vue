@@ -59,9 +59,21 @@
           }"
         >
           <div
-            class="rounded-full bg-k-primary transition-all duration-[60000ms] ease-linear"
+            class="flex items-center justify-end rounded-full bg-k-primary transition-all duration-[60000ms] ease-linear"
             :style="`width: ${isClaiming ? '100%' : '0%'};`"
-          ></div>
+          >
+            <Icon name="mdi:chevron-right" class="animate-pulse text-white animate-duration-[1200ms]" size="28" />
+            <Icon
+              name="mdi:chevron-right"
+              class="animate-pulse text-white animate-delay-[400ms] animate-duration-[1200ms]"
+              size="28"
+            />
+            <Icon
+              name="mdi:chevron-right"
+              class="animate-pulse text-white animate-delay-[800ms] animate-duration-[1200ms]"
+              size="28"
+            />
+          </div>
         </div>
       </template>
 
@@ -95,6 +107,9 @@ const { data, status, error } = await useFetch("/api/code", {
 const claimFailed = ref(false);
 const claimed = ref<null | string>(null);
 const isClaiming = ref(false);
+onMounted(() => {
+  isClaiming.value = true;
+});
 
 const onSubmit = () => claim();
 
