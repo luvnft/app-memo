@@ -10,7 +10,7 @@
       <dot-label text="POAP description">
         <dot-text-area
           v-model="description"
-          :limit="150"
+          :limit="500"
           placeholder="Describe your POAP. These description will be displayed for all POAP users."
           :error="descriptionError"
         />
