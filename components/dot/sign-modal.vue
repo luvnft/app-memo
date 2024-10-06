@@ -187,18 +187,23 @@ watch(status, async (status) => {
   // eslint-disable-next-line no-console
   console.log("TransactionStatus", status);
   if (status === TransactionStatus.Finalized) {
-    const data = await $fetch("/api/create", {
-      method: "POST",
-      body: {
-        secret: props.secret,
-        chain: prefix.value,
-        collectionId: futureCollection.value,
-        mint: toMint.value,
-      },
-    });
-    // eslint-disable-next-line no-console
-    console.log(data);
-    closeModal();
+    try {
+      const data = await $fetch("/api/create", {
+        method: "POST",
+        body: {
+          secret: props.secret,
+          chain: prefix.value,
+          collectionId: futureCollection.value,
+          mint: toMint.value,
+        },
+      });
+      // eslint-disable-next-line no-console
+      console.log(data);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      closeModal();
+    }
   }
 });
 
