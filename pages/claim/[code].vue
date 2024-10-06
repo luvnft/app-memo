@@ -47,32 +47,34 @@
 
         <dot-label v-if="claimFailed" :error="true" text="You already claimed this POAP" />
 
-        <dot-button :disabled="!canClaim || isClaiming" variant="primary" size="medium" @click="claim">
-          Claim
-        </dot-button>
+        <div class="relative w-full overflow-hidden rounded-full">
+          <dot-button :disabled="!canClaim || isClaiming" variant="primary" size="medium" class="w-full" @click="claim">
+            {{ claimButtonLabel }}
+          </dot-button>
 
-        <div
-          class="flex h-10 rounded-full bg-stone-600/15 p-1"
-          :class="{
-            'opacity-100': isClaiming,
-            'opacity-0': !isClaiming,
-          }"
-        >
           <div
-            class="flex items-center justify-end rounded-full bg-k-primary transition-all duration-[60000ms] ease-linear"
-            :style="`width: ${isClaiming ? '100%' : '0%'};`"
+            class="pointer-events-none absolute inset-0 top-0 flex rounded-full p-1 transition-all duration-700"
+            :class="{
+              'opacity-100': isClaiming,
+              'opacity-0': !isClaiming,
+            }"
           >
-            <Icon name="mdi:chevron-right" class="animate-pulse text-white animate-duration-[1200ms]" size="28" />
-            <Icon
-              name="mdi:chevron-right"
-              class="animate-pulse text-white animate-delay-[400ms] animate-duration-[1200ms]"
-              size="28"
-            />
-            <Icon
-              name="mdi:chevron-right"
-              class="animate-pulse text-white animate-delay-[800ms] animate-duration-[1200ms]"
-              size="28"
-            />
+            <div
+              class="flex items-center justify-end rounded-full bg-k-primary transition-all duration-[60000ms] ease-linear"
+              :style="`width: ${isClaiming ? '100%' : '17%'};`"
+            >
+              <Icon name="mdi:chevron-right" class="animate-pulse text-white animate-duration-[1200ms]" size="28" />
+              <Icon
+                name="mdi:chevron-right"
+                class="animate-pulse text-white animate-delay-[400ms] animate-duration-[1200ms]"
+                size="28"
+              />
+              <Icon
+                name="mdi:chevron-right"
+                class="animate-pulse text-white animate-delay-[800ms] animate-duration-[1200ms]"
+                size="28"
+              />
+            </div>
           </div>
         </div>
       </template>
@@ -110,6 +112,8 @@ const isClaiming = ref(false);
 onMounted(() => {
   isClaiming.value = true;
 });
+
+const claimButtonLabel = computed(() => (isClaiming.value ? "Claiming ..." : "Claim"));
 
 const onSubmit = () => claim();
 
