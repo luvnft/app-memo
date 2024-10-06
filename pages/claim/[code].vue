@@ -117,10 +117,10 @@ const claim = async () => {
     setTimeout(() => {
       const url = `https://kodadot.xyz/${data.chain}/gallery/${data.collection}-${data.sn}`;
       claimed.value = url;
+      isClaiming.value = false;
     }, 60_000);
   } catch (error) {
     claimFailed.value = true;
-  } finally {
     isClaiming.value = false;
   }
 };
