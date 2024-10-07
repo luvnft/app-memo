@@ -56,7 +56,9 @@
         <p class="text-sm text-text-color">Total Deposit + Fees</p>
         <p class="text-right text-sm text-text-color">
           <span class="text-xs text-text-color opacity-60">$0.980</span>
-          <span class="ml-2 font-bold text-text-color">{{ totalDeposit }} {{ properties.symbol }}</span>
+          <span class="ml-2 font-bold text-text-color">
+            {{ Math.round(totalDeposit * 10000) / 10000 }} {{ properties.symbol }}
+          </span>
         </p>
 
         <button class="col-span-2 flex items-center gap-2" @click="showBreakdown = !showBreakdown">
