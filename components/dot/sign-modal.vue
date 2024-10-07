@@ -32,7 +32,9 @@
 
     <template v-if="!isLoading">
       <div class="flex items-center gap-5">
-        <div class="h-20 w-20 rounded-full border-2 border-border-color"></div>
+        <div class="flex h-20 w-20 overflow-hidden rounded-full border-2 border-border-color">
+          <img :src="imagePreview" class="m-1 flex-1 rounded-full object-cover" />
+        </div>
         <div class="flex flex-col gap-2">
           <h1 class="text-xl text-text-color">{{ props.name }}</h1>
           <p class="text-sm text-text-color opacity-70">Network: {{ chainName }}</p>
@@ -241,6 +243,14 @@ watch(status, async (status) => {
       closeModal();
     }
   }
+});
+
+const imagePreview = ref("");
+
+onMounted(() => {
+  const reader = new FileReader();
+  reader.onload = (e) => (imagePreview.value = e.target?.result as string);
+  reader.readAsDataURL(props.image);
 });
 
 const vfm = useVfm();
