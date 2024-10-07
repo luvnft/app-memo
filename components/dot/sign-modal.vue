@@ -82,7 +82,43 @@
     </template>
 
     <template v-else>
-      <p class="text-text-color">Signing ...</p>
+      <div class="flex h-64 flex-row items-center justify-center gap-4 rounded-2xl bg-stone-600/15">
+        <svg
+          class="animate-spin"
+          width="75"
+          height="75"
+          viewBox="-17.375 -17.375 173.75 173.75"
+          version="1.1"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <circle
+            class="stroke-stone-700/20"
+            r="59.5"
+            cx="69.5"
+            cy="69.5"
+            fill="transparent"
+            stroke-width="11"
+            stroke-dasharray="373.66px"
+            stroke-dashoffset="0"
+          ></circle>
+          <circle
+            class="stroke-text-color"
+            r="59.5"
+            cx="69.5"
+            cy="69.5"
+            stroke-width="16"
+            stroke-linecap="round"
+            stroke-dashoffset="280px"
+            fill="transparent"
+            stroke-dasharray="373.66px"
+          ></circle>
+        </svg>
+
+        <div>
+          <p class="text-2xl font-bold text-text-color">Setting up POAP</p>
+          <p class="text-text-color opacity-70">Transaction in progress</p>
+        </div>
+      </div>
     </template>
   </VueFinalModal>
 </template>
