@@ -15,11 +15,18 @@
           :variant="selectedAccount?.address === account.address ? 'primary' : 'tertiary'"
           @click="selectedAccount = account"
         >
-          <div class="flex flex-1 flex-col items-start gap-1 px-4 py-1">
-            <h2 class="font-bold">{{ account.meta.name }}</h2>
-            <p class="text-xs">
-              {{ addressShortener(account.address, 10, -10) }}
-            </p>
+          <div class="flex w-full items-center">
+            <div class="rounded-full border-2 border-white">
+              <!-- @vue-ignore -->
+              <Identicon :size="52" theme="polkadot" :value="account.address" />
+            </div>
+
+            <div class="flex flex-1 flex-col items-start gap-1 px-4 py-3">
+              <h2 class="font-bold">{{ account.meta.name }}</h2>
+              <p class="text-xs">
+                {{ addressShortener(account.address, 7, -7) }}
+              </p>
+            </div>
           </div>
         </dot-button>
       </div>
@@ -37,6 +44,7 @@ import { web3Accounts } from "@polkadot/extension-dapp";
 import { useAccountStore } from "~/stores/account";
 import type { Account } from "~/types/web3";
 import { getInjectedExtensions } from "~/utils/extension";
+import Identicon from "@polkadot/vue-identicon";
 
 const emit = defineEmits<{
   (e: "confirm"): void;
