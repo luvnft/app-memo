@@ -30,12 +30,12 @@
 
     <hr class="my-3" />
 
-    <template v-if="!isSigning">
+    <template v-if="!isLoading">
       <div class="flex items-center gap-5">
         <div class="h-20 w-20 rounded-full border-2 border-border-color"></div>
         <div class="flex flex-col gap-2">
           <h1 class="text-xl text-text-color">{{ props.name }}</h1>
-          <p class="text-sm text-text-color opacity-70">Network: PolkadotHub</p>
+          <p class="text-sm text-text-color opacity-70">Network: {{ chainName }}</p>
         </div>
       </div>
 
@@ -56,7 +56,7 @@
         <p class="text-sm text-text-color">Total Deposit + Fees</p>
         <p class="text-right text-sm text-text-color">
           <span class="text-xs text-text-color opacity-60">$0.980</span>
-          <span class="ml-2 font-bold text-text-color">1 DOT</span>
+          <span class="ml-2 font-bold text-text-color">{{ totalDeposit }} {{ properties.symbol }}</span>
         </p>
 
         <button class="col-span-2 flex items-center gap-2" @click="showBreakdown = !showBreakdown">
@@ -65,14 +65,18 @@
         </button>
 
         <template v-if="showBreakdown">
+          <p class="text-sm text-text-color">Collection Deposit</p>
+          <p class="text-right text-sm text-text-color">{{ depositForCollection }} {{ properties.symbol }}</p>
           <p class="text-sm text-text-color">Free Minting Deposit</p>
-          <p class="text-right text-sm text-text-color">24 x 0.04 DOT</p>
+          <p class="text-right text-sm text-text-color">
+            {{ props.quantity }} x {{ depositPerItem }} {{ properties.symbol }}
+          </p>
           <p class="text-sm text-text-color">Fees</p>
-          <p class="text-right text-sm text-text-color">0.02 DOT</p>
+          <p class="text-right text-sm text-text-color">0.02 {{ properties.symbol }}</p>
         </template>
       </div>
 
-      <dot-button :disabled="!canSign" variant="primary" size="large" @click="sign()"> Proceed to signing </dot-button>
+      <dot-button :disabled="!isLogIn" variant="primary" size="large" @click="sign()"> Proceed to signing </dot-button>
     </template>
 
     <template v-else>
@@ -83,7 +87,14 @@
 
 <script lang="ts" setup>
 import { VueFinalModal, useVfm } from "vue-final-modal";
-import { useAccountStore } from "~/stores/account";
+import { useAccountStore } from "@/stores/account";
+import { createArgsForNftPallet } from "@/utils/sdk/create";
+import useAuth from "~/composables/useAuth";
+import { nextCollectionId } from "~/utils/sdk/query";
+import { collectionDeposit, itemDeposit, MEMO_BOT, metadataDeposit } from "~/utils/sdk/constants";
+import { onApiConnect } from "@kodadot1/sub-api";
+import { getChainName } from "~/utils/chain.config";
+import { pinFileToIPFS, pinJson, type Metadata } from "~/services/nftStorage";
 
 const props = defineProps<{
   name: string;
@@ -92,24 +103,109 @@ const props = defineProps<{
   endDate: Date;
   quantity: number;
   secret: string;
+  description?: string;
 }>();
+
+const { apiInstance } = useApi();
+const { howAboutToExecute, status, isError: _isError, isLoading } = useMetaTransaction();
+const { accountId, isLogIn } = useAuth();
+const { prefix } = usePrefix();
+
+const properties = chainAssetOf(prefix.value);
+const chainName = getChainName(prefix.value);
+const depositPerItem = ref(0);
+const depositForCollection = ref(0);
+const futureCollection = ref(0);
+const toMint = ref("");
+const totalDeposit = computed(() => depositPerItem.value * props.quantity + depositForCollection.value);
 
 const accountStore = useAccountStore();
 const currentAccount = computed(() => accountStore.selected);
 
-const canSign = computed(() => accountStore.hasSelectedAccount);
-const isSigning = ref(false);
+onApiConnect(prefix.value, async (api) => {
+  const collectionFee = collectionDeposit(api);
+  const itemFee = itemDeposit(api);
+  const metadataFee = metadataDeposit(api);
+  const decimals = Number(`1e${properties.decimals}`);
+  depositForCollection.value = (collectionFee + metadataFee) / decimals;
+  depositPerItem.value = itemFee / decimals;
+});
 
 const showBreakdown = ref(false);
 
-function sign() {
-  // TODO API call or smth
-  isSigning.value = true;
-
-  setTimeout(() => {
-    isSigning.value = false;
-  }, 1000);
+async function pinAll() {
+  const imageHash = await pinFileToIPFS(props.image);
+  const metadata: Metadata = {
+    name: props.name,
+    image: `ipfs://${imageHash}`,
+    banner: `ipfs://${imageHash}`,
+    kind: "poap",
+    description: props.description || "",
+    external_url: "",
+    type: props.image.type,
+  };
+  const metadataHash = await pinJson(metadata);
+  return `ipfs://${metadataHash}`;
 }
+
+async function sign() {
+  if (!accountId.value) {
+    console.error("No account selected");
+    return;
+  }
+
+  if (!toMint.value) {
+    const metadataHash = await pinAll();
+    toMint.value = metadataHash;
+  }
+
+  const api = await apiInstance.value;
+
+  const createArgs = createArgsForNftPallet(accountId.value, props.quantity);
+  const nextId = await nextCollectionId(api);
+
+  if (!nextId) {
+    console.error("No next collection id");
+    return;
+  }
+
+  futureCollection.value = nextId;
+
+  const cb = api.tx.utility.batchAll;
+  const args = [
+    [
+      api.tx.nfts.create(...createArgs),
+      api.tx.nfts.setCollectionMetadata(nextId, toMint.value),
+      api.tx.nfts.setTeam(nextId, MEMO_BOT, accountId.value, accountId.value),
+    ],
+  ];
+
+  await howAboutToExecute(accountId.value, cb, args);
+}
+
+watch(status, async (status) => {
+  // eslint-disable-next-line no-console
+  console.log("TransactionStatus", status);
+  if (status === TransactionStatus.Finalized) {
+    try {
+      const data = await $fetch("/api/create", {
+        method: "POST",
+        body: {
+          secret: props.secret,
+          chain: prefix.value,
+          collectionId: futureCollection.value,
+          mint: toMint.value,
+        },
+      });
+      // eslint-disable-next-line no-console
+      console.log(data);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      closeModal();
+    }
+  }
+});
 
 const vfm = useVfm();
 const closeModal = () => vfm.close("sign-modal");

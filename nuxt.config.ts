@@ -24,6 +24,7 @@ export default defineNuxtConfig({
     apiUrl: "",
     public: {
       appUrl: "",
+      chain: process.env.NUXT_CHAIN_PREFIX || "ahp", // 'ahp' for asset hub polkadot
     },
   },
 
@@ -31,6 +32,9 @@ export default defineNuxtConfig({
     families: {
       Unbounded: true,
     },
+  },
+  routeRules: {
+    "/create": { ssr: false },
   },
 
   compatibilityDate: "2024-09-20",

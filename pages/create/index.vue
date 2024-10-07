@@ -10,7 +10,7 @@
       <dot-label text="POAP description">
         <dot-text-area
           v-model="description"
-          :limit="150"
+          :limit="500"
           placeholder="Describe your POAP. These description will be displayed for all POAP users."
           :error="descriptionError"
         />
@@ -50,7 +50,7 @@
 import { useField, useForm } from "vee-validate";
 import { toTypedSchema } from "@vee-validate/zod";
 import { useModal } from "vue-final-modal";
-import SignModal from "~/components/dot/sign-modal.vue";
+import SignModal from "@/components/dot/sign-modal.vue";
 import * as zod from "zod";
 
 const validationSchema = toTypedSchema(
@@ -113,6 +113,7 @@ const onSubmit = handleSubmit(({ description, endDate, image, quantity, startDat
       quantity,
       image,
       secret,
+      description,
     },
   });
 
@@ -135,6 +136,7 @@ const isSubmittable = computed(
     name.value &&
     startDate.value &&
     endDate.value &&
+    secret.value &&
     quantity.value &&
     !localStartDateError.value &&
     !localEndDateError.value &&
