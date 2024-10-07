@@ -19,7 +19,8 @@
       <p class="mt-2 text-text-color opacity-70">Connected as</p>
 
       <div class="flex items-center gap-3">
-        <div class="h-7 w-7 rounded-full border-2 border-border-color"></div>
+        <!-- @vue-ignore -->
+        <Identicon :size="28" theme="polkadot" :value="currentAccount?.address" />
         <p class="text-text-color">{{ currentAccount?.meta.name }}</p>
       </div>
     </template>
@@ -32,7 +33,9 @@
 
     <template v-if="!isLoading">
       <div class="flex items-center gap-5">
-        <div class="h-20 w-20 rounded-full border-2 border-border-color"></div>
+        <div class="flex h-20 w-20 overflow-hidden rounded-full border-2 border-border-color">
+          <img :src="imagePreview" class="m-1 flex-1 rounded-full object-cover" />
+        </div>
         <div class="flex flex-col gap-2">
           <h1 class="text-xl text-text-color">{{ props.name }}</h1>
           <p class="text-sm text-text-color opacity-70">Network: {{ chainName }}</p>
@@ -55,6 +58,7 @@
       <div class="grid grid-cols-2 gap-3">
         <p class="text-sm text-text-color">Total Deposit + Fees</p>
         <p class="text-right text-sm text-text-color">
+          <!-- TODO -->
           <span class="text-xs text-text-color opacity-60">$0.980</span>
           <span class="ml-2 font-bold text-text-color">
             {{ Math.round(totalDeposit * 10000) / 10000 }} {{ properties.symbol }}
@@ -133,6 +137,7 @@ import { collectionDeposit, itemDeposit, MEMO_BOT, metadataDeposit } from "~/uti
 import { onApiConnect } from "@kodadot1/sub-api";
 import { getChainName } from "~/utils/chain.config";
 import { pinFileToIPFS, pinJson, type Metadata } from "~/services/nftStorage";
+import Identicon from "@polkadot/vue-identicon";
 
 const props = defineProps<{
   name: string;
@@ -243,6 +248,14 @@ watch(status, async (status) => {
       closeModal();
     }
   }
+});
+
+const imagePreview = ref("");
+
+onMounted(() => {
+  const reader = new FileReader();
+  reader.onload = (e) => (imagePreview.value = e.target?.result as string);
+  reader.readAsDataURL(props.image);
 });
 
 const vfm = useVfm();
