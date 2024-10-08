@@ -109,9 +109,6 @@ const { data, status, error } = await useFetch("/api/code", {
 const claimFailed = ref(false);
 const claimed = ref<null | string>(null);
 const isClaiming = ref(false);
-onMounted(() => {
-  isClaiming.value = true;
-});
 
 const claimButtonLabel = computed(() => (isClaiming.value ? "Claiming ..." : "Claim"));
 
