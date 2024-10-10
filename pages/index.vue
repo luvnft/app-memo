@@ -74,10 +74,16 @@
       <p class="text-4xl !text-black md:text-6xl">Featured</p>
 
       <div class="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-        <div v-for="_ in 4" :key="_" class="flex flex-col items-center gap-2">
-          <div class="aspect-square w-full rounded-xl bg-stone-300"></div>
-          <p class="text-xl font-bold text-black">name of poap</p>
-          <a href="#">View collection</a>
+        <div v-for="collection in collections" :key="collection.id" class="flex flex-col items-center gap-2">
+          <div class="aspect-square w-full rounded-xl bg-stone-300">
+            <img
+              :src="$purifyOne(collection.image, 'kodadot')"
+              alt="collection image"
+              class="rounded-xl object-cover"
+            />
+          </div>
+          <p class="text-xl font-bold text-black">{{ collection.name }}</p>
+          <a :href="kodaUrl(collection.id)">View on KodaDot</a>
         </div>
       </div>
     </section>
@@ -87,9 +93,28 @@
 <script lang="ts" setup>
 import polkadotLogo from "@/assets/images/Polkadot.png";
 import landingBackground from "@/assets/images/landing-background.png";
+import { getClient } from "@kodadot1/uniquery";
+import { $purifyOne } from "@kodadot1/minipfs";
 definePageMeta({
   layout: "landing",
 });
 
 const router = useRouter();
+
+const { prefix } = usePrefix();
+const collections = ref([]);
+
+const client = getClient(prefix.value);
+const ids = computed(() => (prefix.value === "ahp" ? ["1", "13", "163", "171"] : ["67", "167", "287", "477"]));
+const query = client.collectionByIdIn(ids.value);
+const result = await client.fetch(query);
+
+collections.value = result.data.collections;
+
+const kodaUrl = (id: string) => `https://kodadot.xyz/${prefix.value}/collection/${id}`;
+
+watchEffect(() => {
+  // eslint-disable-next-line no-console
+  console.log(collections.value);
+});
 </script>
