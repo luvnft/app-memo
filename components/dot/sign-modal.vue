@@ -119,7 +119,7 @@
         </svg>
 
         <div>
-          <p class="text-2xl font-bold text-text-color">Setting up POAP</p>
+          <p class="text-2xl font-bold text-text-color">Setting up MEMO</p>
           <p class="text-text-color opacity-70">Transaction in progress</p>
         </div>
       </div>
