@@ -4,14 +4,14 @@
 
     <div class="flex flex-col gap-4">
       <dot-image-input v-model="image" :error="imageError" />
-      <dot-label text="POAP name">
+      <dot-label text="MEMO name">
         <dot-text-input v-model="name" :limit="150" type="text" placeholder="XYZ Event Collection" :error="nameError" />
       </dot-label>
-      <dot-label text="POAP description">
+      <dot-label text="MEMO description">
         <dot-text-area
           v-model="description"
           :limit="500"
-          placeholder="Describe your POAP. These description will be displayed for all POAP users."
+          placeholder="Describe your MEMO. These description will be displayed for all MEMO users."
           :error="descriptionError"
         />
       </dot-label>
@@ -38,7 +38,7 @@
           <dot-button class="flex-1" size="small" variant="tertiary" @click="quantity += 100"> +100 </dot-button>
         </div>
       </dot-label>
-      <dot-label text="POAP Secret">
+      <dot-label text="MEMO Secret">
         <dot-text-input v-model="secret" placeholder="event2024" :error="secretError" />
       </dot-label>
     </div>
