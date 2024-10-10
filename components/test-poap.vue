@@ -1,8 +1,8 @@
 <template>
   <div class="flex h-screen w-full flex-col items-center gap-4 p-4">
-    <h4 class="text-2xl text-primary">Welcome to .POAP test component</h4>
+    <h4 class="text-primary text-2xl">Welcome to .MEMO test component</h4>
     <p>App url: {{ $config.public.appUrl }}</p>
-    <h4 class="text-2xl text-primary">API Test:</h4>
+    <h4 class="text-primary text-2xl">API Test:</h4>
     <h2 v-if="pending">Loading...</h2>
     <h2 v-else>Status: {{ data }}</h2>
     <icon name="mdi:reload" class="cursor-pointer" size="24" @click="refresh" />
