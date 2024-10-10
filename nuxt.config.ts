@@ -2,7 +2,7 @@
 export default defineNuxtConfig({
   app: {
     head: {
-      title: ".POAP",
+      title: ".MEMO",
     },
   },
 
