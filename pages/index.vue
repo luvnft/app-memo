@@ -74,17 +74,27 @@
       <p class="text-4xl !text-black md:text-6xl">Featured</p>
 
       <div class="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-        <div v-for="collection in collections" :key="collection.id" class="flex flex-col items-center gap-2">
-          <div class="aspect-square w-full rounded-xl bg-stone-300">
+        <a
+          v-for="collection in collections"
+          :key="collection.id"
+          class="flex flex-col items-center gap-2"
+          :href="kodaUrl(collection.id)"
+          target="_blank"
+        >
+          <div class="relative aspect-square w-full overflow-hidden rounded-xl bg-stone-300">
             <img
               :src="$purifyOne(collection.image, 'kodadot')"
               alt="collection image"
-              class="rounded-xl object-cover"
+              class="h-full w-full rounded-xl object-cover"
             />
+
+            <div class="absolute inset-x-0 bottom-0 z-20 h-96 bg-gradient-to-t from-black/70 to-transparent"></div>
+
+            <div class="absolute inset-x-0 bottom-0 z-30 overflow-hidden p-7">
+              <p class="line-clamp-2 text-xl font-bold !text-white">{{ collection.name }}</p>
+            </div>
           </div>
-          <p class="text-xl font-bold text-black">{{ collection.name }}</p>
-          <a :href="kodaUrl(collection.id)">View on KodaDot</a>
-        </div>
+        </a>
       </div>
     </section>
   </main>
@@ -99,17 +109,30 @@ definePageMeta({
   layout: "landing",
 });
 
+type Collection = {
+  id: string;
+  createdAt: string;
+  name: string;
+  image: string;
+  metadata: string;
+  currentOwner: string;
+  issuer: string;
+};
+
 const router = useRouter();
 
 const { prefix } = usePrefix();
-const collections = ref([]);
+const collections = ref<Collection[]>([]);
 
 const client = getClient(prefix.value);
 const ids = computed(() => (prefix.value === "ahp" ? ["1", "13", "163", "171"] : ["67", "167", "287", "477"]));
 const query = client.collectionByIdIn(ids.value);
-const result = await client.fetch(query);
+const result = await client.fetch<{ kokot: true }>(query).catch((e) => {
+  console.error("Error while fetching collections", e);
+  return {};
+});
 
-collections.value = result.data.collections;
+collections.value = result?.data?.collections ?? [];
 
 const kodaUrl = (id: string) => `https://kodadot.xyz/${prefix.value}/collection/${id}`;
 </script>
