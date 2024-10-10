@@ -10,7 +10,7 @@
     <h3 v-if="status === 'success'">{{ data.name }}</h3>
 
     <div class="flex flex-col space-y-1 self-stretch">
-      <dot-label text="Enter POAP Code" class="flex-1">
+      <dot-label text="Enter MEMO Code" class="flex-1">
         <form class="flex space-x-4" @submit.prevent="onSubmit()">
           <dot-text-input v-model="code" :error="errorMessage" placeholder="CODE · SVv43nF...9a33jA" />
           <div>
@@ -58,7 +58,7 @@ const continueClaim = async () => {
 
 const onSubmit = () => continueClaim();
 
-const errorMessage = computed(() => (error.value ? "Couldn't load POAP" : undefined));
+const errorMessage = computed(() => (error.value ? "Couldn't load MEMO" : undefined));
 
 const { open } = useModal({
   component: QRScannerModal,
