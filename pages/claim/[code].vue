@@ -1,6 +1,6 @@
 <template>
   <div class="mx-auto flex max-w-xl flex-col items-center space-y-10 p-4">
-    <h1 class="mt-10 text-center text-4xl font-bold md:mt-20">Claim POAP</h1>
+    <h1 class="mt-10 text-center text-4xl font-bold md:mt-20">Claim MEMO</h1>
 
     <div class="flex aspect-square w-2/5 rounded-full border border-black bg-zinc-400 shadow-[4px_4px] shadow-k-shade2">
       <div v-if="status !== 'success'" class="m-4 flex-1 rounded-full bg-zinc-300" />
@@ -8,7 +8,7 @@
     </div>
 
     <h3 v-if="status === 'success'">{{ data.name }}</h3>
-    <h3 v-if="error" class="text-k-red">Couldn't load POAP</h3>
+    <h3 v-if="error" class="text-k-red">Couldn't load MEMO</h3>
 
     <div class="flex flex-col space-y-3 self-stretch">
       <template v-if="!claimed">
@@ -45,7 +45,7 @@
           </dot-label>
         </client-only>
 
-        <dot-label v-if="claimFailed" :error="true" text="You already claimed this POAP" />
+        <dot-label v-if="claimFailed" :error="true" text="You already claimed this MEMO" />
 
         <div class="relative w-full overflow-hidden rounded-full">
           <dot-button :disabled="!canClaim || isClaiming" variant="primary" size="medium" class="w-full" @click="claim">
@@ -80,9 +80,9 @@
       </template>
 
       <template v-else>
-        <dot-label text="POAP claimed successfully 🥳">
+        <dot-label text="MEMO claimed successfully 🥳">
           <a :href="claimed" class="block w-full">
-            <dot-button class="w-full" variant="primary" size="large">Check your POAP at KodaDot</dot-button>
+            <dot-button class="w-full" variant="primary" size="large">Check your MEMO at KodaDot</dot-button>
           </a>
         </dot-label>
       </template>
