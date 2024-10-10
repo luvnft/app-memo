@@ -112,9 +112,4 @@ const result = await client.fetch(query);
 collections.value = result.data.collections;
 
 const kodaUrl = (id: string) => `https://kodadot.xyz/${prefix.value}/collection/${id}`;
-
-watchEffect(() => {
-  // eslint-disable-next-line no-console
-  console.log(collections.value);
-});
 </script>
