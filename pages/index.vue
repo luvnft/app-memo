@@ -1,14 +1,17 @@
 <template>
   <main class="flex flex-col bg-bg-persistent">
     <section
-      class="relative flex h-[65vh] flex-col items-center justify-center gap-10"
+      class="relative flex h-[75vh] flex-col items-center justify-center gap-10"
       :style="{
         backgroundImage: `url(${landingBackground})`,
         backgroundSize: '100%',
         backgroundRepeat: 'no-repeat',
       }"
     >
-      <p class="text-4xl !text-white md:text-7xl">Your memories,<br />forever onchain</p>
+      <div class="absolute inset-x-0 top-0 flex justify-center">
+        <h1 class="mt-5 text-3xl !text-white">.MEMO</h1>
+      </div>
+      <p class="mt-16 text-4xl !text-white md:text-7xl">Your memories,<br />forever onchain</p>
       <div class="flex flex-row gap-5">
         <dot-button size="large" variant="primary" class="px-10 sm:px-20" @click="router.push('/claim')">
           Claim
@@ -24,7 +27,7 @@
     </section>
 
     <section class="mx-10 flex min-h-[40vh] flex-col justify-between gap-7 rounded-2xl bg-white p-10">
-      <p class="max-w-full text-4xl !text-black sm:max-w-[66%] md:text-6xl">
+      <p class="max-w-full text-4xl !text-bg-persistent sm:max-w-[66%] md:text-6xl">
         Capture your unforgettable moments as digital badges on the Polkadot network.
       </p>
 
@@ -71,7 +74,7 @@
     </section>
 
     <section class="m-10 flex min-h-[40vh] flex-col gap-7 rounded-2xl bg-white p-10">
-      <p class="text-4xl !text-black md:text-6xl">Featured</p>
+      <p class="text-4xl !text-bg-persistent md:text-6xl">Featured</p>
 
       <div class="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         <a
