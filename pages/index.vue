@@ -26,7 +26,7 @@
       </div>
     </section>
 
-    <section class="mx-10 flex min-h-[40vh] flex-col justify-between gap-7 rounded-2xl bg-white p-10">
+    <section class="mx-[10px] flex min-h-[40vh] flex-col justify-between gap-7 rounded-2xl bg-white p-10 md:mx-10">
       <p class="max-w-full text-4xl !text-bg-persistent sm:max-w-[66%] md:text-6xl">
         Capture your unforgettable moments as digital badges on the Polkadot network.
       </p>
@@ -41,12 +41,14 @@
       </div>
     </section>
 
-    <section class="m-10 flex min-h-[50vh] flex-col">
+    <section class="m-[10px] flex min-h-[50vh] flex-col md:m-10">
       <p class="m-6 text-3xl !text-white">How Dotmemo Works</p>
 
       <div class="grid grid-cols-1 gap-7 sm:grid-cols-2 lg:grid-cols-3">
         <div class="flex flex-col gap-2 rounded-3xl bg-bg-card p-8 sm:p-12">
-          <div class="mb-16 h-16 w-16 rounded-full bg-k-primary"></div>
+          <div class="mb-16 flex h-16 w-16 items-center justify-center rounded-full bg-k-primary">
+            <img class="h-8 w-8" :src="claimIcon" />
+          </div>
           <p class="text-2xl font-bold !text-white">Claim</p>
           <p class="!text-white">
             Receive a digital badge for attending or participating in special events, all securely stored on the
@@ -55,7 +57,9 @@
         </div>
 
         <div class="flex flex-col gap-2 rounded-3xl bg-bg-card p-8 sm:p-12">
-          <div class="mb-16 h-16 w-16 rounded-full bg-k-primary"></div>
+          <div class="mb-16 flex h-16 w-16 items-center justify-center rounded-full bg-k-primary">
+            <img class="h-8 w-8" :src="createNewIcon" />
+          </div>
           <p class="text-2xl font-bold !text-white">Create</p>
           <p class="!text-white">
             Organizers can create unique badges to distribute at their events, giving attendees a tangible way to
@@ -64,7 +68,9 @@
         </div>
 
         <div class="flex flex-col gap-2 rounded-3xl bg-bg-card p-8 sm:p-12">
-          <div class="mb-16 h-16 w-16 rounded-full bg-k-primary"></div>
+          <div class="mb-16 flex h-16 w-16 items-center justify-center rounded-full bg-k-primary">
+            <img class="h-8 w-8" :src="communityIcon" />
+          </div>
           <p class="text-2xl font-bold !text-white">Share & Showcase</p>
           <p class="!text-white">
             Show off your achievements by sharing your badges on social media or displaying them in your digital wallet.
@@ -73,7 +79,7 @@
       </div>
     </section>
 
-    <section class="m-10 flex min-h-[40vh] flex-col gap-7 rounded-2xl bg-white p-10">
+    <section class="m-[10px] flex min-h-[40vh] flex-col gap-7 rounded-2xl bg-white p-10 md:m-10">
       <p class="text-4xl !text-bg-persistent md:text-6xl">Featured</p>
 
       <div class="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
@@ -105,6 +111,9 @@
 
 <script lang="ts" setup>
 import polkadotLogo from "@/assets/images/Polkadot.png";
+import claimIcon from "@/assets/icons/claim.svg";
+import createNewIcon from "@/assets/icons/create-new-from-source.svg";
+import communityIcon from "@/assets/icons/community.svg";
 import landingBackground from "@/assets/images/landing-background.png";
 import { getClient } from "@kodadot1/uniquery";
 import { $purifyOne } from "@kodadot1/minipfs";
