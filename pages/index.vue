@@ -1,10 +1,9 @@
 <template>
   <main class="flex flex-col bg-bg-persistent">
     <section
-      class="relative flex h-[75vh] flex-col items-center justify-center gap-10"
+      class="relative flex h-[75vh] flex-col items-center justify-center gap-10 bg-cover bg-left md:bg-center"
       :style="{
         backgroundImage: `url(${landingBackground})`,
-        backgroundSize: '100%',
         backgroundRepeat: 'no-repeat',
       }"
     >
@@ -13,7 +12,12 @@
       </div>
       <p class="mt-16 text-4xl !text-white md:text-7xl">Your memories,<br />forever onchain</p>
       <div class="flex flex-row gap-5">
-        <dot-button size="large" variant="primary" class="px-10 sm:px-20" @click="router.push('/claim')">
+        <dot-button
+          size="large"
+          variant="primary"
+          class="px-10 hover:!bg-white hover:!text-bg-persistent sm:px-20"
+          @click="router.push('/claim')"
+        >
           Claim
         </dot-button>
         <dot-button size="large" variant="tertiary-light" class="px-10 sm:px-20" @click="router.push('/create')">
@@ -114,7 +118,7 @@ import polkadotLogo from "@/assets/images/Polkadot.png";
 import claimIcon from "@/assets/icons/claim.svg";
 import createNewIcon from "@/assets/icons/create-new-from-source.svg";
 import communityIcon from "@/assets/icons/community.svg";
-import landingBackground from "@/assets/images/landing-background.png";
+import landingBackground from "@/assets/images/landing-background-2.png";
 import { getClient } from "@kodadot1/uniquery";
 import { $purifyOne } from "@kodadot1/minipfs";
 definePageMeta({
