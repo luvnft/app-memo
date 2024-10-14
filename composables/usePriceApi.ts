@@ -21,8 +21,6 @@ export const usePriceApi = () => {
         return "polkadot" as const;
       case "ETH":
         return "ethereum" as const;
-      case "MNT":
-        return "mantle" as const;
       default:
         return symbol.toLowerCase();
     }

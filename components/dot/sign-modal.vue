@@ -265,7 +265,7 @@ const { getPrice, getSymbolName } = usePriceApi();
 
 const dollarValue = asyncComputed(async () => {
   const name = getSymbolName(properties.value.symbol);
-  const res = await getPrice(name);
-  return res[name].usd;
+  const prices = await getPrice(name);
+  return prices[name].usd;
 });
 </script>
