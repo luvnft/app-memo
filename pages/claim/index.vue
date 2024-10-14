@@ -12,7 +12,7 @@
     <div class="flex flex-col space-y-1 self-stretch">
       <dot-label text="Enter MEMO Code" class="flex-1">
         <form class="flex space-x-4" @submit.prevent="onSubmit()">
-          <dot-text-input v-model="code" :error="errorMessage" placeholder="CODE · SVv43nF...9a33jA" />
+          <dot-text-input v-model="code" :error="errorMessage" placeholder="event2024" />
           <div>
             <dot-button variant="tertiary" size="large" @click="open()">
               <template #icon>
