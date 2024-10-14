@@ -138,6 +138,7 @@ import { onApiConnect } from "@kodadot1/sub-api";
 import { getChainName } from "~/utils/chain.config";
 import { pinFileToIPFS, pinJson, type Metadata } from "~/services/nftStorage";
 import Identicon from "@polkadot/vue-identicon";
+import { asyncComputed } from "@vueuse/core";
 
 const props = defineProps<{
   name: string;
@@ -154,7 +155,7 @@ const { howAboutToExecute, status, isError: _isError, isLoading } = useMetaTrans
 const { accountId, isLogIn } = useAuth();
 const { prefix } = usePrefix();
 
-const properties = chainAssetOf(prefix.value);
+const properties = computed(() => chainAssetOf(prefix.value));
 const chainName = getChainName(prefix.value);
 const depositPerItem = ref(0);
 const depositForCollection = ref(0);
@@ -169,7 +170,7 @@ onApiConnect(prefix.value, async (api) => {
   const collectionFee = collectionDeposit(api);
   const itemFee = itemDeposit(api);
   const metadataFee = metadataDeposit(api);
-  const decimals = Number(`1e${properties.decimals}`);
+  const decimals = Number(`1e${properties.value.decimals}`);
   depositForCollection.value = (collectionFee + metadataFee) / decimals;
   depositPerItem.value = itemFee / decimals;
 });
@@ -260,20 +261,11 @@ onMounted(() => {
 
 const vfm = useVfm();
 const closeModal = () => vfm.close("sign-modal");
-
-const dollarValue = ref(0);
-
 const { getPrice, getSymbolName } = usePriceApi();
-watch(
-  () => properties,
-  async (properties) => {
-    const name = getSymbolName(properties.symbol);
-    const res = await getPrice(name);
-    dollarValue.value = res[name].usd;
-  },
-  {
-    deep: true,
-    immediate: true,
-  },
-);
+
+const dollarValue = asyncComputed(async () => {
+  const name = getSymbolName(properties.value.symbol);
+  const res = await getPrice(name);
+  return res[name].usd;
+});
 </script>
