@@ -59,7 +59,7 @@
         <p class="text-sm text-text-color">Total Deposit + Fees</p>
         <p class="text-right text-sm text-text-color">
           <!-- TODO -->
-          <span class="text-xs text-text-color opacity-60">$0.980</span>
+          <span class="text-xs text-text-color opacity-60">{{ dollarValue }}$</span>
           <span class="ml-2 font-bold text-text-color">
             {{ Math.round(totalDeposit * 10000) / 10000 }} {{ properties.symbol }}
           </span>
@@ -260,4 +260,20 @@ onMounted(() => {
 
 const vfm = useVfm();
 const closeModal = () => vfm.close("sign-modal");
+
+const dollarValue = ref(0);
+
+const { getPrice, getSymbolName } = usePriceApi();
+watch(
+  () => properties,
+  async (properties) => {
+    const name = getSymbolName(properties.symbol);
+    const res = await getPrice(name);
+    dollarValue.value = res[name].usd;
+  },
+  {
+    deep: true,
+    immediate: true,
+  },
+);
 </script>
