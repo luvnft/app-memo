@@ -15,8 +15,16 @@
           :error="descriptionError"
         />
       </dot-label>
-      <dot-label text="Website address">
-        <dot-text-input v-model="externalUrl" placeholder="https://" :error="externalUrlError" />
+      <dot-label class="relative" text="Website address">
+        <div class="group absolute right-0 top-0 cursor-default rounded-full bg-k-primary px-2">
+          <span>?</span>
+          <span
+            class="pointer-events-none absolute right-0 top-full z-50 mt-2 w-64 rounded-lg bg-white px-3 py-2 opacity-0 shadow-xl transition-opacity group-hover:opacity-100"
+          >
+            Use this if your memo should be linked to extenal domain
+          </span>
+        </div>
+        <dot-text-input v-model="externalUrl" placeholder="Custom domains are supported." :error="externalUrlError" />
       </dot-label>
       <div class="grid grid-cols-2 gap-8">
         <dot-label text="Start date">
