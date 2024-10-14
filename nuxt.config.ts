@@ -24,7 +24,11 @@ export default defineNuxtConfig({
     apiUrl: "",
     public: {
       appUrl: "",
-      chain: process.env.NUXT_CHAIN_PREFIX || "ahp", // 'ahp' for asset hub polkadot
+      api: {
+        kodaprice: "",
+        coingecko: "",
+      },
+      chain: "ahp",
     },
   },
 
