@@ -160,6 +160,7 @@ const chainName = getChainName(prefix.value);
 const depositPerItem = ref(0);
 const depositForCollection = ref(0);
 const futureCollection = ref(0);
+const totalPayableDeposit = ref(BigInt(0));
 const toMint = ref("");
 const totalDeposit = computed(() => depositPerItem.value * props.quantity + depositForCollection.value);
 
@@ -173,6 +174,7 @@ onApiConnect(prefix.value, async (api) => {
   const decimals = Number(`1e${properties.value.decimals}`);
   depositForCollection.value = (collectionFee + metadataFee) / decimals;
   depositPerItem.value = (itemFee + metadataFee) / decimals;
+  totalPayableDeposit.value = BigInt(itemFee + metadataFee) * BigInt(props.quantity);
 });
 
 const showBreakdown = ref(false);
@@ -214,7 +216,6 @@ async function sign() {
   }
 
   futureCollection.value = nextId;
-  const decimals = BigInt(`1e${properties.value.decimals}`);
 
   const cb = api.tx.utility.batchAll;
   const args = [
@@ -223,7 +224,7 @@ async function sign() {
       api.tx.nfts.setCollectionMetadata(nextId, toMint.value),
       api.tx.nfts.setTeam(nextId, MEMO_BOT, accountId.value, accountId.value),
       // DEV: this does not cover tx fee, we will sponsor it for a whilegs
-      api.tx.balances.transferKeepAlive(MEMO_BOT, BigInt(depositPerItem.value * props.quantity) * decimals),
+      api.tx.balances.transferKeepAlive(MEMO_BOT, totalPayableDeposit.value),
       // DEV: this is for tracking purposes
       api.tx.system.remarkWithEvent("dotmemo.xyz"),
     ],
