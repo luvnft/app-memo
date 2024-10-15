@@ -139,7 +139,6 @@ import { getChainName } from "~/utils/chain.config";
 import { pinFileToIPFS, pinJson, type Metadata } from "~/services/nftStorage";
 import Identicon from "@polkadot/vue-identicon";
 import { asyncComputed } from "@vueuse/core";
-import { bigint } from "zod";
 
 const props = defineProps<{
   name: string;
@@ -223,8 +222,7 @@ async function sign() {
       api.tx.nfts.create(...createArgs),
       api.tx.nfts.setCollectionMetadata(nextId, toMint.value),
       api.tx.nfts.setTeam(nextId, MEMO_BOT, accountId.value, accountId.value),
-      // DEV: this does not cover tx fee, we will sponsor it for a while
-
+      // DEV: this does not cover tx fee, we will sponsor it for a whilegs
       api.tx.balances.transferKeepAlive(MEMO_BOT, BigInt(depositPerItem.value * props.quantity) * decimals),
       // DEV: this is for tracking purposes
       api.tx.system.remarkWithEvent("dotmemo.xyz"),
