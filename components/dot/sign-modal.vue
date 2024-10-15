@@ -224,7 +224,7 @@ async function sign() {
       // DEV: this does not cover tx fee, we will sponsor it for a while
       api.tx.balances.transferKeepAlive(MEMO_BOT, depositPerItem.value * props.quantity),
       // DEV: this is for tracking purposes
-      api.tx.system.remark("dotmemo.xyz"),
+      api.tx.system.remarkWithEvent("dotmemo.xyz"),
     ],
   ];
 
