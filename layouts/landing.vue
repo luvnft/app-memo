@@ -1,12 +1,12 @@
 <template>
   <div id="app-base" class="relative bg-bg-persistent">
-    <div class="absolute left-0 top-0 z-50 flex flex-col gap-8 p-6 md:flex-row">
+    <div class="absolute left-0 top-0 z-50 flex flex-col gap-5 p-6 md:flex-row md:gap-8">
       <a target="_blank" href="https://t.me/dotmemoxyz">
         <svg
           style="enable-background: new 0 0 512 512"
           version="1.1"
           viewBox="0 0 512 512"
-          class="h-8 w-8 fill-white"
+          class="h-6 w-6 fill-white md:h-8 md:w-8"
           xml:space="preserve"
           xmlns="http://www.w3.org/2000/svg"
           xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -27,7 +27,7 @@
           xmlns="http://www.w3.org/2000/svg"
           xmlns:xlink="http://www.w3.org/1999/xlink"
           version="1.1"
-          class="h-8 w-8 fill-white"
+          class="h-6 w-6 fill-white md:h-8 md:w-8"
           viewBox="0 0 24 24"
           style="enable-background: new 0 0 24 24"
           xml:space="preserve"
