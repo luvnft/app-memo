@@ -172,7 +172,7 @@ onApiConnect(prefix.value, async (api) => {
   const metadataFee = metadataDeposit(api);
   const decimals = Number(`1e${properties.value.decimals}`);
   depositForCollection.value = (collectionFee + metadataFee) / decimals;
-  depositPerItem.value = itemFee / decimals;
+  depositPerItem.value = (itemFee + metadataFee) / decimals;
 });
 
 const showBreakdown = ref(false);
@@ -221,6 +221,10 @@ async function sign() {
       api.tx.nfts.create(...createArgs),
       api.tx.nfts.setCollectionMetadata(nextId, toMint.value),
       api.tx.nfts.setTeam(nextId, MEMO_BOT, accountId.value, accountId.value),
+      // DEV: this does not cover tx fee, we will sponsor it for a while
+      api.tx.balances.transferKeepAlive(MEMO_BOT, depositPerItem.value * props.quantity),
+      // DEV: this is for tracking purposes
+      api.tx.system.remark("dotmemo.xyz"),
     ],
   ];
 
