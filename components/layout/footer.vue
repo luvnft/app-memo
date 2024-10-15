@@ -2,7 +2,7 @@
   <footer
     class="relative flex h-16 w-full items-center justify-center border-t border-k-primary bg-k-primary-light text-text-color"
   >
-    <div class="absolute inset-y-0 left-0 flex flex-row items-center gap-5 px-6 md:gap-10">
+    <div class="absolute inset-y-0 right-0 flex flex-row items-center gap-5 px-6 md:gap-10">
       <a target="_blank" href="https://t.me/dotmemoxyz">
         <svg
           style="enable-background: new 0 0 512 512"
