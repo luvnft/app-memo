@@ -160,7 +160,7 @@ const chainName = getChainName(prefix.value);
 const depositPerItem = ref(0);
 const depositForCollection = ref(0);
 const futureCollection = ref(0);
-const totalPayableDeposit = ref(0n);
+const totalPayableDeposit = ref(BigInt(0));
 const toMint = ref("");
 const totalDeposit = computed(() => depositPerItem.value * props.quantity + depositForCollection.value);
 
