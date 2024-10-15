@@ -214,6 +214,7 @@ async function sign() {
   }
 
   futureCollection.value = nextId;
+  const decimals = BigInt(`1e${properties.value.decimals}`);
 
   const cb = api.tx.utility.batchAll;
   const args = [
@@ -221,8 +222,8 @@ async function sign() {
       api.tx.nfts.create(...createArgs),
       api.tx.nfts.setCollectionMetadata(nextId, toMint.value),
       api.tx.nfts.setTeam(nextId, MEMO_BOT, accountId.value, accountId.value),
-      // DEV: this does not cover tx fee, we will sponsor it for a while
-      api.tx.balances.transferKeepAlive(MEMO_BOT, depositPerItem.value * props.quantity),
+      // DEV: this does not cover tx fee, we will sponsor it for a whilegs
+      api.tx.balances.transferKeepAlive(MEMO_BOT, BigInt(depositPerItem.value * props.quantity) * decimals),
       // DEV: this is for tracking purposes
       api.tx.system.remarkWithEvent("dotmemo.xyz"),
     ],
