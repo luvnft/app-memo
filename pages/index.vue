@@ -141,7 +141,7 @@ const { prefix } = usePrefix();
 const collections = ref<Collection[]>([]);
 
 const client = getClient(prefix.value);
-const ids = computed(() => (prefix.value === "ahp" ? ["1", "13", "163", "171"] : ["67", "167", "287", "477"]));
+const ids = computed(() => (prefix.value === "ahp" ? ["107", "13", "163", "171"] : ["67", "167", "287", "477"]));
 const query = client.collectionByIdIn(ids.value);
 const result = await client.fetch<{ collections: Collection[] }>(query).catch((e) => {
   console.error("Error while fetching collections", e);
