@@ -2,13 +2,14 @@
   <footer
     class="relative flex h-16 w-full items-center justify-center border-t border-k-primary bg-k-primary-light text-text-color"
   >
-    <div class="absolute inset-y-0 right-0 flex flex-row items-center gap-5 px-6 md:gap-10">
+    <span class="flex-1 text-center md:pl-32">.MEMO 2024 {{ name }}</span>
+    <div class="flex flex-row items-center gap-5 pr-5 md:gap-10">
       <a target="_blank" href="https://t.me/dotmemoxyz">
         <svg
           style="enable-background: new 0 0 512 512"
           version="1.1"
           viewBox="0 0 512 512"
-          class="h-6 w-6 fill-white md:h-8 md:w-8"
+          class="h-5 w-5 fill-white md:h-8 md:w-8"
           xml:space="preserve"
           xmlns="http://www.w3.org/2000/svg"
           xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -29,7 +30,7 @@
           xmlns="http://www.w3.org/2000/svg"
           xmlns:xlink="http://www.w3.org/1999/xlink"
           version="1.1"
-          class="h-6 w-6 fill-white md:h-8 md:w-8"
+          class="h-5 w-5 fill-white md:h-8 md:w-8"
           viewBox="0 0 24 24"
           style="enable-background: new 0 0 24 24"
           xml:space="preserve"
@@ -40,7 +41,6 @@
         </svg>
       </a>
     </div>
-    <span>.MEMO 2024 {{ name }}</span>
   </footer>
 </template>
 
