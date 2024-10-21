@@ -151,7 +151,7 @@ const props = defineProps<{
 }>();
 
 const { apiInstance } = useApi();
-const { howAboutToExecute, status, isError: _isError, isLoading } = useMetaTransaction();
+const { howAboutToExecute, initTransactionLoader, status, isError: _isError, isLoading } = useMetaTransaction();
 const { accountId, isLogIn } = useAuth();
 const { prefix } = usePrefix();
 
@@ -230,6 +230,7 @@ async function sign() {
     ],
   ];
 
+  initTransactionLoader();
   await howAboutToExecute(accountId.value, cb, args);
 }
 
