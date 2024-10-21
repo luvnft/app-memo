@@ -59,7 +59,7 @@
         <p class="text-sm text-text-color">Total Deposit + Fees</p>
         <p class="text-right text-sm text-text-color">
           <!-- TODO -->
-          <span class="text-xs text-text-color opacity-60">{{ dollarValue }}$</span>
+          <span class="text-xs text-text-color opacity-60">{{ dollarValue.toFixed(2) }}$</span>
           <span class="ml-2 font-bold text-text-color"> {{ symbolValue }} {{ properties.symbol }} </span>
         </p>
 
