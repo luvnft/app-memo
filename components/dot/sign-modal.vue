@@ -161,6 +161,7 @@ const futureCollection = ref(0);
 const totalPayableDeposit = ref(BigInt(0));
 const toMint = ref("");
 const totalDeposit = computed(() => depositPerItem.value * props.quantity + depositForCollection.value);
+const imageCid = ref("");
 
 const accountStore = useAccountStore();
 const currentAccount = computed(() => accountStore.selected);
@@ -179,6 +180,7 @@ const showBreakdown = ref(false);
 
 async function pinAll() {
   const imageHash = await pinFileToIPFS(props.image);
+  imageCid.value = `ipfs://${imageHash}`;
   const metadata: Metadata = {
     name: props.name,
     image: `ipfs://${imageHash}`,
@@ -244,6 +246,8 @@ watch(status, async (status) => {
           chain: prefix.value,
           collection: futureCollection.value,
           mint: toMint.value,
+          name: props.name,
+          image: imageCid.value,
         },
       });
       // eslint-disable-next-line no-console
