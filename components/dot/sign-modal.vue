@@ -60,9 +60,7 @@
         <p class="text-right text-sm text-text-color">
           <!-- TODO -->
           <span class="text-xs text-text-color opacity-60">{{ dollarValue }}$</span>
-          <span class="ml-2 font-bold text-text-color">
-            {{ Math.round(totalDeposit * 10000) / 10000 }} {{ properties.symbol }}
-          </span>
+          <span class="ml-2 font-bold text-text-color"> {{ symbolValue }} {{ properties.symbol }} </span>
         </p>
 
         <button class="col-span-2 flex items-center gap-2" @click="showBreakdown = !showBreakdown">
@@ -270,9 +268,11 @@ const vfm = useVfm();
 const closeModal = () => vfm.close("sign-modal");
 const { getPrice, getSymbolName } = usePriceApi();
 
+const symbolValue = computed(() => Math.round(totalDeposit.value * 10000) / 10000);
+
 const dollarValue = asyncComputed(async () => {
   const name = getSymbolName(properties.value.symbol);
   const prices = await getPrice(name);
-  return prices[name].usd;
+  return prices[name].usd * symbolValue.value;
 });
 </script>
