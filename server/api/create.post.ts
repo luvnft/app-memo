@@ -21,7 +21,7 @@ export default defineEventHandler(async (event) => {
 
   if (err) {
     console.error(err);
-    throw new Error("An unknown error has occoured");
+    throw new Error(`[API::CREATE] Failed to create MEMO ${err.message}`);
   }
 
   return data;
