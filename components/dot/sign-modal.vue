@@ -242,7 +242,7 @@ watch(status, async (status) => {
         body: {
           secret: props.secret,
           chain: prefix.value,
-          collectionId: futureCollection.value,
+          collection: futureCollection.value,
           mint: toMint.value,
         },
       });
