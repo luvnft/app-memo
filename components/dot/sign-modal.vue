@@ -280,7 +280,7 @@ const symbolValue = computed(() => Math.round(totalDeposit.value * 10000) / 1000
 const dollarValue = asyncComputed(async () => {
   const name = getSymbolName(properties.value.symbol);
   const prices = await getPrice(name);
-  if (!prices[name]) return null;
+  if (prices[name]?.usd === undefined) return null;
   return prices[name].usd * symbolValue.value;
 }, null);
 </script>
