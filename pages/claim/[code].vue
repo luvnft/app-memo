@@ -12,7 +12,7 @@
 
     <div class="flex flex-col space-y-3 self-stretch">
       <template v-if="!claimed">
-        <div class="flex rounded-full border-2 border-border-color p-2 shadow-text-color">
+        <div class="mb-6 flex rounded-full border-2 border-border-color p-2 shadow-text-color">
           <button
             class="flex-1 rounded-full py-2 text-text-color"
             :class="{
@@ -34,8 +34,15 @@
         </div>
 
         <dot-label v-if="showAddressInput" text="Enter DOT address">
-          <form @submit.prevent="onSubmit()">
+          <form class="flex space-x-4" @submit.prevent="onSubmit()">
             <dot-text-input v-model="manualAddress" placeholder="Address" />
+            <div>
+              <dot-button variant="tertiary" size="large" @click="open()">
+                <template #icon>
+                  <icon name="mdi:qrcode" size="24" />
+                </template>
+              </dot-button>
+            </div>
           </form>
         </dot-label>
 
@@ -91,6 +98,8 @@
 </template>
 <script setup lang="ts">
 import { isAddress } from "@polkadot/util-crypto";
+import QRScannerModal from "~/components/dot/qr-scanner-modal.vue";
+import { useModal } from "vue-final-modal";
 
 const route = useRoute();
 const accountStore = useAccountStore();
@@ -113,6 +122,15 @@ const isClaiming = ref(false);
 const claimButtonLabel = computed(() => (isClaiming.value ? "Claiming ..." : "Claim"));
 
 const onSubmit = () => claim();
+
+const { open } = useModal({
+  component: QRScannerModal,
+  attrs: {
+    onScan(data: string) {
+      manualAddress.value = data;
+    },
+  },
+});
 
 const claim = async () => {
   if (!address.value) return;
