@@ -1,5 +1,5 @@
 <template>
-  <dot-button variant="primary" :size="size" @click="open">
+  <dot-button variant="tertiary" :size="size" @click="open">
     {{ accountStore.hasSelectedAccount ? `${accountStore.accountName} ${accountStore.shortAddress}` : "Connect" }}
   </dot-button>
 </template>
