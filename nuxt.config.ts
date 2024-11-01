@@ -32,6 +32,12 @@ export default defineNuxtConfig({
     },
   },
 
+  icon: {
+    clientBundle: {
+      scan: true,
+    },
+  },
+
   googleFonts: {
     families: {
       Unbounded: true,
