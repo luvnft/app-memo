@@ -38,6 +38,7 @@
 <script setup lang="ts">
 import QRScannerModal from "~/components/dot/qr-scanner-modal.vue";
 import { useModal } from "vue-final-modal";
+import { parseClaimString } from "~/utils/scanner";
 
 const code = ref("");
 const isCodeValid = computed(() => code.value.trim().length > 0);
@@ -64,7 +65,8 @@ const { open } = useModal({
   component: QRScannerModal,
   attrs: {
     onScan(data: string) {
-      code.value = data;
+      const parsedData = parseClaimString(data);
+      code.value = parsedData;
     },
   },
 });
