@@ -72,7 +72,10 @@ const validationSchema = toTypedSchema(
     startDate: zod.date({ message: "Start date is required" }),
     endDate: zod.date({ message: "End date is required" }),
     quantity: zod.number({ message: "Quantity is required" }).positive({ message: "Quantity must be positive" }),
-    secret: zod.string({ message: "Secret is required" }).min(1, { message: "Secret is required" }),
+    secret: zod
+      .string({ message: "Secret is required" })
+      .min(1, { message: "Secret is required" })
+      .regex(/^[a-zA-Z_.\-\d]+$/, "Only alphanumeric characters and '-' are allowed"),
   }),
 );
 
