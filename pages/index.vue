@@ -90,22 +90,20 @@
         <a
           v-for="collection in collections"
           :key="collection.id"
-          class="flex flex-col items-center gap-2"
+          class="relative aspect-square w-full overflow-hidden rounded-xl bg-stone-300"
           :href="kodaUrl(collection.id)"
           target="_blank"
         >
-          <div class="relative aspect-square w-full overflow-hidden rounded-xl bg-stone-300">
-            <img
-              :src="$purifyOne(collection.image, 'kodadot')"
-              alt="collection image"
-              class="h-full w-full rounded-xl object-cover"
-            />
+          <img
+            :src="$purifyOne(collection.image, 'kodadot')"
+            alt="collection image"
+            class="h-full w-full rounded-xl object-cover"
+          />
 
-            <div class="absolute inset-x-0 bottom-0 z-20 h-96 bg-gradient-to-t from-black/70 to-transparent"></div>
+          <div class="absolute inset-x-0 bottom-0 z-20 h-96 h-full bg-gradient-to-t from-black/70 to-transparent"></div>
 
-            <div class="absolute inset-x-0 bottom-0 z-30 overflow-hidden p-7">
-              <p class="line-clamp-2 text-xl font-bold !text-white">{{ collection.name }}</p>
-            </div>
+          <div class="absolute inset-x-0 bottom-0 z-30 overflow-hidden p-7">
+            <p class="line-clamp-2 text-xl font-bold !text-white">{{ collection.name }}</p>
           </div>
         </a>
       </div>
