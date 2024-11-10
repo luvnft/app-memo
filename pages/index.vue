@@ -100,7 +100,7 @@
             class="h-full w-full rounded-xl object-cover"
           />
 
-          <div class="absolute inset-x-0 bottom-0 z-20 h-96 h-full bg-gradient-to-t from-black/70 to-transparent"></div>
+          <div class="absolute inset-x-0 bottom-0 z-20 h-full bg-gradient-to-t from-black/70 to-transparent"></div>
 
           <div class="absolute inset-x-0 bottom-0 z-30 overflow-hidden p-7">
             <p class="line-clamp-2 text-xl font-bold !text-white">{{ collection.name }}</p>
