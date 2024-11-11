@@ -1,62 +1,134 @@
 <template>
   <VueFinalModal
     class="flex items-center justify-center"
-    content-class="flex w-3/4 md:w-2/5 flex-col p-6 gap-4 bg-background-color rounded-2xl border border-background-color-inverse"
+    content-class="flex w-full mx-2 md:mx-0 md:w-2/5 flex-col p-6 gap-4 bg-background-color rounded-2xl border border-background-color-inverse"
     overlay-transition="vfm-fade"
     content-transition="vfm-fade"
   >
-    <h1 class="text-2xl font-semibold text-text-color">Select account</h1>
-    <div class="flex flex-col gap-2">
-      <div class="mb-4 flex flex-col gap-3">
-        <dot-button
-          v-for="account in accountStore.accounts"
-          :key="account.address"
-          class="flex w-full"
-          :variant="selectedAccount?.address === account.address ? 'primary' : 'tertiary'"
-          @click="selectedAccount = account"
-        >
-          <div class="flex w-full items-center">
-            <div class="rounded-full border-2 border-white">
-              <!-- @vue-ignore -->
-              <Identicon :size="52" theme="polkadot" :value="account.address" />
+    <template v-if="state === 'wallet'">
+      <h1 class="text-2xl font-semibold text-text-color">Select wallet</h1>
+      <div class="flex flex-col gap-2">
+        <div class="mb-4 flex flex-col gap-3">
+          <dot-button
+            v-for="wallet in installedWallets"
+            :key="wallet.name"
+            class="flex w-full"
+            variant="tertiary"
+            @click="selectWallet(wallet)"
+          >
+            <div class="flex w-full items-center">
+              <div class="overflow-hidden rounded-full border-2 border-white">
+                <img :src="wallet.img" class="h-12 w-12" />
+              </div>
+              <div class="flex flex-1 flex-col items-start gap-1 px-4 py-3">
+                <h2 class="font-bold">{{ wallet.name }}</h2>
+              </div>
             </div>
-
-            <div class="flex flex-1 flex-col items-start gap-1 px-4 py-3">
-              <h2 class="font-bold">{{ account.meta.name }}</h2>
-              <p class="text-xs">
-                {{ addressShortener(account.address, 7, -7) }}
-              </p>
-            </div>
+          </dot-button>
+          <div class="flex flex-col gap-2">
+            <button class="flex w-full items-center justify-between" @click="showBreakdown = !showBreakdown">
+              <h2 class="text-lg font-semibold text-text-color">Other wallets</h2>
+              <Icon
+                :name="`mdi:chevron-${showBreakdown ? 'up' : 'down'}`"
+                size="20"
+                class="text-text-color opacity-50"
+              />
+            </button>
+            <template v-if="showBreakdown">
+              <dot-button
+                v-for="wallet in availableWallets"
+                :key="wallet.name"
+                class="flex w-full"
+                variant="tertiary"
+                disabled
+                @click="selectWallet(wallet)"
+              >
+                <div class="flex w-full items-center">
+                  <div class="overflow-hidden rounded-full border-2 border-white">
+                    <img :src="wallet.img" class="h-12 w-12" />
+                  </div>
+                  <div class="flex w-full flex-1 flex-col items-start gap-1 px-4 py-3">
+                    <h2 class="font-bold">{{ wallet.name }}</h2>
+                  </div>
+                  <a :href="wallet.guideUrl" class="text-text-color hover:text-white">Download</a>
+                </div>
+              </dot-button>
+            </template>
           </div>
-        </dot-button>
+
+          <dot-button variant="tertiary" @click="emit('confirm')"> Cancel </dot-button>
+        </div>
       </div>
-      <div class="flex justify-end gap-2">
-        <dot-button variant="tertiary" @click="emit('confirm')"> Cancel </dot-button>
-        <dot-button :disabled="!selectedAccount" variant="primary" @click="saveAndClose"> Confirm </dot-button>
+    </template>
+    <template v-if="state === 'account'">
+      <h1 class="text-2xl font-semibold text-text-color">Select account</h1>
+      <div class="flex flex-col gap-2">
+        <div class="mb-4 flex flex-col gap-3">
+          <dot-button
+            v-for="account in accountStore.accounts"
+            :key="account.address"
+            class="flex w-full"
+            :variant="selectedAccount?.address === account.address ? 'primary' : 'tertiary'"
+            @click="selectedAccount = account"
+          >
+            <div class="flex w-full items-center">
+              <div class="rounded-full border-2 border-white">
+                <!-- @vue-ignore -->
+                <Identicon :size="52" theme="polkadot" :value="account.address" />
+              </div>
+
+              <div class="flex flex-1 flex-col items-start gap-1 px-4 py-3">
+                <h2 class="font-bold">{{ account.name }}</h2>
+                <p class="text-xs">
+                  {{ addressShortener(account.address, 7, -7) }}
+                </p>
+              </div>
+            </div>
+          </dot-button>
+        </div>
+        <div class="flex justify-end gap-2">
+          <dot-button class="w-full" variant="tertiary" @click="state = 'wallet'"> Back </dot-button>
+          <dot-button class="w-full" :disabled="!selectedAccount" variant="primary" @click="saveAndClose">
+            Confirm
+          </dot-button>
+        </div>
       </div>
-    </div>
+    </template>
   </VueFinalModal>
 </template>
 
 <script lang="ts" setup>
 import { VueFinalModal } from "vue-final-modal";
-import { web3Accounts } from "@polkadot/extension-dapp";
 import { useAccountStore } from "~/stores/account";
-import type { Account } from "~/types/web3";
-import { getInjectedExtensions } from "~/utils/extension";
 import Identicon from "@polkadot/vue-identicon";
+import { getSupportedWallets } from "~/utils/wallet";
+import type { BaseDotsamaWallet, ExtendedDotsamaAccount } from "~/utils/wallet/base_dotsama_wallet";
 
 const emit = defineEmits<{
   (e: "confirm"): void;
 }>();
 
+const state = ref<"wallet" | "account">("wallet");
+const showBreakdown = ref(false);
+
 const accountStore = useAccountStore();
+
+const installedWallets = ref<BaseDotsamaWallet[]>([]);
+const availableWallets = ref<BaseDotsamaWallet[]>([]);
+
 onMounted(async () => {
-  const _extensions = getInjectedExtensions();
-  accountStore.setAccounts(await web3Accounts());
+  const wallets = getSupportedWallets();
+  installedWallets.value = wallets.filter((wallet) => wallet.installed);
+  availableWallets.value = wallets.filter((wallet) => !wallet.installed);
 });
 
-const selectedAccount = ref<Account | null>(null);
+const selectWallet = async (wallet: BaseDotsamaWallet) => {
+  const accounts = await wallet.getAccounts();
+  accountStore.setAccounts(accounts ?? []);
+  state.value = "account";
+};
+
+const selectedAccount = ref<ExtendedDotsamaAccount | null>(null);
 
 const saveAndClose = () => {
   if (selectedAccount.value) {

@@ -39,7 +39,7 @@
         <div class="flex items-center justify-start">
           <p class="!text-black">Turn milestones into digital memories</p>
         </div>
-        <div class="flex hidden justify-end">
+        <div class="hidden justify-end">
           <dot-button class="w-full sm:w-auto" variant="tertiary-dark" size="large">Learn more</dot-button>
         </div>
       </div>

@@ -119,7 +119,7 @@ export class BaseDotsamaWallet implements Wallet {
     return unsubscribe;
   };
 
-  getAccounts = async () => {
+  getAccounts = async (): Promise<ExtendedDotsamaAccount[] | null> => {
     if (!this._extension) {
       await this.enable();
     }
@@ -136,7 +136,7 @@ export class BaseDotsamaWallet implements Wallet {
   getSubstrateAccounts = (accounts: InjectedAccount[]) =>
     accounts.filter((account) => isValidSubstrateAddress(account.address));
 
-  accountMap = (accounts: InjectedAccount[]) =>
+  accountMap = (accounts: InjectedAccount[]): ExtendedDotsamaAccount[] =>
     this.getSubstrateAccounts(accounts).map((account) => {
       account.address = formatAccount(account.address);
       return {
@@ -148,3 +148,9 @@ export class BaseDotsamaWallet implements Wallet {
       };
     });
 }
+
+export type ExtendedDotsamaAccount = InjectedAccount & {
+  source: string;
+  wallet: BaseDotsamaWallet;
+  signer?: InjectedSigner;
+};
