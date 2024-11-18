@@ -31,7 +31,7 @@ const model = defineModel<string | number | Date>({
     return props.type === "date" ? new Date(val) : val;
   },
   get(val: string | Date | number) {
-    return val instanceof Date ? val.toISOString().split("T").at(0) : val;
+    return val instanceof Date ? val.toISOString().split("T").at(0)! : val;
   },
 });
 

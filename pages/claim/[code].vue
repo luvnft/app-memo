@@ -35,7 +35,7 @@
 
         <dot-label v-if="showAddressInput" text="Enter DOT address">
           <form class="flex space-x-4" @submit.prevent="onSubmit()">
-            <dot-text-input v-model="manualAddress" placeholder="Address" />
+            <dot-text-input v-model="manualAddress" :error="addressError" placeholder="Address" />
             <div>
               <dot-button variant="tertiary" size="large" @click="open()">
                 <template #icon>
@@ -97,7 +97,6 @@
   </div>
 </template>
 <script setup lang="ts">
-import { isAddress } from "@polkadot/util-crypto";
 import QRScannerModal from "~/components/dot/qr-scanner-modal.vue";
 import { useModal } from "vue-final-modal";
 
@@ -108,7 +107,16 @@ const showAddressInput = ref(true);
 
 const address = computed(() => (showAddressInput.value ? manualAddress.value : accountStore.selected?.address));
 
-const canClaim = computed(() => isAddress(address.value));
+const addressError = ref("");
+watch(address, (address) => {
+  if (!address) {
+    addressError.value = "Address is required";
+    return;
+  }
+  addressError.value = isValidSubstrateAddress(address ?? "") ? "" : "Invalid address";
+});
+
+const canClaim = computed(() => address.value && !addressError.value);
 
 const { data, status, error } = await useFetch("/api/code", {
   query: { code: route.params.code },

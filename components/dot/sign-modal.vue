@@ -21,7 +21,7 @@
       <div class="flex items-center gap-3">
         <!-- @vue-ignore -->
         <Identicon :size="28" theme="polkadot" :value="currentAccount?.address" />
-        <p class="text-text-color">{{ currentAccount?.meta.name }}</p>
+        <p class="text-text-color">{{ currentAccount?.name }}</p>
       </div>
     </template>
 

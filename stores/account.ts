@@ -1,9 +1,9 @@
 import { defineStore } from "pinia";
-import type { Account } from "~/types/web3";
+import type { ExtendedDotsamaAccount } from "~/utils/wallet/base_dotsama_wallet";
 
 interface StoreState {
-  accounts: Account[];
-  selected: Account | null;
+  accounts: ExtendedDotsamaAccount[];
+  selected: ExtendedDotsamaAccount | null;
 }
 
 export const useAccountStore = defineStore({
@@ -13,10 +13,10 @@ export const useAccountStore = defineStore({
     selected: null,
   }),
   actions: {
-    setAccounts(accounts: Account[]) {
+    setAccounts(accounts: ExtendedDotsamaAccount[]) {
       this.accounts = accounts;
     },
-    selectAccount(account: Account) {
+    selectAccount(account: ExtendedDotsamaAccount) {
       this.selected = account;
     },
   },
@@ -29,7 +29,7 @@ export const useAccountStore = defineStore({
     },
     accountName: (state) => {
       if (!state.selected) return "";
-      return state.selected.meta.name ?? "";
+      return state.selected.name ?? "";
     },
   },
 });
