@@ -36,6 +36,7 @@ export default defineNuxtConfig({
     clientBundle: {
       scan: true,
     },
+    serverBundle: "local",
   },
 
   googleFonts: {
