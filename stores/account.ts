@@ -19,6 +19,9 @@ export const useAccountStore = defineStore({
     selectAccount(account: ExtendedDotsamaAccount) {
       this.selected = account;
     },
+    disconnect() {
+      this.selected = null;
+    },
   },
 
   getters: {
