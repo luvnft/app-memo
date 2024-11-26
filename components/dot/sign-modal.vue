@@ -59,7 +59,10 @@
         <p class="text-sm text-text-color">Total Deposit + Fees</p>
         <p class="text-right text-sm text-text-color">
           <!-- TODO -->
-          <span class="text-xs text-text-color opacity-60">{{ dollarValue.toFixed(2) }}$</span>
+          <span v-if="dollarValue === null" class="animate-pulse text-xs text-text-color opacity-60">
+            Calculating...
+          </span>
+          <span v-else class="text-xs text-text-color opacity-60">{{ dollarValue.toFixed(2) }}$</span>
           <span class="ml-2 font-bold text-text-color"> {{ symbolValue }} {{ properties.symbol }} </span>
         </p>
 
@@ -277,6 +280,7 @@ const symbolValue = computed(() => Math.round(totalDeposit.value * 10000) / 1000
 const dollarValue = asyncComputed(async () => {
   const name = getSymbolName(properties.value.symbol);
   const prices = await getPrice(name);
+  if (prices[name]?.usd === undefined) return null;
   return prices[name].usd * symbolValue.value;
-});
+}, null);
 </script>
