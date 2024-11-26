@@ -56,6 +56,7 @@
             </template>
           </div>
 
+          <dot-button variant="tertiary" @click="disconnect"> Disconnect </dot-button>
           <dot-button variant="tertiary" @click="emit('confirm')"> Cancel </dot-button>
         </div>
       </div>
@@ -133,8 +134,15 @@ const selectedAccount = ref<ExtendedDotsamaAccount | null>(null);
 const saveAndClose = () => {
   if (selectedAccount.value) {
     accountStore.selectAccount(selectedAccount.value);
+    localStorage.setItem("account", JSON.stringify(selectedAccount.value));
     emit("confirm");
   }
+};
+
+const disconnect = () => {
+  accountStore.disconnect();
+  localStorage.removeItem("account");
+  emit("confirm");
 };
 </script>
 
