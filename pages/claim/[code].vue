@@ -162,7 +162,7 @@ const { data, status, error } = await useFetch("/api/code", {
 });
 
 const claimFailed = ref(false);
-const claimed = ref<null | string>("https://kodadot.xyz/ahp/gallery/259-18");
+const claimed = ref<null | string>(null);
 const isClaiming = ref(false);
 
 const claimButtonLabel = computed(() => (isClaiming.value ? "Claiming ..." : "Claim"));
