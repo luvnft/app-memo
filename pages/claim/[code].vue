@@ -1,12 +1,34 @@
 <template>
-  <div class="mx-auto flex max-w-xl flex-col items-center space-y-10 p-4">
-    <div class="flex aspect-square w-2/5 rounded-full border border-black bg-zinc-400 shadow-[4px_4px] shadow-k-shade2">
+  <h1 v-if="claimed" class="my-10 w-full text-center text-4xl !text-white">MEMO claimed successfully 🥳</h1>
+  <div class="mx-auto flex max-w-xl flex-col items-center gap-y-5 p-4">
+    <div
+      class="flex aspect-square w-4/5 rounded-full border border-black bg-zinc-400 shadow-[4px_4px] shadow-k-shade2 md:w-3/5"
+    >
       <div v-if="status !== 'success'" class="m-4 flex-1 rounded-full bg-zinc-300" />
-      <img v-else :src="data.imageSrc" alt="poap image" class="flex-1 rounded-full object-cover" />
+      <img v-else :src="data?.image" alt="poap image" class="w-full rounded-full object-cover" />
     </div>
 
-    <h1 v-if="status === 'success'" class="text-4xl">{{ data.name }}</h1>
+    <h1 v-if="status === 'success' && data" class="text-4xl">{{ data?.name }}</h1>
     <h3 v-if="error" class="text-k-red">Couldn't load MEMO</h3>
+    <template v-if="status === 'success' && data">
+      <div class="flex items-center gap-2">
+        <Icon name="mdi:calendar" size="24" class="text-k-primary" />
+        <p>
+          {{ DateTime.fromSQL(data.createdAt).toLocaleString(DateTime.DATE_FULL) }}
+        </p>
+        <p>-</p>
+        <Icon name="mdi:calendar" size="24" class="text-k-primary" />
+        <p>
+          {{ DateTime.fromSQL(data.expiresAt).toLocaleString(DateTime.DATE_FULL) }}
+        </p>
+      </div>
+      <div v-if="data.description" class="flex items-center gap-2">
+        <Icon name="mdi:text" size="24" class="text-k-primary" />
+        <p>
+          {{ data.description }}
+        </p>
+      </div>
+    </template>
 
     <div class="flex flex-col space-y-3 self-stretch">
       <template v-if="!claimed">
@@ -85,18 +107,36 @@
       </template>
 
       <template v-else>
-        <dot-label text="MEMO claimed successfully 🥳">
-          <a :href="claimed" class="block w-full">
-            <dot-button class="w-full" variant="primary" size="large">Check your MEMO at KodaDot</dot-button>
-          </a>
-        </dot-label>
+        <a :href="claimed" class="block w-full">
+          <dot-button class="w-full" variant="primary" size="large">
+            See {{ data?.name ?? "MEMO" }} in gallery
+          </dot-button>
+        </a>
+        <div class="flex w-full flex-col items-center gap-2">
+          <small class="text-white">Do you want to share?</small>
+          <span class="mb-10 flex gap-2">
+            <div class="flex cursor-pointer items-center gap-2" @click="shareOnTelegram(SHARE_MESSAGE, claimed)">
+              <div class="overflow-hidden rounded-full border border-white">
+                <img src="/socials/telegram.webp" alt="Telegram" class="size-10" />
+              </div>
+            </div>
+            <div class="flex cursor-pointer items-center gap-2" @click="shareOnX(SHARE_MESSAGE, claimed)">
+              <div class="overflow-hidden rounded-full border border-white">
+                <img src="/socials/x.webp" alt="X" class="size-10" />
+              </div>
+            </div>
+          </span>
+        </div>
       </template>
     </div>
   </div>
 </template>
 <script setup lang="ts">
 import QRScannerModal from "~/components/dot/qr-scanner-modal.vue";
+import { DateTime } from "luxon";
 import { useModal } from "vue-final-modal";
+
+const { shareOnTelegram, shareOnX } = useSocials();
 
 const route = useRoute();
 const accountStore = useAccountStore();
@@ -122,7 +162,7 @@ const { data, status, error } = await useFetch("/api/code", {
 });
 
 const claimFailed = ref(false);
-const claimed = ref<null | string>(null);
+const claimed = ref<null | string>("https://kodadot.xyz/ahp/gallery/259-18");
 const isClaiming = ref(false);
 
 const claimButtonLabel = computed(() => (isClaiming.value ? "Claiming ..." : "Claim"));
@@ -137,6 +177,8 @@ const { open } = useModal({
     },
   },
 });
+
+const SHARE_MESSAGE = "I just claimed a new MEMO on dotmemo.xyz! 🎉";
 
 const claim = async () => {
   if (!address.value) return;

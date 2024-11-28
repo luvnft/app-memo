@@ -1,10 +1,12 @@
+import type { CreateMemoDTO } from "~/types/memo";
+
 const RUNTIME_CONFIG = useRuntimeConfig();
 
 export default defineEventHandler(async (event) => {
   // const { image, name, description, externalUrl, startDate, endDate, quantity, secret, chain, collection } =
   //   await readBody(event);
 
-  const { secret, mint, collection, chain, name, image } = await readBody(event);
+  const { secret, mint, collection, chain, name, image } = await readBody<CreateMemoDTO>(event);
 
   const [data, err] = await $fetch(`${RUNTIME_CONFIG.apiUrl}/poaps`, {
     method: "POST",
