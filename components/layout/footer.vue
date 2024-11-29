@@ -1,6 +1,6 @@
 <template>
   <footer
-    class="relative flex h-16 w-full items-center justify-center border-t border-k-primary bg-bg-persistent text-text-color"
+    class="absolute bottom-0 flex h-16 w-full items-center justify-center border-t border-k-primary bg-bg-persistent text-text-color"
   >
     <span class="flex-1 text-center text-white md:pl-32">.MEMO 2024 {{ name }}</span>
     <div class="flex flex-row items-center gap-5 pr-5 md:gap-10">

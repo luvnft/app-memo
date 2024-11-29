@@ -1,9 +1,11 @@
+import type { MemoDTO } from "~/types/memo";
+
 const RUNTIME_CONFIG = useRuntimeConfig();
 
 export default defineEventHandler(async (event) => {
   const { code, address } = await readBody(event);
 
-  const [data, err] = await $fetch(`${RUNTIME_CONFIG.apiUrl}/poaps/${code}/claim`, {
+  const [data, err] = await $fetch<MemoDTO>(`${RUNTIME_CONFIG.apiUrl}/poaps/${code}/claim`, {
     method: "POST",
     body: {
       address,
