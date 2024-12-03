@@ -6,6 +6,7 @@ import useTransactionStatus, { TransactionStatus } from "./useTransactionStatus"
 import exec, { execResultValue, txCb } from "@/utils/transactionExecutor";
 import type { ExecResult, TxCbOnSuccessParams } from "@/utils/transactionExecutor";
 import type { Extrinsic } from "@kodadot1/sub-api";
+import type { Prefix } from "@kodadot1/static";
 
 export type HowAboutToExecuteOnSuccessParam = {
   txHash: string;
@@ -30,11 +31,11 @@ export type HowAboutToExecute = (
   options?: HowAboutToExecuteOptions,
 ) => Promise<void>;
 
-function useMetaTransaction() {
+function useMetaTransaction(prefix: Ref<Prefix>) {
   // const { $i18n } = useNuxtApp()
   const { isLoading, resolveStatus, initTransactionLoader, status, stopLoader } = useTransactionStatus();
   const error = ref<string | null>(null);
-  const { apiInstance } = useAPI();
+  const { apiInstance } = useAPI(prefix);
   const tx = ref<ExecResult>();
   const isError = ref(false);
 
