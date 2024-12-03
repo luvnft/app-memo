@@ -2,7 +2,7 @@
   <VueFinalModal
     modal-id="sign-modal"
     class="flex items-center justify-center"
-    content-class="flex w-3/4 sm:w-2/3 md:w-1/2 xl:w-1/4 flex-col p-6 gap-4 bg-background-color rounded-2xl border border-background-color-inverse"
+    content-class="flex w-3/4 sm:w-2/3 md:w-1/2 xl:w-1/4 flex-col max-h-[calc(100vh-40px)] overflow-y-scroll p-6 gap-4 bg-background-color rounded-2xl border border-background-color-inverse"
     overlay-transition="vfm-fade"
     content-transition="vfm-fade"
   >
@@ -54,8 +54,8 @@
 
     <template v-if="!isLoading">
       <div class="flex items-center gap-5">
-        <div class="flex h-20 w-20 overflow-hidden rounded-full border-2 border-border-color">
-          <img :src="imagePreview" class="m-1 flex-1 rounded-full object-cover" />
+        <div class="flex max-h-20 max-w-20 overflow-hidden rounded-full border-2 border-border-color">
+          <img :src="imagePreview" class="flex-1 rounded-full object-cover" />
         </div>
         <div class="flex flex-col gap-2">
           <h1 class="text-xl text-text-color">{{ props.name }}</h1>
