@@ -1,6 +1,6 @@
 <template>
   <h1 v-if="claimed" class="my-10 w-full text-center text-4xl !text-white">MEMO claimed successfully 🥳</h1>
-  <div class="mx-auto flex max-w-xl flex-col items-center gap-y-5 p-4">
+  <div class="mx-auto mb-20 flex max-w-xl flex-col items-center gap-y-5 p-4">
     <div
       class="flex aspect-square w-4/5 rounded-full border border-black bg-zinc-400 shadow-[4px_4px] shadow-k-shade2 md:w-3/5"
     >
