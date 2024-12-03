@@ -1,10 +1,9 @@
 import { ApiFactory } from "@kodadot1/sub-api";
 import type { ApiPromise } from "@polkadot/api";
 import { getChainEndpointByPrefix } from "@/utils/chain";
-import usePrefix from "./usePrefix";
+import type { Prefix } from "@kodadot1/static";
 
-export default function () {
-  const { prefix } = usePrefix();
+export default function (prefix: Ref<Prefix>) {
   // const config = useRuntimeConfig()
 
   const apiUrl = computed(() => {

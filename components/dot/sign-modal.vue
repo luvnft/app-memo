@@ -178,7 +178,10 @@ const props = defineProps<{
   chain: Prefix;
 }>();
 
-const { apiInstance } = useApi();
+const chainRef = computed(() => props.chain);
+
+const { apiInstance } = useApi(chainRef);
+
 const {
   howAboutToExecute,
   initTransactionLoader,
@@ -186,7 +189,7 @@ const {
   isError: _isError,
   isLoading,
   error: txError,
-} = useMetaTransaction();
+} = useMetaTransaction(chainRef);
 const { accountId, isLogIn } = useAuth();
 
 const properties = computed(() => chainAssetOf(props.chain));
