@@ -1,6 +1,5 @@
 import type { FetchError } from "ofetch";
 import { $fetch } from "ofetch";
-import consola from "consola";
 
 export type Metadata = {
   name: string;
@@ -33,7 +32,7 @@ type StorageApiResponse = {
     created: Date;
   };
 };
-
+const logger = createLogger("NFT::STORAGE");
 export const pinJson = async (object: Metadata) => {
   const { value } = await nftStorageApi<StorageApiResponse>("/pinJson", {
     method: "POST",
@@ -41,7 +40,7 @@ export const pinJson = async (object: Metadata) => {
   }).catch((error: FetchError) => {
     throw new Error(`[NFT::STORAGE] Unable to PIN JSON for reasons ${error.data}`);
   });
-  consola.log("[NFT::STORAGE] Pin Json");
+  logger.log("Pin Json");
   return value.cid;
 };
 
@@ -61,7 +60,7 @@ export const pinFileToIPFS = async (file: Blob | File): Promise<string> => {
   }).catch((error: FetchError) => {
     throw new Error(`[NFT::STORAGE] Unable to PIN File for reasons ${error.data}`);
   });
-  consola.log("[NFT::STORAGE] Pin File");
+  logger.log("Pin File");
   return value.cid;
 };
 

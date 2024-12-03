@@ -1,14 +1,16 @@
 import "@polkadot/api-augment";
 import type { ApiPromise } from "@polkadot/api";
 
+const logger = createLogger("Utils/SDK/Query");
+
 export async function nextCollectionId(api: ApiPromise) {
   try {
     const result = await api.query.nfts.nextCollectionId();
 
     return result.unwrap().toNumber();
   } catch (error) {
-    console.error("Error getting collection id", error);
-    return undefined;
+    logger.error("Error getting collection id", error);
+    return null;
   }
 }
 
@@ -18,7 +20,7 @@ export async function latestBlock(api: ApiPromise) {
 
     return result.number.toNumber();
   } catch (error) {
-    console.error("Error getting collection id", error);
-    return undefined;
+    logger.error("Error getting latest block", error);
+    return null;
   }
 }

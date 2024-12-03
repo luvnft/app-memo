@@ -2,7 +2,7 @@
   <VueFinalModal
     modal-id="sign-modal"
     class="flex items-center justify-center"
-    content-class="flex w-3/4 sm:w-2/3 md:w-1/2 xl:w-1/4 flex-col p-6 gap-4 bg-background-color rounded-2xl border border-background-color-inverse"
+    content-class="flex w-3/4 sm:w-2/3 md:w-1/2 xl:w-1/4 flex-col max-h-[calc(100vh-40px)] overflow-y-scroll p-6 gap-4 bg-background-color rounded-2xl border border-background-color-inverse"
     overlay-transition="vfm-fade"
     content-transition="vfm-fade"
   >
@@ -30,11 +30,32 @@
     </client-only>
 
     <hr class="my-3" />
+    <template v-if="signError">
+      <div class="relative rounded border border-red-200 bg-red-100 px-4 py-3 text-red-700" role="alert">
+        <strong class="font-bold">Error! </strong>
+        <span class="block sm:inline">{{ signError }}</span>
+      </div>
+      <hr class="my-3" />
+    </template>
+    <template v-else-if="txError">
+      <div class="relative rounded border border-red-200 bg-red-100 px-4 py-3 text-red-700" role="alert">
+        <strong class="font-bold">Error! </strong>
+        <span class="block sm:inline">{{ txError }}</span>
+      </div>
+      <hr class="my-3" />
+    </template>
+    <template v-else-if="currencyError">
+      <div class="relative rounded border border-red-200 bg-red-100 px-4 py-3 text-red-700" role="alert">
+        <strong class="font-bold">Error! </strong>
+        <span class="block sm:inline">{{ currencyError }}</span>
+      </div>
+      <hr class="my-3" />
+    </template>
 
     <template v-if="!isLoading">
       <div class="flex items-center gap-5">
-        <div class="flex h-20 w-20 overflow-hidden rounded-full border-2 border-border-color">
-          <img :src="imagePreview" class="m-1 flex-1 rounded-full object-cover" />
+        <div class="flex max-h-20 max-w-20 overflow-hidden rounded-full border-2 border-border-color">
+          <img :src="imagePreview" class="flex-1 rounded-full object-cover" />
         </div>
         <div class="flex flex-col gap-2">
           <h1 class="text-xl text-text-color">{{ props.name }}</h1>
@@ -62,7 +83,9 @@
           <span v-if="dollarValue === null" class="animate-pulse text-xs text-text-color opacity-60">
             Calculating...
           </span>
-          <span v-else class="text-xs text-text-color opacity-60">{{ dollarValue.toFixed(2) }}$</span>
+          <span v-else-if="!currencyError" class="text-xs text-text-color opacity-60">
+            {{ dollarValue.toFixed(2) }}$
+          </span>
           <span class="ml-2 font-bold text-text-color"> {{ symbolValue }} {{ properties.symbol }} </span>
         </p>
 
@@ -83,7 +106,9 @@
         </template>
       </div>
 
-      <dot-button :disabled="!isLogIn" variant="primary" size="large" @click="sign()"> Proceed to signing </dot-button>
+      <dot-button :disabled="!isLogIn || !!currencyError" variant="primary" size="large" @click="sign()">
+        Proceed to signing
+      </dot-button>
     </template>
 
     <template v-else>
@@ -152,7 +177,14 @@ const props = defineProps<{
 }>();
 
 const { apiInstance } = useApi();
-const { howAboutToExecute, initTransactionLoader, status, isError: _isError, isLoading } = useMetaTransaction();
+const {
+  howAboutToExecute,
+  initTransactionLoader,
+  status,
+  isError: _isError,
+  isLoading,
+  error: txError,
+} = useMetaTransaction();
 const { accountId, isLogIn } = useAuth();
 const { prefix } = usePrefix();
 
@@ -162,9 +194,9 @@ const depositPerItem = ref(0);
 const depositForCollection = ref(0);
 const futureCollection = ref(0);
 const totalPayableDeposit = ref(BigInt(0));
-const toMint = ref("");
+const toMint = ref<string | null>(null);
 const totalDeposit = computed(() => depositPerItem.value * props.quantity + depositForCollection.value);
-const imageCid = ref("");
+const imageCid = ref<string | null>(null);
 
 const accountStore = useAccountStore();
 const currentAccount = computed(() => accountStore.selected);
@@ -181,9 +213,10 @@ onApiConnect(prefix.value, async (api) => {
 
 const showBreakdown = ref(false);
 
+const logger = createLogger("SignModal");
+
 async function pinAll() {
   const imageHash = await pinFileToIPFS(props.image);
-  imageCid.value = `ipfs://${imageHash}`;
   const metadata: Metadata = {
     name: props.name,
     image: `ipfs://${imageHash}`,
@@ -194,27 +227,39 @@ async function pinAll() {
     type: props.image.type,
   };
   const metadataHash = await pinJson(metadata);
-  return `ipfs://${metadataHash}`;
+  return {
+    image: `ipfs://${imageHash}`,
+    metadata: `ipfs://${metadataHash}`,
+  };
 }
-
+const signError = ref<string | null>(null);
 async function sign() {
   if (!accountId.value) {
-    console.error("No account selected");
+    logger.error("No account selected");
     return;
   }
+  txError.value = null;
+  signError.value = null;
 
   if (!toMint.value) {
-    const metadataHash = await pinAll();
-    toMint.value = metadataHash;
+    try {
+      const { image, metadata } = await pinAll();
+      imageCid.value = image;
+      toMint.value = metadata;
+    } catch (e) {
+      logger.error("Failed to pin image and metadata. Reason: %s", (e as Error).message);
+      signError.value = "Failed to pin image and metadata. Try again later or contact support.";
+      return;
+    }
   }
 
   const api = await apiInstance.value;
 
   const createArgs = createArgsForNftPallet(accountId.value, props.quantity);
+  logger.info("Creating collection with args: %O", createArgs);
   const nextId = await nextCollectionId(api);
-
   if (!nextId) {
-    console.error("No next collection id");
+    signError.value = "Failed to get next collection id. Try again later or contact support.";
     return;
   }
 
@@ -242,7 +287,7 @@ watch(status, async (status) => {
   console.log("TransactionStatus", status);
   if (status === TransactionStatus.Finalized) {
     try {
-      const data = await $fetch("/api/create", {
+      const _data = await $fetch("/api/create", {
         method: "POST",
         body: {
           secret: props.secret,
@@ -253,10 +298,8 @@ watch(status, async (status) => {
           image: imageCid.value,
         },
       });
-      // eslint-disable-next-line no-console
-      console.log(data);
     } catch (error) {
-      console.error(error);
+      logger.error(error);
     } finally {
       closeModal();
     }
@@ -276,11 +319,17 @@ const closeModal = () => vfm.close("sign-modal");
 const { getPrice, getSymbolName } = usePriceApi();
 
 const symbolValue = computed(() => Math.round(totalDeposit.value * 10000) / 10000);
-
+const currencyError = ref<string | null>(null);
 const dollarValue = asyncComputed(async () => {
-  const name = getSymbolName(properties.value.symbol);
-  const prices = await getPrice(name);
-  if (prices[name]?.usd === undefined) return null;
-  return prices[name].usd * symbolValue.value;
+  try {
+    const name = getSymbolName(properties.value.symbol);
+    const prices = await getPrice(name);
+    if (prices[name]?.usd === undefined) return null;
+    return prices[name].usd * symbolValue.value;
+  } catch (e) {
+    currencyError.value = "Failed to fetch currency data. Try again later or contact support.";
+    logger.error("Failed to fetch currency data. Reason: %s", (e as Error).message);
+    return null;
+  }
 }, null);
 </script>
