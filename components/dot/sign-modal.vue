@@ -2,7 +2,7 @@
   <VueFinalModal
     modal-id="sign-modal"
     class="flex items-center justify-center"
-    content-class="flex w-3/4 sm:w-2/3 md:w-1/2 xl:w-1/4 flex-col max-h-[calc(100vh-40px)] overflow-y-scroll p-6 gap-4 bg-background-color rounded-2xl border border-background-color-inverse"
+    content-class="flex w-[calc(100vw-20px)] sm:w-2/3 md:w-1/2 xl:w-1/4 flex-col max-h-[calc(100vh-40px)] overflow-y-scroll overflow-x-hidden p-6 gap-4 bg-background-color rounded-2xl border border-background-color-inverse"
     overlay-transition="vfm-fade"
     content-transition="vfm-fade"
   >
@@ -65,13 +65,13 @@
 
       <div class="grid grid-cols-2 gap-3">
         <p class="text-sm text-text-color">Event Start</p>
-        <p class="text-right text-sm text-text-color">{{ props.startDate.toISOString().split("T").at(0) }}</p>
+        <p class="text-right text-sm text-text-color/70">{{ props.startDate.toISOString().split("T").at(0) }}</p>
         <p class="text-sm text-text-color">Event End</p>
-        <p class="text-right text-sm text-text-color">{{ props.endDate.toISOString().split("T").at(0) }}</p>
+        <p class="text-right text-sm text-text-color/70">{{ props.endDate.toISOString().split("T").at(0) }}</p>
         <p class="text-sm text-text-color">Claim Code</p>
-        <p class="text-right text-sm font-bold text-text-color">{{ props.secret }}</p>
+        <p class="text-right text-sm font-bold text-text-color/70">{{ props.secret }}</p>
         <p class="text-sm text-text-color">Amount</p>
-        <p class="text-right text-sm font-bold text-text-color">{{ props.quantity }}</p>
+        <p class="text-right text-sm font-bold text-text-color/70">{{ props.quantity }}</p>
       </div>
 
       <hr class="-mx-6 my-3" />
@@ -80,13 +80,10 @@
         <p class="text-sm text-text-color">Total Deposit + Fees</p>
         <p class="text-right text-sm text-text-color">
           <!-- TODO -->
-          <span v-if="dollarValue === null" class="animate-pulse text-xs text-text-color opacity-60">
-            Calculating...
-          </span>
-          <span v-else-if="!currencyError" class="text-xs text-text-color opacity-60">
-            {{ dollarValue.toFixed(2) }}$
-          </span>
-          <span class="ml-2 font-bold text-text-color"> {{ symbolValue }} {{ properties.symbol }} </span>
+          <span class="ml-2 font-bold text-text-color/70"> {{ symbolValue }} {{ properties.symbol }} </span>
+
+          <span v-if="dollarValue === null" class="animate-pulse text-xs text-text-color/50"> (Calculating...) </span>
+          <span v-else-if="!currencyError" class="text-xs text-text-color/50"> ({{ dollarValue.toFixed(2) }}$) </span>
         </p>
 
         <button class="col-span-2 flex items-center gap-2" @click="showBreakdown = !showBreakdown">
@@ -96,19 +93,22 @@
 
         <template v-if="showBreakdown">
           <p class="text-sm text-text-color">Collection Deposit</p>
-          <p class="text-right text-sm text-text-color">{{ depositForCollection }} {{ properties.symbol }}</p>
+          <p class="text-right text-sm text-text-color/70">{{ depositForCollection }} {{ properties.symbol }}</p>
           <p class="text-sm text-text-color">Free Minting Deposit</p>
-          <p class="text-right text-sm text-text-color">
+          <p class="text-right text-sm text-text-color/70">
             {{ props.quantity }} x {{ depositPerItem }} {{ properties.symbol }}
           </p>
           <p class="text-sm text-text-color">Fees</p>
-          <p class="text-right text-sm text-text-color">0.02 {{ properties.symbol }}</p>
+          <p class="text-right text-sm text-text-color/70">0.02 {{ properties.symbol }}</p>
         </template>
       </div>
 
-      <dot-button :disabled="!isLogIn || !!currencyError" variant="primary" size="large" @click="sign()">
-        Proceed to signing
+      <dot-button :disabled="!isLogIn || !!currencyError || isSigning" variant="primary" size="large" @click="sign()">
+        {{ isSigning ? `Signing... (${statusText})` : "Proceed to signing" }}
       </dot-button>
+      <small v-if="status === TransactionStatus.Cancelled" class="text-center text-sm text-gray-400">
+        Transaction was cancelled. Please try again.
+      </small>
     </template>
 
     <template v-else>
@@ -146,7 +146,7 @@
 
         <div>
           <p class="text-2xl font-bold text-text-color">Setting up MEMO</p>
-          <p class="text-text-color opacity-70">Transaction in progress</p>
+          <p class="text-text-color opacity-70">Transaction in progress (Status: {{ statusText }})</p>
         </div>
       </div>
     </template>
@@ -186,6 +186,7 @@ const {
   howAboutToExecute,
   initTransactionLoader,
   status,
+  statusText,
   isError: _isError,
   isLoading,
   error: txError,
@@ -237,11 +238,13 @@ async function pinAll() {
   };
 }
 const signError = ref<string | null>(null);
+const isSigning = ref(false);
 async function sign() {
   if (!accountId.value) {
     logger.error("No account selected");
     return;
   }
+  isSigning.value = true;
   txError.value = null;
   signError.value = null;
 
@@ -253,6 +256,7 @@ async function sign() {
     } catch (e) {
       logger.error("Failed to pin image and metadata. Reason: %s", (e as Error).message);
       signError.value = "Failed to pin image and metadata. Try again later or contact support.";
+      isSigning.value = false;
       return;
     }
   }
@@ -264,6 +268,7 @@ async function sign() {
   const nextId = await nextCollectionId(api);
   if (!nextId) {
     signError.value = "Failed to get next collection id. Try again later or contact support.";
+    isSigning.value = false;
     return;
   }
 
@@ -286,9 +291,18 @@ async function sign() {
   await howAboutToExecute(accountId.value, cb, args);
 }
 
+watch(txError, (error) => {
+  if (error) {
+    isSigning.value = false;
+  }
+});
+
 watch(status, async (status) => {
   // eslint-disable-next-line no-console
   console.log("TransactionStatus", status);
+  if (status === TransactionStatus.Cancelled) {
+    isSigning.value = false;
+  }
   if (status === TransactionStatus.Finalized) {
     try {
       const _data = await $fetch("/api/create", {
@@ -305,6 +319,7 @@ watch(status, async (status) => {
     } catch (error) {
       logger.error(error);
     } finally {
+      isSigning.value = false;
       closeModal();
     }
   }
