@@ -165,6 +165,7 @@ import { getChainName } from "~/utils/chain.config";
 import { pinFileToIPFS, pinJson, type Metadata } from "~/services/nftStorage";
 import Identicon from "@polkadot/vue-identicon";
 import { asyncComputed } from "@vueuse/core";
+import type { Prefix } from "@kodadot1/static";
 
 const props = defineProps<{
   name: string;
@@ -174,6 +175,7 @@ const props = defineProps<{
   quantity: number;
   secret: string;
   description?: string;
+  chain: Prefix;
 }>();
 
 const { apiInstance } = useApi();
@@ -186,10 +188,9 @@ const {
   error: txError,
 } = useMetaTransaction();
 const { accountId, isLogIn } = useAuth();
-const { prefix } = usePrefix();
 
-const properties = computed(() => chainAssetOf(prefix.value));
-const chainName = getChainName(prefix.value);
+const properties = computed(() => chainAssetOf(props.chain));
+const chainName = getChainName(props.chain);
 const depositPerItem = ref(0);
 const depositForCollection = ref(0);
 const futureCollection = ref(0);
@@ -201,7 +202,7 @@ const imageCid = ref<string | null>(null);
 const accountStore = useAccountStore();
 const currentAccount = computed(() => accountStore.selected);
 
-onApiConnect(prefix.value, async (api) => {
+onApiConnect(props.chain, async (api) => {
   const collectionFee = collectionDeposit(api);
   const itemFee = itemDeposit(api);
   const metadataFee = metadataDeposit(api);
@@ -291,7 +292,7 @@ watch(status, async (status) => {
         method: "POST",
         body: {
           secret: props.secret,
-          chain: prefix.value,
+          chain: props.chain,
           collection: futureCollection.value,
           mint: toMint.value,
           name: props.name,
@@ -324,7 +325,11 @@ const dollarValue = asyncComputed(async () => {
   try {
     const name = getSymbolName(properties.value.symbol);
     const prices = await getPrice(name);
-    if (prices[name]?.usd === undefined) return null;
+    if (prices[name]?.usd === undefined) {
+      logger.error("Failed to get symbol price. Data: %O", prices);
+      currencyError.value = "Failed to fetch currency data. Try again later or contact support.";
+      return null;
+    }
     return prices[name].usd * symbolValue.value;
   } catch (e) {
     currencyError.value = "Failed to fetch currency data. Try again later or contact support.";
