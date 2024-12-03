@@ -46,7 +46,7 @@
     </section>
 
     <section class="m-[10px] flex min-h-[50vh] flex-col md:m-10">
-      <p class="m-6 text-3xl !text-white">How Dotmemo Works</p>
+      <p class="m-6 text-3xl !text-white">How HAHZ.LIVE Memo Works</p>
 
       <div class="grid grid-cols-1 gap-7 sm:grid-cols-2 lg:grid-cols-3">
         <div class="flex flex-col gap-2 rounded-3xl bg-bg-card p-8 sm:p-12">

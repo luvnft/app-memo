@@ -178,7 +178,7 @@ const { open } = useModal({
   },
 });
 
-const SHARE_MESSAGE = "I just claimed a new MEMO on dotmemo.xyz! 🎉";
+const SHARE_MESSAGE = "I just claimed a new MEMO on memo.hahz.live! 🎉";
 
 const claim = async () => {
   if (!address.value) return;

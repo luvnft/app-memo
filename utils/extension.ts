@@ -1,9 +1,9 @@
 import { web3Enable, web3FromAddress } from "@polkadot/extension-dapp";
 
-export const enableExtension = async () => await web3Enable("DotMemo");
+export const enableExtension = async () => await web3Enable("HAHZMemo");
 
 export const getInjectedExtensions = async () => {
-  const extensions = await web3Enable("DotMemo");
+  const extensions = await web3Enable("HAHZMemo");
   return extensions;
 };
 

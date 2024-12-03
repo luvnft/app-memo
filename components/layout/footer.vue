@@ -2,9 +2,9 @@
   <footer
     class="absolute bottom-0 flex h-16 w-full items-center justify-center border-t border-k-primary bg-bg-persistent text-text-color"
   >
-    <span class="flex-1 text-center text-white md:pl-32">.MEMO 2024 {{ name }}</span>
+    <span class="flex-1 text-center text-white md:pl-32">MEMO.HAHZ.LIVE 2024 {{ name }}</span>
     <div class="flex flex-row items-center gap-5 pr-5 md:gap-10">
-      <a target="_blank" href="https://t.me/dotmemoxyz">
+      <a target="_blank" href="https://t.me/hahzlove">
         <svg
           style="enable-background: new 0 0 512 512"
           version="1.1"
@@ -24,7 +24,7 @@
           <g id="Layer_1" />
         </svg>
       </a>
-      <a target="_blank" href="https://x.com/polkadotmemo">
+      <a target="_blank" href="https://x.com/hahzlove">
         <svg
           id="Layer_1"
           xmlns="http://www.w3.org/2000/svg"

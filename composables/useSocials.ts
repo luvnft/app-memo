@@ -11,7 +11,7 @@ export const useSocials = () => {
     window.open(url, "_blank");
   };
 
-  const shareOnX = (text: string, url: string = fullPathShare.value, via: string | null = "polkadotmemo") => {
+  const shareOnX = (text: string, url: string = fullPathShare.value, via: string | null = "hahzlove") => {
     const shareUrl = new URL("https://twitter.com/intent/tweet");
     shareUrl.searchParams.set("text", text);
     via && shareUrl.searchParams.set("via", via);
