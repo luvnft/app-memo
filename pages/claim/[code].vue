@@ -72,12 +72,23 @@
           </dot-label>
         </client-only>
 
-        <dot-label v-if="claimFailed" :error="true" text="You already claimed this MEMO" />
+        <p v-if="claimFailed" class="w-full text-center !text-red-500">You already claimed this MEMO</p>
 
-        <div class="relative w-full overflow-hidden rounded-full">
-          <dot-button :disabled="!canClaim || isClaiming" variant="primary" size="medium" class="w-full" @click="claim">
+        <div class="relative flex w-full flex-col gap-2">
+          <dot-button
+            :disabled="!canClaim || isClaiming || claimFailed"
+            variant="primary"
+            size="medium"
+            class="w-full"
+            @click="claim"
+          >
             {{ claimButtonLabel }}
           </dot-button>
+
+          <div v-if="data?.chain" class="flex w-full items-center justify-center gap-2">
+            <small class="text-md text-white">Claim for free @{{ getChainName(data.chain) }}</small>
+            <img :src="`/chain/${data.chain}.png`" alt="chain" class="max-h-6 max-w-6 rounded-full" />
+          </div>
 
           <div
             class="pointer-events-none absolute inset-0 top-0 flex rounded-full p-1 transition-all duration-700"
@@ -143,10 +154,17 @@ const accountStore = useAccountStore();
 const manualAddress = ref("");
 const showAddressInput = ref(true);
 
+watch(showAddressInput, (show) => {
+  if (!show) {
+    claimFailed.value = false;
+  }
+});
+
 const address = computed(() => (showAddressInput.value ? manualAddress.value : accountStore.selected?.address));
 
 const addressError = ref("");
 watch(address, (address) => {
+  claimFailed.value = false;
   if (!address) {
     addressError.value = "Address is required";
     return;
