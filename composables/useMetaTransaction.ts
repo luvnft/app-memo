@@ -33,6 +33,7 @@ export type HowAboutToExecute = (
 function useMetaTransaction() {
   // const { $i18n } = useNuxtApp()
   const { isLoading, resolveStatus, initTransactionLoader, status, stopLoader } = useTransactionStatus();
+  const error = ref<string | null>(null);
   const { apiInstance } = useAPI();
   const tx = ref<ExecResult>();
   const isError = ref(false);
@@ -93,6 +94,7 @@ function useMetaTransaction() {
         status.value = TransactionStatus.Cancelled;
       } else {
         console.error("onCatchError", e);
+        error.value = errorMessage;
         // warningMessage(e.toString())
       }
       isLoading.value = false;
@@ -113,6 +115,7 @@ function useMetaTransaction() {
     isLoading,
     stopLoader,
     isError,
+    error,
   };
 }
 
