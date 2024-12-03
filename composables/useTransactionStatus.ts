@@ -47,12 +47,35 @@ function useTransactionStatus() {
     isLoading.value = false;
     status.value = TransactionStatus.Unknown;
   };
+
+  const statusText = computed(() => {
+    switch (status.value) {
+      case TransactionStatus.Broadcast:
+        return "Broadcast";
+      case TransactionStatus.Casting:
+        return "Casting";
+      case TransactionStatus.Block:
+        return "In Block";
+      case TransactionStatus.Finalized:
+        return "Finalized";
+      case TransactionStatus.Unknown:
+        return "Unknown";
+      case TransactionStatus.IPFS:
+        return "IPFS";
+      case TransactionStatus.Cancelled:
+        return "Cancelled";
+      default:
+        return "";
+    }
+  });
+
   return {
     status,
     isLoading,
     resolveStatus,
     initTransactionLoader,
     stopLoader,
+    statusText,
   };
 }
 

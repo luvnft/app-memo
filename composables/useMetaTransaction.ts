@@ -33,7 +33,7 @@ export type HowAboutToExecute = (
 
 function useMetaTransaction(prefix: Ref<Prefix>) {
   // const { $i18n } = useNuxtApp()
-  const { isLoading, resolveStatus, initTransactionLoader, status, stopLoader } = useTransactionStatus();
+  const { isLoading, resolveStatus, initTransactionLoader, status, stopLoader, statusText } = useTransactionStatus();
   const error = ref<string | null>(null);
   const { apiInstance } = useAPI(prefix);
   const tx = ref<ExecResult>();
@@ -117,6 +117,7 @@ function useMetaTransaction(prefix: Ref<Prefix>) {
     stopLoader,
     isError,
     error,
+    statusText,
   };
 }
 
