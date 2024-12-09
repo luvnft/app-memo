@@ -59,6 +59,12 @@ export default defineNuxtConfig({
     },
     workbox: {
       globPatterns: ["**/*.{js,css,html,png,svg,ico}"],
+      runtimeCaching: [
+        {
+          urlPattern: /^https:\/\/ahk\.gql\.api\.kodadot.xyz\/.*/i,
+          handler: "CacheFirst",
+        },
+      ],
     },
     injectManifest: {
       globPatterns: ["**/*.{js,css,html,png,svg,ico}"],
@@ -68,7 +74,7 @@ export default defineNuxtConfig({
     },
     devOptions: {
       // Enable for development testing
-      // enabled: true,
+      enabled: true,
     },
   },
 
