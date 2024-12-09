@@ -1,4 +1,5 @@
 <template>
+  <NuxtPwaManifest />
   <nuxt-layout>
     <nuxt-page />
     <modals-container />
