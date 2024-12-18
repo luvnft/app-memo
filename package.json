@@ -19,7 +19,7 @@
     "@kodadot1/sub-api": "0.4.0-rc.2",
     "@kodadot1/uniquery": "0.7.2-rc.0",
     "@nuxt/eslint": "^0.3.13",
-    "@nuxt/icon": "^1.5.4",
+    "@nuxt/icon": "^1.9.1",
     "@nuxt/image": "^1.7.0",
     "@nuxtjs/color-mode": "^3.4.1",
     "@nuxtjs/google-fonts": "^3.2.0",
@@ -30,8 +30,8 @@
     "@polkadot/types-codec": "^13.1.1",
     "@polkadot/util-crypto": "^13.1.1",
     "@polkadot/vue-identicon": "^3.10.1",
-    "@types/luxon": "^3.4.2",
     "@vee-validate/zod": "^4.13.2",
+    "@vite-pwa/nuxt": "0.10.6",
     "@vue-final-modal/nuxt": "^1.0.3",
     "@vueuse/core": "^10.11.0",
     "consola": "^3.2.3",
@@ -55,6 +55,7 @@
   "devDependencies": {
     "@histoire/plugin-nuxt": "^0.17.17",
     "@histoire/plugin-vue": "^0.17.17",
+    "@types/luxon": "^3.4.2",
     "histoire": "^0.17.17",
     "husky": "^9.0.11"
   }

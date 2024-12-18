@@ -2,7 +2,7 @@
   <VueFinalModal
     modal-id="sign-modal"
     class="flex items-center justify-center"
-    content-class="flex w-3/4 sm:w-2/3 md:w-1/2 xl:w-1/4 flex-col p-6 gap-4 bg-background-color rounded-2xl border border-background-color-inverse"
+    content-class="flex w-[calc(100vw-20px)] sm:w-2/3 md:w-1/2 xl:w-1/4 flex-col max-h-[calc(100vh-40px)] overflow-y-scroll overflow-x-hidden p-6 gap-4 bg-background-color rounded-2xl border border-background-color-inverse"
     overlay-transition="vfm-fade"
     content-transition="vfm-fade"
   >
@@ -30,11 +30,32 @@
     </client-only>
 
     <hr class="my-3" />
+    <template v-if="signError">
+      <div class="relative rounded border border-red-200 bg-red-100 px-4 py-3 text-red-700" role="alert">
+        <strong class="font-bold">Error! </strong>
+        <span class="block sm:inline">{{ signError }}</span>
+      </div>
+      <hr class="my-3" />
+    </template>
+    <template v-else-if="txError">
+      <div class="relative rounded border border-red-200 bg-red-100 px-4 py-3 text-red-700" role="alert">
+        <strong class="font-bold">Error! </strong>
+        <span class="block sm:inline">{{ txError }}</span>
+      </div>
+      <hr class="my-3" />
+    </template>
+    <template v-else-if="currencyError">
+      <div class="relative rounded border border-red-200 bg-red-100 px-4 py-3 text-red-700" role="alert">
+        <strong class="font-bold">Error! </strong>
+        <span class="block sm:inline">{{ currencyError }}</span>
+      </div>
+      <hr class="my-3" />
+    </template>
 
     <template v-if="!isLoading">
       <div class="flex items-center gap-5">
-        <div class="flex h-20 w-20 overflow-hidden rounded-full border-2 border-border-color">
-          <img :src="imagePreview" class="m-1 flex-1 rounded-full object-cover" />
+        <div class="flex max-h-20 max-w-20 overflow-hidden rounded-full border-2 border-border-color">
+          <img :src="imagePreview" class="flex-1 rounded-full object-cover" />
         </div>
         <div class="flex flex-col gap-2">
           <h1 class="text-xl text-text-color">{{ props.name }}</h1>
@@ -44,13 +65,13 @@
 
       <div class="grid grid-cols-2 gap-3">
         <p class="text-sm text-text-color">Event Start</p>
-        <p class="text-right text-sm text-text-color">{{ props.startDate.toISOString().split("T").at(0) }}</p>
+        <p class="text-right text-sm text-text-color/70">{{ props.startDate.toISOString().split("T").at(0) }}</p>
         <p class="text-sm text-text-color">Event End</p>
-        <p class="text-right text-sm text-text-color">{{ props.endDate.toISOString().split("T").at(0) }}</p>
+        <p class="text-right text-sm text-text-color/70">{{ props.endDate.toISOString().split("T").at(0) }}</p>
         <p class="text-sm text-text-color">Claim Code</p>
-        <p class="text-right text-sm font-bold text-text-color">{{ props.secret }}</p>
+        <p class="text-right text-sm font-bold text-text-color/70">{{ props.secret }}</p>
         <p class="text-sm text-text-color">Amount</p>
-        <p class="text-right text-sm font-bold text-text-color">{{ props.quantity }}</p>
+        <p class="text-right text-sm font-bold text-text-color/70">{{ props.quantity }}</p>
       </div>
 
       <hr class="-mx-6 my-3" />
@@ -59,11 +80,10 @@
         <p class="text-sm text-text-color">Total Deposit + Fees</p>
         <p class="text-right text-sm text-text-color">
           <!-- TODO -->
-          <span v-if="dollarValue === null" class="animate-pulse text-xs text-text-color opacity-60">
-            Calculating...
-          </span>
-          <span v-else class="text-xs text-text-color opacity-60">{{ dollarValue.toFixed(2) }}$</span>
-          <span class="ml-2 font-bold text-text-color"> {{ symbolValue }} {{ properties.symbol }} </span>
+          <span class="ml-2 font-bold text-text-color/70"> {{ symbolValue }} {{ properties.symbol }} </span>
+
+          <span v-if="dollarValue === null" class="animate-pulse text-xs text-text-color/50"> (Calculating...) </span>
+          <span v-else-if="!currencyError" class="text-xs text-text-color/50"> ({{ dollarValue.toFixed(2) }}$) </span>
         </p>
 
         <button class="col-span-2 flex items-center gap-2" @click="showBreakdown = !showBreakdown">
@@ -73,17 +93,22 @@
 
         <template v-if="showBreakdown">
           <p class="text-sm text-text-color">Collection Deposit</p>
-          <p class="text-right text-sm text-text-color">{{ depositForCollection }} {{ properties.symbol }}</p>
+          <p class="text-right text-sm text-text-color/70">{{ depositForCollection }} {{ properties.symbol }}</p>
           <p class="text-sm text-text-color">Free Minting Deposit</p>
-          <p class="text-right text-sm text-text-color">
+          <p class="text-right text-sm text-text-color/70">
             {{ props.quantity }} x {{ depositPerItem }} {{ properties.symbol }}
           </p>
           <p class="text-sm text-text-color">Fees</p>
-          <p class="text-right text-sm text-text-color">0.02 {{ properties.symbol }}</p>
+          <p class="text-right text-sm text-text-color/70">0.02 {{ properties.symbol }}</p>
         </template>
       </div>
 
-      <dot-button :disabled="!isLogIn" variant="primary" size="large" @click="sign()"> Proceed to signing </dot-button>
+      <dot-button :disabled="!isLogIn || !!currencyError || isSigning" variant="primary" size="large" @click="sign()">
+        {{ isSigning ? `Signing... (${statusText})` : "Proceed to signing" }}
+      </dot-button>
+      <small v-if="status === TransactionStatus.Cancelled" class="text-center text-sm text-gray-400">
+        Transaction was cancelled. Please try again.
+      </small>
     </template>
 
     <template v-else>
@@ -121,7 +146,7 @@
 
         <div>
           <p class="text-2xl font-bold text-text-color">Setting up MEMO</p>
-          <p class="text-text-color opacity-70">Transaction in progress</p>
+          <p class="text-text-color opacity-70">Transaction in progress (Status: {{ statusText }})</p>
         </div>
       </div>
     </template>
@@ -140,6 +165,7 @@ import { getChainName } from "~/utils/chain.config";
 import { pinFileToIPFS, pinJson, type Metadata } from "~/services/nftStorage";
 import Identicon from "@polkadot/vue-identicon";
 import { asyncComputed } from "@vueuse/core";
+import type { Prefix } from "@kodadot1/static";
 
 const props = defineProps<{
   name: string;
@@ -149,27 +175,38 @@ const props = defineProps<{
   quantity: number;
   secret: string;
   description?: string;
+  chain: Prefix;
 }>();
 
-const { apiInstance } = useApi();
-const { howAboutToExecute, initTransactionLoader, status, isError: _isError, isLoading } = useMetaTransaction();
-const { accountId, isLogIn } = useAuth();
-const { prefix } = usePrefix();
+const chainRef = computed(() => props.chain);
 
-const properties = computed(() => chainAssetOf(prefix.value));
-const chainName = getChainName(prefix.value);
+const { apiInstance } = useApi(chainRef);
+
+const {
+  howAboutToExecute,
+  initTransactionLoader,
+  status,
+  statusText,
+  isError: _isError,
+  isLoading,
+  error: txError,
+} = useMetaTransaction(chainRef);
+const { accountId, isLogIn } = useAuth();
+
+const properties = computed(() => chainAssetOf(props.chain));
+const chainName = getChainName(props.chain);
 const depositPerItem = ref(0);
 const depositForCollection = ref(0);
 const futureCollection = ref(0);
 const totalPayableDeposit = ref(BigInt(0));
-const toMint = ref("");
+const toMint = ref<string | null>(null);
 const totalDeposit = computed(() => depositPerItem.value * props.quantity + depositForCollection.value);
-const imageCid = ref("");
+const imageCid = ref<string | null>(null);
 
 const accountStore = useAccountStore();
 const currentAccount = computed(() => accountStore.selected);
 
-onApiConnect(prefix.value, async (api) => {
+onApiConnect(props.chain, async (api) => {
   const collectionFee = collectionDeposit(api);
   const itemFee = itemDeposit(api);
   const metadataFee = metadataDeposit(api);
@@ -181,9 +218,10 @@ onApiConnect(prefix.value, async (api) => {
 
 const showBreakdown = ref(false);
 
+const logger = createLogger("SignModal");
+
 async function pinAll() {
   const imageHash = await pinFileToIPFS(props.image);
-  imageCid.value = `ipfs://${imageHash}`;
   const metadata: Metadata = {
     name: props.name,
     image: `ipfs://${imageHash}`,
@@ -194,27 +232,43 @@ async function pinAll() {
     type: props.image.type,
   };
   const metadataHash = await pinJson(metadata);
-  return `ipfs://${metadataHash}`;
+  return {
+    image: `ipfs://${imageHash}`,
+    metadata: `ipfs://${metadataHash}`,
+  };
 }
-
+const signError = ref<string | null>(null);
+const isSigning = ref(false);
 async function sign() {
   if (!accountId.value) {
-    console.error("No account selected");
+    logger.error("No account selected");
     return;
   }
+  isSigning.value = true;
+  txError.value = null;
+  signError.value = null;
 
   if (!toMint.value) {
-    const metadataHash = await pinAll();
-    toMint.value = metadataHash;
+    try {
+      const { image, metadata } = await pinAll();
+      imageCid.value = image;
+      toMint.value = metadata;
+    } catch (e) {
+      logger.error("Failed to pin image and metadata. Reason: %s", (e as Error).message);
+      signError.value = "Failed to pin image and metadata. Try again later or contact support.";
+      isSigning.value = false;
+      return;
+    }
   }
 
   const api = await apiInstance.value;
 
   const createArgs = createArgsForNftPallet(accountId.value, props.quantity);
+  logger.info("Creating collection with args: %O", createArgs);
   const nextId = await nextCollectionId(api);
-
   if (!nextId) {
-    console.error("No next collection id");
+    signError.value = "Failed to get next collection id. Try again later or contact support.";
+    isSigning.value = false;
     return;
   }
 
@@ -237,27 +291,35 @@ async function sign() {
   await howAboutToExecute(accountId.value, cb, args);
 }
 
+watch(txError, (error) => {
+  if (error) {
+    isSigning.value = false;
+  }
+});
+
 watch(status, async (status) => {
   // eslint-disable-next-line no-console
   console.log("TransactionStatus", status);
+  if (status === TransactionStatus.Cancelled) {
+    isSigning.value = false;
+  }
   if (status === TransactionStatus.Finalized) {
     try {
-      const data = await $fetch("/api/create", {
+      const _data = await $fetch("/api/create", {
         method: "POST",
         body: {
           secret: props.secret,
-          chain: prefix.value,
+          chain: props.chain,
           collection: futureCollection.value,
           mint: toMint.value,
           name: props.name,
           image: imageCid.value,
         },
       });
-      // eslint-disable-next-line no-console
-      console.log(data);
     } catch (error) {
-      console.error(error);
+      logger.error(error);
     } finally {
+      isSigning.value = false;
       closeModal();
     }
   }
@@ -276,11 +338,21 @@ const closeModal = () => vfm.close("sign-modal");
 const { getPrice, getSymbolName } = usePriceApi();
 
 const symbolValue = computed(() => Math.round(totalDeposit.value * 10000) / 10000);
-
+const currencyError = ref<string | null>(null);
 const dollarValue = asyncComputed(async () => {
-  const name = getSymbolName(properties.value.symbol);
-  const prices = await getPrice(name);
-  if (prices[name]?.usd === undefined) return null;
-  return prices[name].usd * symbolValue.value;
+  try {
+    const name = getSymbolName(properties.value.symbol);
+    const prices = await getPrice(name);
+    if (prices[name]?.usd === undefined) {
+      logger.error("Failed to get symbol price. Data: %O", prices);
+      currencyError.value = "Failed to fetch currency data. Try again later or contact support.";
+      return null;
+    }
+    return prices[name].usd * symbolValue.value;
+  } catch (e) {
+    currencyError.value = "Failed to fetch currency data. Try again later or contact support.";
+    logger.error("Failed to fetch currency data. Reason: %s", (e as Error).message);
+    return null;
+  }
 }, null);
 </script>

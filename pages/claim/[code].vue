@@ -1,15 +1,17 @@
 <template>
   <h1 v-if="claimed" class="my-10 w-full text-center text-4xl !text-white">MEMO claimed successfully 🥳</h1>
-  <div class="mx-auto flex max-w-xl flex-col items-center gap-y-5 p-4">
-    <div
-      class="flex aspect-square w-4/5 rounded-full border border-black bg-zinc-400 shadow-[4px_4px] shadow-k-shade2 md:w-3/5"
-    >
-      <div v-if="status !== 'success'" class="m-4 flex-1 rounded-full bg-zinc-300" />
-      <img v-else :src="data?.image" alt="poap image" class="w-full rounded-full object-cover" />
+
+  <div class="mx-auto mt-10 flex max-w-xl flex-col items-center gap-y-5 p-4 md:mt-24">
+    <div class="relative flex h-52 w-full overflow-hidden rounded-lg border-2 border-white bg-white/5 p-2 md:h-72">
+      <img :src="data?.image" alt="poap image" class="absolute size-full object-cover opacity-80 blur-2xl" />
+      <div class="absolute inset-2 flex items-center justify-center">
+        <img :src="data?.image" alt="poap image" class="absolute h-full" />
+      </div>
     </div>
 
     <h1 v-if="status === 'success' && data" class="text-4xl">{{ data?.name }}</h1>
     <h3 v-if="error" class="text-k-red">Couldn't load MEMO</h3>
+
     <template v-if="status === 'success' && data">
       <div class="flex items-center gap-2">
         <Icon name="mdi:calendar" size="24" class="text-k-primary" />
@@ -72,12 +74,23 @@
           </dot-label>
         </client-only>
 
-        <dot-label v-if="claimFailed" :error="true" text="You already claimed this MEMO" />
+        <p v-if="claimFailed" class="w-full text-center !text-red-500">You already claimed this MEMO</p>
 
-        <div class="relative w-full overflow-hidden rounded-full">
-          <dot-button :disabled="!canClaim || isClaiming" variant="primary" size="medium" class="w-full" @click="claim">
+        <div class="relative flex w-full flex-col gap-2">
+          <dot-button
+            :disabled="!canClaim || isClaiming || claimFailed"
+            variant="primary"
+            size="medium"
+            class="w-full"
+            @click="claim"
+          >
             {{ claimButtonLabel }}
           </dot-button>
+
+          <div v-if="data?.chain" class="flex w-full items-center justify-center gap-2">
+            <small class="text-md text-white">Claim for free @{{ getChainName(data.chain) }}</small>
+            <img :src="`/chain/${data.chain}.png`" alt="chain" class="max-h-6 max-w-6 rounded-full" />
+          </div>
 
           <div
             class="pointer-events-none absolute inset-0 top-0 flex rounded-full p-1 transition-all duration-700"
@@ -143,10 +156,17 @@ const accountStore = useAccountStore();
 const manualAddress = ref("");
 const showAddressInput = ref(true);
 
+watch(showAddressInput, (show) => {
+  if (!show) {
+    claimFailed.value = false;
+  }
+});
+
 const address = computed(() => (showAddressInput.value ? manualAddress.value : accountStore.selected?.address));
 
 const addressError = ref("");
 watch(address, (address) => {
+  claimFailed.value = false;
   if (!address) {
     addressError.value = "Address is required";
     return;

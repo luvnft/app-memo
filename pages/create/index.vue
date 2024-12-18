@@ -4,6 +4,9 @@
 
     <div class="flex flex-col gap-4">
       <dot-image-input v-model="image" :error="imageError" />
+      <dot-label text="Chain">
+        <dot-select v-model="preferredChain" :options="chainList" />
+      </dot-label>
       <dot-label text="MEMO name">
         <dot-text-input v-model="name" :limit="150" type="text" placeholder="XYZ Event Collection" :error="nameError" />
       </dot-label>
@@ -21,7 +24,7 @@
           <span
             class="pointer-events-none absolute right-0 top-full z-50 mt-2 w-64 rounded-lg bg-white px-3 py-2 opacity-0 shadow-xl transition-opacity group-hover:opacity-100"
           >
-            Use this if your memo should be linked to extenal domain
+            Use this if your memo should be linked to external domain
           </span>
         </div>
         <dot-text-input v-model="externalUrl" placeholder="Custom domains are supported." :error="externalUrlError" />
@@ -60,6 +63,7 @@ import { toTypedSchema } from "@vee-validate/zod";
 import { useModal } from "vue-final-modal";
 import SignModal from "@/components/dot/sign-modal.vue";
 import * as zod from "zod";
+import type { Option } from "~/types/components";
 
 const validationSchema = toTypedSchema(
   zod.object({
@@ -125,6 +129,7 @@ const onSubmit = handleSubmit(({ description, endDate, image, quantity, startDat
       image,
       secret,
       description,
+      chain: preferredChain.value,
     },
   });
 
@@ -153,6 +158,15 @@ const isSubmittable = computed(
     !localEndDateError.value &&
     !Object.keys(errors.value).length,
 );
+
+// Chain list
+const { prefix } = usePrefix();
+const preferredChain = ref(prefix.value);
+
+const chainList = computed<Option[]>(() => [
+  { text: "Asset Hub Kusama", value: "ahk", info: "Kusama is a canary network for Polkadot." },
+  { text: "Asset Hub Polkadot", value: "ahp", info: "Polkadot is a multi-chain network." },
+]);
 </script>
 
 <style>
